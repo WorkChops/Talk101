@@ -127,7 +127,8 @@
 
   <!-- CONTENT -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 pb-16">
-<div id="grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div>
+    <!-- CORRECTION 1: Suppression de xl:grid-cols-4 -->
+    <div id="grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div>
   </main>
 
   <!-- FOOTER -->
@@ -319,7 +320,9 @@
         const text = document.createElement('p');
         text.className = "text-sm text-slate-700"; text.textContent = it.text;
 
-        const left = document.createElement('div'); left.className = "flex items-center gap-2 min-w-[8rem]"; left.append(dot, team, badge);
+        const left = document.createElement('div'); left.className = "flex items-center gap-2 min-w-[8rem] shrink-0"; left.append(dot, team, badge);
+        
+        // CORRECTION 2: Remplacement de sm: par md:
         const wrap = document.createElement('div'); wrap.className = "flex flex-col md:flex-row md:items-center gap-2 md:gap-3 w-full"; wrap.append(left, text);
         row.append(wrap); body.append(row);
       });
