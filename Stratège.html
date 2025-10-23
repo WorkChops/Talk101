@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stratège — Timeline des activités</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{--bg:#0b0f14;--card:#10141a;--text:#E6E6E6;--accent:#C6A769;--g1:#0d1220;--g2:#1d2432}
+    html,body{height:100%}
+    body{background:#111827;color:var(--text);transition:background 1.2s ease-in-out,filter .5s ease-in-out;filter:brightness(var(--exp,1)) contrast(1.02)}
+    @supports (background: color-mix(in oklab, #000 50%, #fff 50%)){
+      body{background:linear-gradient(135deg,color-mix(in oklab,var(--g1) 88%,#000 12%),color-mix(in oklab,var(--g2) 88%,#000 12%));}
+    }
+    .skip{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+    .skip:focus{left:16px;top:16px;width:auto;height:auto;padding:.5rem .75rem;background:#0f172a;color:#fff;border-radius:.5rem;z-index:60}
+    .htrack{scroll-snap-type:x mandatory}
+    .hslide{scroll-snap-align:center;transition:transform .35s ease,opacity .35s ease;opacity:.68;width:120px}
+    .pixi-img{filter:drop-shadow(0 10px 24px rgba(0,0,0,.45))}
+    body:not(.gridboard) #track .pixi-img{height:110px;width:110px}
+    @media (min-width:768px){body:not(.gridboard) #track .pixi-img{height:130px;width:130px}}
+    .hslide.locked .openDlg{cursor:not-allowed}
+    .hslide.locked .label-sid{opacity:.75}
+    .hslide:not(.locked) .openDlg:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:12px}
+    #jumpStart:focus-visible,.btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+    body:not(.gridboard) #track::before,body:not(.gridboard) #track::after{content:"";flex:0 0 50vw}
+    .overlay{background:rgba(8,10,14,.55)}
+    .dialog{background:var(--card)}
+    .timeline{position:relative;min-width:100%}
+    #track{position:relative;z-index:1}
+    .rail{position:absolute;top:50%;transform:translateY(-50%);height:14px;border-radius:999px;opacity:.95;pointer-events:none;z-index:0;background:linear-gradient(90deg,#0c1119 0%,#39424d 50%,#0c1119 100%)}
+    .rail:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 22px,rgba(255,255,255,.09) 22px 24px);border-radius:999px}
+    .ticks{position:absolute;top:calc(50% + 14px);height:16px;pointer-events:none;z-index:0}
+    .tick{position:absolute;top:0;width:2px;height:10px;background:rgba(255,255,255,.32);border-radius:1px}
+    .no-scrollbar{scrollbar-width:none}
+    .no-scrollbar::-webkit-scrollbar{display:none}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem .75rem;border-radius:.75rem;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.05)}
+    .btn:hover{background:rgba(255,255,255,.08)}
+    #jumpStart{position:fixed;right:1.5rem;bottom:5rem}
+    @media (min-width:640px){#jumpStart{bottom:1.5rem}}
+    #cursor{position:fixed;left:0;top:0;width:8px;height:8px;border-radius:999px;background:var(--accent);box-shadow:0 0 12px rgba(198,167,105,.65);pointer-events:none;opacity:.8;transform:translate(-50%,-50%);z-index:50}
+    .gridboard #track{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.25rem;overflow:visible;scroll-snap-type:none;padding-block:2rem}
+    .gridboard .hslide{width:auto;opacity:1}
+    .gridboard .rail,.gridboard .ticks{display:none}
+    .badge{font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+    .badge-role{padding:.125rem .5rem;border-radius:.5rem;border:1px solid rgba(255,255,255,.12);display:inline-flex;gap:.375rem;align-items:center}
+    .badge-role[data-role="JOUE"]{color:#a7f3d0;background:rgba(16,185,129,.12)}
+    .badge-role[data-role="INTERAGIT"]{color:#bae6fd;background:rgba(14,165,233,.12)}
+    .badge-role[data-role="ANALYSE"]{color:#fecdd3;background:rgba(244,63,94,.12)}
+    .skel{position:absolute;inset:0;border-radius:12px;background:linear-gradient(135deg,#0d121a,#1b232f);overflow:hidden}
+    .skel::after{content:"";position:absolute;inset:-40% -60%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);transform:rotate(12deg);animation:shine 1.4s linear infinite}
+    @keyframes shine{to{transform:translateX(120%) rotate(12deg)}}
+    #vignette{position:fixed;inset:0;pointer-events:none;z-index:5;background:radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 58%, rgba(0,0,0,.18) 78%, rgba(0,0,0,.32) 100%)}
+    @keyframes rack{0%{filter:blur(.8px) saturate(.9)}100%{filter:blur(0) saturate(1)}}
+    .hslide:not(.locked) .openDlg:hover .pixi-img{animation:rack .15s ease both}
+    body.zoomed #pageMain{transform:scale(.985);filter:blur(.3px);transition:transform .25s ease,filter .25s ease}
+    #pageMain{transition:transform .25s ease,filter .25s ease}
+  </style>
+</head>
+<body class="antialiased selection:bg-yellow-500/10">
+  <a href="#track" class="skip">Aller à la timeline</a>
+  <div id="cursor"></div>
+  <div id="vignette" aria-hidden="true"></div>
+
+  <header class="max-w-6xl mx-auto px-6 pt-8" id="pageHeader">
+    <h1 class="text-2xl md:text-3xl font-semibold tracking-tight">Stratège — Timeline des activités</h1>
+    <p class="text-sm text-white/80 mt-1">Déblocage par temps : <span class="font-medium text-[var(--accent)]">jeu 1 disponible maintenant</span>, puis un jeu <span class="font-medium">toutes les 5 heures</span> à partir du <span class="font-medium">27 octobre</span>.</p>
+    <div id="status" class="mt-3 text-xs text-white/70"></div>
+  </header>
+
+  <main class="mt-6 relative" id="pageMain">
+    <section aria-label="Timeline Stratège (14 jeux)" class="relative px-6 pb-24 sm:pb-16">
+      <div id="track" class="timeline htrack overflow-x-auto no-scrollbar flex gap-12 py-16 scroll-smooth min-w-full" tabindex="0" role="list">
+        <div id="ticks" class="ticks"></div>
+      </div>
+      <div id="rail" class="rail"></div>
+    </section>
+    <div class="absolute left-1/2 -bottom-12 -translate-x-1/2">
+      <button id="toggleView" class="btn text-white/85">Vue Storyboard</button>
+    </div>
+    <button id="jumpStart" class="btn text-white/90 shadow-lg backdrop-blur-sm">Aller au jeu débloqué</button>
+  </main>
+
+  <div id="dialogRoot" class="hidden fixed inset-0 overlay flex items-end sm:items-center justify-center p-4 z-50" aria-hidden="true">
+    <div role="dialog" aria-modal="true" aria-labelledby="dlgTitle" aria-describedby="dlgDesc" class="dialog w-full max-w-md rounded-2xl shadow-2xl ring-1 ring-white/10 p-5">
+      <div class="flex items-start gap-3">
+        <div class="relative h-12 w-12">
+          <div class="skel rounded-xl" aria-hidden="true"></div>
+          <img id="dlgImg" class="h-12 w-12 object-contain pixi-img opacity-0 transition-opacity duration-300" alt="" width="48" height="48" loading="lazy" decoding="async" />
+        </div>
+        <div class="min-w-0">
+          <h2 id="dlgTitle" class="text-base font-semibold"></h2>
+          <p id="dlgDesc" class="text-sm text-white/80 mt-1"></p>
+          <div id="dlgMeta" class="mt-2 text-xs text-white/70"></div>
+          <p id="dlgLockMsg" class="mt-2 text-xs text-white/60 hidden">🔒 Non disponible pour l’instant.</p>
+        </div>
+      </div>
+      <div class="flex justify-end mt-4">
+        <button id="dlgClose" class="text-sm text-white/85 hover:text-white px-3 py-1.5 rounded-md ring-1 ring-white/10">Fermer (Esc)</button>
+      </div>
+    </div>
+  </div>
+  <div id="srLive" class="sr-only" aria-live="polite"></div>
+  <footer class="max-w-6xl mx-auto px-6 py-10 text-xs text-white/70 text-center" id="pageFooter">© 2025 · formation <span class="font-medium text-[var(--accent)]">ASIN</span> — Rôle : Stratège</footer>
+
+  <script>
+  // --- Données source (extraites de votre infographie) : uniquement le rôle STRATÈGE par jeu
+  const RAW_GAMES = [
+    { id:1, title:"Jeu d’improvisation d’introduction", role:"ANALYSE", text:"Évalue la clarté du sujet (a-t-on compris le propos ?)." },
+    { id:2, title:"Jeu du miroir (gestuelle)", role:"INTERAGIT", text:"Imite en miroir avec précision technique." },
+    { id:3, title:"Minute de clarté (synthèse rapide)", role:"JOUE", text:"Présentation 60s structurée (ex : Problème → Solution)." },
+    { id:4, title:"Interview à l’aveugle (écoute active)", role:"ANALYSE", text:"Évalue la qualité de la reformulation (écoute active)." },
+    { id:5, title:"Jeu du message-clé", role:"JOUE", text:"Rédige et présente un message-clé clair et direct." },
+    { id:6, title:"Simulation d’interview (médias)", role:"INTERAGIT", text:"Journaliste factuel : questions précises pour tester la maîtrise." },
+    { id:7, title:"Jeu du “soundbite”", role:"ANALYSE", text:"Évalue la concision (le moins de mots possible)." },
+    { id:8, title:"Jeu du porte-parole", role:"JOUE", text:"Prise de parole : clarté et maîtrise du message-clé." },
+    { id:9, title:"Réactivité face caméra", role:"ANALYSE", text:"Structure de la réponse improvisée (début, milieu, fin)." },
+    { id:10, title:"Empathie & transparence", role:"ANALYSE", text:"Clarté de l’information (partie ‘transparence’)." },
+    { id:11, title:"Conférence de presse sous tension", role:"JOUE", text:"Porte-parole : contrôle et répétition des messages-clés." },
+    { id:12, title:"Questions pièges & réponses maîtrisées", role:"INTERAGIT", text:"Pose des questions pièges logiques/factuelles." },
+    { id:13, title:"Mini-conférence filmée", role:"JOUE", text:"Présentation structurée en 3 parties claires." },
+    { id:14, title:"Débrief collectif filmé", role:"ANALYSE", text:"Feedback sur clarté de la structure et efficacité des messages." }
+  ];
+
+  // --- Déblocage temporel ---
+  // Jeu 1 disponible immédiatement.
+  // Les jeux 2..14 se débloquent toutes les 5 heures à partir du 27/10/2025 00:00 (heure locale).
+  const BASE_START = new Date(2025, 9, 27, 0, 0, 0); // 27 oct 2025 00:00 (mois 0-indexé)
+  const STEP_HOURS = 5;
+
+  function unlockTimeFor(game){
+    if(game.id === 1) return new Date(0); // toujours dispo
+    const idx = game.id - 2; // jeu2 => 0
+    const t = new Date(BASE_START.getTime() + idx * STEP_HOURS * 3600 * 1000);
+    return t;
+  }
+
+  function isUnlocked(game, now=new Date()){
+    const when = unlockTimeFor(game);
+    return now >= when;
+  }
+
+  // --- UI helpers ---
+  const status = document.getElementById('status');
+  const setStatus = (m, ok=true)=>{ status.textContent=m; status.className='mt-3 text-xs '+(ok?'text-green-300':'text-red-300') };
+  const $ = (s,r=document)=>r.querySelector(s), $$ = (s,r=document)=>[...r.querySelectorAll(s)];
+  const trackEl = document.getElementById('track');
+  const rail = document.getElementById('rail');
+  const ticks = document.getElementById('ticks');
+  const roleColor = r=> r==='JOUE'?'#10B981' : r==='INTERAGIT'?'#0EA5E9' : '#F43F5E';
+
+  function typeBadge(role){
+    const el = document.createElement('span');
+    el.className = 'badge badge-role';
+    el.dataset.role = role;
+    el.innerHTML = `<span class="inline-block h-2 w-2 rounded-full" style="background:${roleColor(role)}"></span>${role}`;
+    return el;
+  }
+
+  function renderSlides(){
+    trackEl.querySelectorAll('article.hslide').forEach(n=>n.remove());
+    RAW_GAMES.forEach(g=>{
+      const unlocked = isUnlocked(g);
+      const el = document.createElement('article');
+      el.className = 'hslide shrink-0 relative text-center'+(unlocked?'':' locked');
+      el.setAttribute('role','listitem');
+      el.dataset.index = g.id-1;
+      el.dataset.unlocked = unlocked? '1':'0';
+
+      const lockHTML = unlocked? '' : '<span class="ml-1 align-[-1px] text-white/50" aria-hidden="true">🔒</span>';
+      const when = unlockTimeFor(g);
+      const tip = unlocked? '' : ` title="Disponible le ${when.toLocaleString('fr-FR')}"`;
+
+      el.innerHTML = `
+        <button class="openDlg block mx-auto -mb-1 relative" aria-label="Détails Jeu ${g.id} — ${g.title}" data-id="${g.id}"${tip}>
+          <span class="skel rounded-xl h-20 w-20 md:h-24 md:w-24"></span>
+          <img src="https://dummyimage.com/160x160/0b0f14/ffffff&text=${encodeURIComponent('J'+g.id)}" alt="Jeu ${g.id}" class="h-20 w-20 md:h-24 md:w-24 object-contain pixi-img opacity-0 transition-opacity duration-300" width="96" height="96" loading="lazy" decoding="async" />
+        </button>
+        <div class="mt-2">
+          <span class="label-sid text-[11px] tracking-widest uppercase text-white/80">Jeu ${g.id}${lockHTML}</span>
+          <h3 class="text-sm md:text-base font-medium leading-tight">${g.title}</h3>
+          <div class="mt-1" data-role-badge></div>
+        </div>`;
+
+      trackEl.appendChild(el);
+      const badgeHost = $('[data-role-badge]', el); badgeHost.appendChild(typeBadge(g.role));
+    });
+
+    // Lifting skeletons
+    $$('.openDlg img',trackEl).forEach(img=>{
+      if(img.complete){ img.classList.remove('opacity-0'); img.previousElementSibling?.remove(); }
+      else { img.addEventListener('load',()=>{ img.classList.remove('opacity-0'); img.previousElementSibling?.remove(); },{once:true}); }
+    });
+  }
+
+  function layoutRail(){
+    const vw=trackEl.getBoundingClientRect().width;
+    rail.style.width=(trackEl.scrollWidth+vw)+'px';
+    rail.style.left=(-vw/2)+'px';
+    ticks.style.width=trackEl.scrollWidth+'px';
+    ticks.style.left='0px';
+    ticks.innerHTML='';
+    const CYCLE=3;
+    for(let i=CYCLE;i<RAW_GAMES.length;i+=CYCLE){
+      const prev=$(`article[data-index="${i-1}"]`,trackEl);
+      const next=$(`article[data-index="${i}"]`,trackEl);
+      if(!prev||!next)continue;
+      const mid=((prev.offsetLeft+prev.offsetWidth/2)+(next.offsetLeft+next.offsetWidth/2))/2;
+      const t=document.createElement('div');t.className='tick';t.style.left=mid+'px';t.setAttribute('aria-hidden','true');
+      ticks.appendChild(t);
+    }
+  }
+
+  function applyGradient(i){
+    const palettes = [["#0d1220","#1d2432"],["#101726","#222a3a"],["#0f1623","#1f2533"],["#0e1522","#1f2634"],["#0f1420","#212738"],["#0e1520","#1d2734"],["#0f1422","#1f2939"],["#0e1522","#202a3b"],["#0f1624","#202a3c"],["#101626","#232c3e"]];
+    const g=palettes[i%palettes.length]||palettes[0];
+    document.documentElement.style.setProperty('--g1',g[0]);
+    document.documentElement.style.setProperty('--g2',g[1]);
+    const exp=0.98+0.02*((i%3));
+    document.documentElement.style.setProperty('--exp',exp.toFixed(2));
+    document.getElementById('srLive').textContent=`Focus jeu ${i+1}`;
+  }
+
+  // Modal
+  const dlg=document.getElementById('dialogRoot'),dlgTitle=document.getElementById('dlgTitle'),dlgDesc=document.getElementById('dlgDesc'),dlgMeta=document.getElementById('dlgMeta'),dlgImg=document.getElementById('dlgImg'),dlgClose=document.getElementById('dlgClose');
+  let lastFocus=null;
+  function setAmbientInert(on){
+    const root=document.documentElement;const parts=[document.getElementById('pageHeader'),document.getElementById('pageMain'),document.getElementById('pageFooter')];
+    if(on){root.style.overflow='hidden';parts.forEach(p=>{p?.setAttribute('aria-hidden','true');p?.setAttribute('inert','')});dlg.removeAttribute('aria-hidden')}else{root.style.overflow='';parts.forEach(p=>{p?.removeAttribute('aria-hidden');p?.removeAttribute('inert')});dlg.setAttribute('aria-hidden','true')}
+  }
+  function openDlg(id){
+    const g = RAW_GAMES.find(x=>x.id===id);
+    const unlocked = isUnlocked(g);
+    const skel=dlgImg.previousElementSibling;dlgImg.classList.add('opacity-0');skel.style.display='block';
+    dlgImg.onload=()=>{dlgImg.classList.remove('opacity-0');skel.style.display='none'};
+    dlgImg.src=`https://dummyimage.com/160x160/0b0f14/ffffff&text=${encodeURIComponent('J'+g.id)}`;
+    dlgTitle.textContent=g.title;
+    dlgDesc.textContent=g.text;
+    const when = unlockTimeFor(g);
+    dlgMeta.innerHTML = `<div class="mt-1">Rôle : <span class="align-middle">${typeBadge(g.role).outerHTML}</span></div>` +
+      (unlocked? `<div class="mt-1 text-green-300">✅ Activité disponible</div>` : `<div class="mt-1 text-white/70">🔒 Déverrouillage : <time datetime="${when.toISOString()}">${when.toLocaleString('fr-FR')}</time></div>`);
+    const lockMsg=document.getElementById('dlgLockMsg');
+    lockMsg.classList.toggle('hidden', unlocked);
+    setAmbientInert(true); dlg.classList.remove('hidden');
+    lastFocus=document.activeElement; dlgClose.focus();
+  }
+  function closeDlg(){ dlg.classList.add('hidden'); setAmbientInert(false); lastFocus?.focus(); }
+
+  // Interactions
+  function bindEvents(){
+    const trackEl=document.getElementById('track');
+    trackEl.addEventListener('click',e=>{const btn=e.target.closest('.openDlg'); if(!btn) return; const id=+btn.dataset.id; openDlg(id);});
+    dlg.addEventListener('click',e=>{if(e.target===dlg) closeDlg()});
+    dlgClose.addEventListener('click',closeDlg);
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!dlg.classList.contains('hidden')) closeDlg()});
+
+    const toggle=document.getElementById('toggleView');
+    toggle.addEventListener('click',()=>{document.body.classList.toggle('gridboard'); toggle.textContent=document.body.classList.contains('gridboard')?'Vue Timeline':'Vue Storyboard'; layoutRail();});
+
+    const prefersReduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const goTo=i=>{const c=Math.max(0,Math.min(RAW_GAMES.length-1,i));const t=document.querySelector(`article[data-index="${c}"]`); if(t) t.scrollIntoView({behavior:prefersReduced?'auto':'smooth',inline:'center',block:'nearest'}); };
+    document.getElementById('jumpStart').addEventListener('click',()=>{const idx = Math.max(0, RAW_GAMES.findIndex(g=>!isUnlocked(g)) - 1); goTo(idx<0?0:idx);});
+  }
+
+  function updateDepth(){
+    const tb=trackEl.getBoundingClientRect();const center=tb.left+tb.width/2;
+    document.querySelectorAll('.hslide').forEach(el=>{const rb=el.getBoundingClientRect();const ec=rb.left+rb.width/2;const d=Math.min(1,Math.abs((ec-center)/(tb.width/2)));const scale=1-0.15*d,y=8*d,op=0.55+0.45*(1-d);const blur=(1.2*d).toFixed(2);const sat=(0.85+0.15*(1-d)).toFixed(2);el.style.transform=`translateY(${y}px) scale(${scale})`;el.style.opacity=op.toFixed(3);el.style.filter=`blur(${blur}px) saturate(${sat})`;});
+  }
+
+  function setupObserver(){
+    const io=new IntersectionObserver(ents=>{ents.forEach(e=>{if(e.isIntersecting){const i=+e.target.dataset.index;applyGradient(i);document.querySelector('[aria-current="true"]')?.removeAttribute('aria-current');e.target.setAttribute('aria-current','true');}})},{root:trackEl,threshold:.6});
+    document.querySelectorAll('.hslide').forEach(el=>io.observe(el));
+  }
+
+  function init(){
+    // statut initial
+    const nextLocked = RAW_GAMES.find(g=>!isUnlocked(g) && g.id!==1);
+    setStatus(nextLocked ? `Prochain déverrouillage : Jeu ${nextLocked.id} à ${unlockTimeFor(nextLocked).toLocaleString('fr-FR')}` : 'Toutes les activités sont débloquées');
+
+    renderSlides();
+    layoutRail();
+    setupObserver();
+    updateDepth();
+
+    const track=document.getElementById('track');
+    track.addEventListener('scroll',()=>{requestAnimationFrame(updateDepth)},{passive:true});
+    addEventListener('resize',()=>{layoutRail();updateDepth()});
+
+    // focus point vers la première dispo
+    const firstAvailableIndex = RAW_GAMES.findIndex(g=>isUnlocked(g));
+    const target = document.querySelector(`article[data-index="${Math.max(0,firstAvailableIndex)}"]`);
+    target?.scrollIntoView({behavior:'auto',inline:'center'});
+  }
+
+  // Cursor toy (optionnel)
+  (function(){const c=document.getElementById('cursor');if(!c)return;let x=0,y=0,tx=0,ty=0,raf;const loop=()=>{tx+=(x-tx)*.18;ty+=(y-ty)*.18;c.style.transform=`translate(${tx}px, ${ty}px)`;raf=requestAnimationFrame(loop)};addEventListener('mousemove',e=>{x=e.clientX;y=e.clientY;if(!raf)loop()});addEventListener('mouseleave',()=>{cancelAnimationFrame(raf);raf=null;c.style.opacity='.0'});addEventListener('mouseenter',()=>{c.style.opacity='.8'})})();
+
+  // Boot
+  renderSlides();
+  init();
+  bindEvents();
+  </script>
+</body>
+</html>
