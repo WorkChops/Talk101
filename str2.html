@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parcours du Stratège</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F5F3FF; /* Fond mauve très clair */
+        }
+        .font-patrick-hand {
+            font-family: 'Patrick Hand', cursive;
+        }
+        /* Styles pour les badges de rôle */
+        .role-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px; /* pill shape */
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-right: 0.75rem;
+            text-transform: uppercase;
+        }
+        .role-joue { background-color: #D1FAE5; color: #065F46; } /* Vert */
+        .role-interagit { background-color: #DBEAFE; color: #1E40AF; } /* Bleu */
+        .role-analyse { background-color: #FEE2E2; color: #991B1B; } /* Rouge */
+        .role-aucun { background-color: #F3F4F6; color: #4B5563; } /* Gris */
+
+        /* Style pour la zone de jeu actuelle */
+        .current-game-card {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            border: 1px solid #E5E7EB;
+            padding: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Style pour la zone de compte à rebours */
+        .countdown-card {
+            background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%); /* Dégradé violet clair */
+            border-radius: 0.75rem;
+            border: 1px solid #C4B5FD;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .countdown-timer {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #5B21B6; /* Violet foncé */
+            letter-spacing: 1px;
+        }
+        .countdown-label {
+            font-size: 0.875rem;
+            color: #6D28D9; /* Violet moyen */
+            margin-bottom: 0.5rem;
+        }
+
+        /* Style pour les placeholders Image/SVG */
+        .placeholder-image {
+             background-color: rgba(255, 255, 255, 0.2);
+             border-radius: 50%; /* Rond pour avatar */
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             color: white;
+             font-size: 0.75rem;
+             text-align: center;
+             padding: 1rem;
+             border: 2px dashed rgba(255, 255, 255, 0.5);
+             position: relative; /* Pour que l'image réelle puisse prendre la place */
+             overflow: hidden; /* Cache l'image si elle dépasse */
+        }
+        .placeholder-image.logo-placeholder {
+            border-radius: 0.25rem; /* Rectangulaire pour logo */
+            background-color: #E5E7EB; /* Gris clair pour logo */
+            color: #6B7280; /* Texte gris */
+            border-color: #D1D5DB;
+        }
+
+        .placeholder-image img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: contain; /* Ajuste l'image dans le placeholder */
+        }
+
+        .avatar-placeholder { width: 192px; height: 192px; } /* w-48 h-48 */
+        .logo-placeholder { height: 40px; width: 160px; } /* h-10 w-40 */
+
+        @media (min-width: 768px) { /* md: breakpoint */
+            .avatar-placeholder { width: 224px; height: 224px; } /* md:w-56 md:h-56 */
+        }
+
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+
+    <!-- En-tête simplifié -->
+    <header class="max-w-5xl mx-auto mb-6">
+        <nav class="bg-white p-3 rounded-xl shadow-sm border border-gray-200 flex items-center justify-between min-h-[60px]">
+            <!-- Placeholder pour le logo (avec ID) -->
+            <div id="logo-container" class="placeholder-image logo-placeholder">
+                 <span class="placeholder-text">Logo</span>
+                 <!-- L'image sera ajoutée ici par JS si le chemin est valide -->
+            </div>
+            <h1 class="text-lg font-bold text-violet-700 absolute left-1/2 transform -translate-x-1/2">Parcours Stratège</h1>
+        </nav>
+    </header>
+
+    <main class="w-full max-w-5xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-3 gap-0">
+
+        <!-- Colonne Profil -->
+        <div class="md:col-span-1 bg-gradient-to-br from-violet-500 to-purple-600 p-8 flex flex-col items-center justify-start text-center">
+            <!-- Placeholder pour l'avatar (avec ID) -->
+            <div class="relative mb-6">
+                <div class="absolute -inset-2 bg-white/30 rounded-full blur-xl animate-pulse"></div>
+                 <div id="avatar-container" class="placeholder-image avatar-placeholder relative">
+                     <span class="placeholder-text">Avatar Stratège</span>
+                     <!-- L'image sera ajoutée ici par JS si le chemin est valide -->
+                 </div>
+            </div>
+            <h2 class="font-patrick-hand text-4xl md:text-5xl text-white mt-4 drop-shadow-lg">Stratège</h2>
+            <p class="text-violet-100 mt-2 font-semibold">Focus : Structure & Décision</p>
+            <!-- Slogan (avec ID) -->
+            <p id="slogan-text" class="text-violet-100 mt-2 italic text-sm px-4">Chargement du slogan...</p>
+        </div>
+
+        <!-- Colonne Contenu / Jeux -->
+        <div class="md:col-span-2 p-6 md:p-8">
+            <div id="game-display" class="space-y-6">
+                <div class="text-center p-8 text-gray-500">Chargement du parcours...</div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // ==========================================
+        // CONFIGURATION MODIFIABLE
+        // ==========================================
+        const CONFIG = {
+            // Paramètres du compte à rebours
+            startDate: "2025-10-27T08:00:00+01:00", // Date et heure de début du déblocage (Jeu 2) Format ISO 8601 avec fuseau horaire
+            intervalHours: 5,                      // Intervalle entre chaque déblocage en heures
+
+            // Chemins vers les images (laisser vide "" si vous préférez afficher le texte du placeholder)
+            logoPath: "/assets/Logo Work CHOPS.svg",          // Chemin vers le logo dans l'en-tête
+            avatarPath: "/assets/strat.png",       // Chemin vers l'avatar du Stratège
+
+            // Textes personnalisables
+            slogan: "Je structure le message et guide l'échange pour des communications claires et impactantes." // Slogan du Stratège
+        };
+        // ==========================================
+        // FIN DE LA CONFIGURATION
+        // ==========================================
+
+        // --- Données des Jeux (inchangées) ---
+        const ALL_GAMES = [ /* ... données des 14 jeux ... */
+              { id:1, title:"Jeu d’improvisation d’introduction", solo:true, items:[ {team:"Catalyseur", role:"JOUE", text:"Improvise son intro. Objectif : créer une connexion immédiate."}, {team:"Explorateur", role:"ANALYSE", text:"Évalue l'originalité de l'accroche (Est-ce surprenant ?)."}, {team:"Stratège", role:"ANALYSE", text:"Évalue la clarté du sujet (A-t-on compris de quoi il va parler ?)."} ] },
+              { id:2, title:"Jeu du miroir (gestuelle)", solo:false, items:[ {team:"Explorateur", role:"JOUE", text:"Mène les gestes. Teste des mouvements créatifs et variés."}, {team:"Stratège", role:"INTERAGIT", text:"Imite en miroir avec précision technique."}, {team:"Catalyseur", role:"ANALYSE", text:"Évalue la synchronisation et la connexion du binôme."} ] },
+              { id:3, title:"Minute de clarté (synthèse rapide)", solo:true, items:[ {team:"Stratège", role:"JOUE", text:"Présentation 60s. Structure parfaite (ex : Problème → Solution)."}, {team:"Catalyseur", role:"ANALYSE", text:"Évalue l'impact (Est-ce convaincant ?)."}, {team:"Explorateur", role:"ANALYSE", text:"Évalue l'angle (Nouvelle façon de voir le sujet ?)."} ] },
+              { id:4, title:"Interview à l’aveugle (écoute active)", solo:false, items:[ {team:"Catalyseur", role:"JOUE", text:"Interviewé. Reformule avec empathie ce qui a été entendu."}, {team:"Explorateur", role:"INTERAGIT", text:"Intervieweur. Pose 3 questions ouvertes ou surprenantes."}, {team:"Stratège", role:"ANALYSE", text:"Évalue la qualité de la reformulation (écoute active)."} ] },
+              { id:5, title:"Jeu du message-clé (impact & mémorisation)", solo:false, items:[ {team:"Stratège", role:"JOUE", text:"Rédige et présente un message-clé efficace et direct."}, {team:"Catalyseur", role:"INTERAGIT", text:"Aide à rendre le message plus humain et mémorable."}, {team:"Explorateur", role:"ANALYSE", text:"Évalue l’originalité et la facilité à répéter le message."} ] },
+              { id:6, title:"Simulation d’interview (gestion des médias)", solo:false, items:[ {team:"Explorateur", role:"JOUE", text:"Interviewé. Utilise les questions pour ouvrir sur sa vision."}, {team:"Stratège", role:"INTERAGIT", text:"Journaliste factuel. Questions précises pour tester la maîtrise."}, {team:"Catalyseur", role:"ANALYSE", text:"Évalue la relation et l’authenticité sous pression."} ] },
+              { id:7, title:"Jeu du “soundbite” (captation d’attention)", solo:true, items:[ {team:"Catalyseur", role:"JOUE", text:"Écrit et lit un soundbite créant une émotion forte."}, {team:"Explorateur", role:"ANALYSE", text:"Évalue la force de l'image (visuel, métaphore)."}, {team:"Stratège", role:"ANALYSE", text:"Évalue la concision (le moins de mots possible)."} ] },
+              { id:8, title:"Jeu du porte-parole", solo:false, items:[ {team:"Stratège", role:"JOUE", text:"Prise de parole claire, maîtrise du message-clé."}, {team:"Catalyseur", role:"INTERAGIT", text:"Questions centrées valeurs/émotions (« Que ressentez-vous ? »)."}, {team:"Explorateur", role:"ANALYSE", text:"Évalue la cohérence et la capacité à ne pas se faire dévier."} ] },
+              { id:9, title:"Réactivité face caméra", solo:true, items:[ {team:"Explorateur", role:"JOUE", text:"Répond à la question surprise : spontanéité et créativité."}, {team:"Stratège", role:"ANALYSE", text:"Évalue la structure improvisée (début, milieu, fin)."}, {team:"Catalyseur", role:"ANALYSE", text:"Évalue le naturel (voix, regard, aisance)."} ] },
+              { id:10, title:"Empathie et transparence en action", solo:true, items:[ {team:"Catalyseur", role:"JOUE", text:"Prépare et lit un message 100% authentique dans l’empathie."}, {team:"Stratège", role:"ANALYSE", text:"Évalue la clarté de l’information (transparence)."}, {team:"Explorateur", role:"ANALYSE", text:"Évalue l’ajustesse de l’empathie (ni trop, ni trop peu)."} ] },
+              { id:11, title:"Conférence de presse sous tension (simulée)", solo:false, items:[ {team:"Stratège", role:"JOUE", text:"Porte-parole : contrôle et répétition des messages-clés."}, {team:"Explorateur", role:"INTERAGIT", text:"Journaliste : questions pièges et déstabilisantes."}, {team:"Catalyseur", role:"ANALYSE", text:"Évalue gestion du stress et posture non-verbale."} ] },
+              { id:12, title:"Questions pièges & réponses maîtrisées", solo:false, items:[ {team:"Catalyseur", role:"JOUE", text:"Répond en désamorçant le piège avec empathie avant le « pont »."}, {team:"Stratège", role:"INTERAGIT", text:"Questions pièges logiques ou factuelles."}, {team:"Explorateur", role:"ANALYSE", text:"Évalue l’efficacité (pont + message-clé)."} ] },
+              { id:13, title:"Mini-conférence filmée (expression libre)", solo:true, items:[ {team:"Stratège", role:"JOUE", text:"Présentation structurée (ex : 3 parties claires)."}, {team:"Catalyseur", role:"ANALYSE", text:"Évalue la connexion avec l’audience (storytelling)."}, {team:"Explorateur", role:"ANALYSE", text:"Évalue l’originalité (a-t-on appris quelque chose ?)."} ] },
+              { id:14, title:"Débrief collectif filmé", solo:false, items:[ {team:"Tous", role:"JOUE", text:"Auto-évaluation en regardant les vidéos."}, {team:"Catalyseur", role:"ANALYSE", text:"Feedback sur langage corporel et authenticité."}, {team:"Explorateur", role:"ANALYSE", text:"Feedback sur idées originales et prises de risque."}, {team:"Stratège", role:"ANALYSE", text:"Feedback sur clarté de la structure et efficacité des messages."} ] }
+        ];
+
+        const STRATEGE_GAMES = ALL_GAMES.map(game => { /* ... extraction des tâches Stratège ... */
+            const task = game.items.find(item => item.team === 'Stratège');
+            return {
+                id: game.id,
+                title: game.title,
+                task: task ? { role: task.role, text: task.text } : null
+            };
+        });
+
+        // --- Logique de Déblocage (utilise CONFIG) ---
+        const START_TIMESTAMP = new Date(CONFIG.startDate).getTime();
+        const INTERVAL_MS = CONFIG.intervalHours * 60 * 60 * 1000;
+
+        function getUnlockTime(gameId) {
+            // ... (logique inchangée, utilise START_TIMESTAMP et INTERVAL_MS calculés depuis CONFIG)
+            if (gameId === 1) return new Date("2025-10-23T00:00:00+01:00").getTime(); // Jeu 1 toujours débloqué
+            if (isNaN(START_TIMESTAMP)) {
+                 console.error("Date de début invalide dans CONFIG.startDate. Format attendu: 'YYYY-MM-DDTHH:mm:ss+ZZ:ZZ'");
+                 return Infinity;
+            }
+             if (isNaN(INTERVAL_MS) || INTERVAL_MS <= 0) {
+                 console.error("Intervalle invalide dans CONFIG.intervalHours. Doit être un nombre positif.");
+                 return Infinity;
+             }
+            return START_TIMESTAMP + (gameId - 2) * INTERVAL_MS;
+        }
+
+        // --- Initialisation des éléments configurables ---
+        function initializeConfigurableElements() {
+            // Slogan
+            const sloganElement = document.getElementById('slogan-text');
+            if (sloganElement) {
+                sloganElement.textContent = CONFIG.slogan;
+            } else {
+                console.error("Élément avec ID 'slogan-text' non trouvé.");
+            }
+
+            // Logo
+            const logoContainer = document.getElementById('logo-container');
+            if (logoContainer) {
+                const placeholderText = logoContainer.querySelector('.placeholder-text');
+                if (CONFIG.logoPath) {
+                     const img = document.createElement('img');
+                     img.src = CONFIG.logoPath;
+                     img.alt = "Logo"; // Vous pouvez aussi ajouter un alt dans CONFIG si besoin
+                     img.className = "h-8 object-contain"; // Ajustez la classe si nécessaire
+                     img.onerror = () => { // Si l'image ne charge pas, affiche le placeholder
+                         if(placeholderText) placeholderText.textContent = `Logo (${CONFIG.logoPath} introuvable)`;
+                         img.remove();
+                     };
+                     if(placeholderText) placeholderText.style.display = 'none'; // Cache le texte si l'image est définie
+                     logoContainer.appendChild(img);
+                } else {
+                     if(placeholderText) placeholderText.textContent = 'Logo (chemin non défini)';
+                }
+            } else {
+                 console.error("Élément avec ID 'logo-container' non trouvé.");
+            }
+
+            // Avatar
+            const avatarContainer = document.getElementById('avatar-container');
+             if (avatarContainer) {
+                 const placeholderText = avatarContainer.querySelector('.placeholder-text');
+                 if (CONFIG.avatarPath) {
+                     const img = document.createElement('img');
+                     img.src = CONFIG.avatarPath;
+                     img.alt = "Avatar Stratège";
+                     // L'image prendra la taille du conteneur grâce au CSS
+                     img.onerror = () => { // Si l'image ne charge pas, affiche le placeholder
+                         if(placeholderText) placeholderText.textContent = `Avatar (${CONFIG.avatarPath} introuvable)`;
+                         img.remove();
+                     };
+                     if(placeholderText) placeholderText.style.display = 'none'; // Cache le texte si l'image est définie
+                     avatarContainer.appendChild(img);
+                 } else {
+                      if(placeholderText) placeholderText.textContent = 'Avatar (chemin non défini)';
+                 }
+             } else {
+                  console.error("Élément avec ID 'avatar-container' non trouvé.");
+             }
+        }
+
+
+        // --- Reste du Script (Calcul état actuel, Affichage, Countdown...) ---
+        const gameDisplay = document.getElementById('game-display');
+        let currentUnlockedGameIndex = -1;
+        let nextGameToUnlockIndex = -1;
+        let timeUntilNextUnlock = Infinity;
+        let countdownIntervalId = null;
+
+        function calculateCurrentState() {
+             const now = new Date().getTime();
+             currentUnlockedGameIndex = -1; // Réinitialise
+             nextGameToUnlockIndex = -1;
+             timeUntilNextUnlock = Infinity;
+
+             STRATEGE_GAMES.forEach((game, index) => {
+                 if (now >= getUnlockTime(game.id)) {
+                     currentUnlockedGameIndex = index;
+                 }
+             });
+
+             if (currentUnlockedGameIndex < STRATEGE_GAMES.length - 1) {
+                 nextGameToUnlockIndex = currentUnlockedGameIndex + 1;
+                 timeUntilNextUnlock = getUnlockTime(STRATEGE_GAMES[nextGameToUnlockIndex].id);
+             }
+        }
+
+        // --- Fonctions d'Affichage (displayCurrentState, displayGameCard, displayCountdown - inchangées) ---
+        function displayCurrentState() { /* ... code inchangé ... */
+            gameDisplay.innerHTML = ''; // Nettoie
+
+            if (currentUnlockedGameIndex === -1) {
+                // Si même le jeu 1 n'est pas débloqué
+                 if (timeUntilNextUnlock === Infinity) {
+                     gameDisplay.innerHTML = '<div class="text-center p-8 text-red-600">Erreur de configuration des dates.</div>';
+                 } else {
+                     displayCountdown(timeUntilNextUnlock);
+                 }
+            } else {
+                // Affiche le jeu actuel
+                const currentGame = STRATEGE_GAMES[currentUnlockedGameIndex];
+                displayGameCard(currentGame);
+
+                // Affiche le compte à rebours s'il y a un prochain jeu
+                if (nextGameToUnlockIndex !== -1) {
+                    displayCountdown(timeUntilNextUnlock);
+                } else {
+                    // Tous les jeux sont débloqués
+                    gameDisplay.innerHTML += `
+                        <div class="mt-6 p-4 bg-green-100 border border-green-300 rounded-lg text-center text-green-800 font-semibold">
+                            Félicitations ! Vous avez débloqué toutes les activités du parcours Stratège.
+                        </div>`;
+                }
+            }
+        }
+
+        function displayGameCard(game) { /* ... code inchangé ... */
+            let roleBadgeHtml = `<span class="role-badge role-aucun">Observation</span>`;
+            let taskText = "Votre rôle principal dans ce jeu est d'observer.";
+
+            if (game.task) {
+                let badgeClass = 'role-aucun';
+                if (game.task.role === 'JOUE') badgeClass = 'role-joue';
+                else if (game.task.role === 'INTERAGIT') badgeClass = 'role-interagit';
+                else if (game.task.role === 'ANALYSE') badgeClass = 'role-analyse';
+                roleBadgeHtml = `<span class="role-badge ${badgeClass}">${game.task.role}</span>`;
+                taskText = game.task.text;
+            }
+
+             const gameCardDiv = document.createElement('div');
+             gameCardDiv.className = 'current-game-card';
+             gameCardDiv.innerHTML = `
+                 <h2 class="text-xl font-bold text-gray-800 mb-2">Activité Actuelle : Jeu ${game.id}</h2>
+                 <h3 class="text-lg font-semibold text-violet-700 mb-4">${game.title}</h3>
+                 <div class="mb-4">
+                     ${roleBadgeHtml}
+                     <span class="text-gray-600 font-medium">Votre Mission :</span>
+                 </div>
+                 <p class="text-gray-700 leading-relaxed">${taskText}</p>
+             `;
+             gameDisplay.appendChild(gameCardDiv);
+        }
+
+        function displayCountdown(targetTimestamp) { /* ... code inchangé ... */
+            const existingCountdown = document.getElementById('countdown-card');
+            if (existingCountdown) return;
+
+            const countdownDiv = document.createElement('div');
+            countdownDiv.id = 'countdown-card';
+            countdownDiv.className = 'countdown-card';
+            countdownDiv.innerHTML = `
+                 <div class="countdown-label">Prochaine activité débloquée dans :</div>
+                 <div id="countdown-timer" class="countdown-timer">Calcul...</div>
+            `;
+            if(nextGameToUnlockIndex !== -1) {
+                const nextGame = STRATEGE_GAMES[nextGameToUnlockIndex];
+                countdownDiv.innerHTML += `<p class="text-sm text-violet-600 mt-3">À venir : Jeu ${nextGame.id} - ${nextGame.title}</p>`;
+            }
+            gameDisplay.appendChild(countdownDiv);
+            startCountdown(targetTimestamp, 'countdown-timer');
+        }
+
+        // --- Compte à Rebours (inchangé, mais utilise les variables globales mises à jour) ---
+        function startCountdown(targetTimestamp, elementId) { /* ... code inchangé ... */
+             if (countdownIntervalId) clearInterval(countdownIntervalId);
+
+            const countdownElement = document.getElementById(elementId);
+             if (!countdownElement || isNaN(targetTimestamp) || targetTimestamp === Infinity) {
+                  if(countdownElement) countdownElement.closest('#countdown-card').innerHTML = '<p class="text-lg font-semibold text-green-700">Toutes les activités sont débloquées !</p>';
+                  return;
+             }
+
+            const updateTimer = () => {
+                const now = new Date().getTime();
+                const distance = targetTimestamp - now;
+
+                if (distance <= 0) {
+                    clearInterval(countdownIntervalId);
+                    countdownElement.textContent = "Débloqué !";
+                    setTimeout(() => {
+                        calculateCurrentState(); // Recalcule l'état
+                        displayCurrentState(); // Met à jour l'affichage COMPLET
+                    }, 1000);
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                let countdownText = "";
+                if (days > 0) countdownText += `${days}j `;
+                countdownText += `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
+                countdownElement.textContent = countdownText;
+            };
+
+            updateTimer();
+            countdownIntervalId = setInterval(updateTimer, 1000);
+        }
+
+        // --- Initialisation au chargement du DOM ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeConfigurableElements(); // Met à jour logo, avatar, slogan
+            calculateCurrentState();        // Détermine quel jeu/countdown afficher
+            displayCurrentState();          // Affiche l'état initial
+        });
+
+    </script>
+
+</body>
+</html>
