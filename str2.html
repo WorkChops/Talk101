@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parcours du Stratège</title>
+    <!-- Favicon link with an ID -->
+    <link id="favicon-link" rel="icon" href="/assets/favicon.ico" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
     <style>
+        /* ... styles inchangés ... */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #F5F3FF; /* Fond mauve très clair */
@@ -95,7 +98,6 @@
         @media (min-width: 768px) { /* md: breakpoint */
             .avatar-placeholder { width: 224px; height: 224px; } /* md:w-56 md:h-56 */
         }
-
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-8">
@@ -149,7 +151,8 @@
 
             // Chemins vers les images (laisser vide "" si vous préférez afficher le texte du placeholder)
             logoPath: "/assets/Logo Work CHOPS.svg",          // Chemin vers le logo dans l'en-tête
-            avatarPath: "/assets/strat.png",       // Chemin vers l'avatar du Stratège
+            avatarPath: "/assets/Strat.png",       // Chemin vers l'avatar du Stratège
+            faviconPath: "/assets/Strat.png",    // Chemin vers la favicon
 
             // Textes personnalisables
             slogan: "Je structure le message et guide l'échange pour des communications claires et impactantes." // Slogan du Stratège
@@ -177,34 +180,52 @@
         ];
 
         const STRATEGE_GAMES = ALL_GAMES.map(game => { /* ... extraction des tâches Stratège ... */
-            const task = game.items.find(item => item.team === 'Stratège');
-            return {
-                id: game.id,
-                title: game.title,
-                task: task ? { role: task.role, text: task.text } : null
-            };
-        });
+             const task = game.items.find(item => item.team === 'Stratège');
+             return {
+                 id: game.id,
+                 title: game.title,
+                 task: task ? { role: task.role, text: task.text } : null
+             };
+         });
 
         // --- Logique de Déblocage (utilise CONFIG) ---
         const START_TIMESTAMP = new Date(CONFIG.startDate).getTime();
         const INTERVAL_MS = CONFIG.intervalHours * 60 * 60 * 1000;
 
         function getUnlockTime(gameId) {
-            // ... (logique inchangée, utilise START_TIMESTAMP et INTERVAL_MS calculés depuis CONFIG)
-            if (gameId === 1) return new Date("2025-10-23T00:00:00+01:00").getTime(); // Jeu 1 toujours débloqué
-            if (isNaN(START_TIMESTAMP)) {
-                 console.error("Date de début invalide dans CONFIG.startDate. Format attendu: 'YYYY-MM-DDTHH:mm:ss+ZZ:ZZ'");
-                 return Infinity;
-            }
-             if (isNaN(INTERVAL_MS) || INTERVAL_MS <= 0) {
-                 console.error("Intervalle invalide dans CONFIG.intervalHours. Doit être un nombre positif.");
-                 return Infinity;
+             // ... (logique inchangée)
+             if (gameId === 1) return new Date("2025-10-23T00:00:00+01:00").getTime(); // Jeu 1 toujours débloqué
+             if (isNaN(START_TIMESTAMP)) {
+                  console.error("Date de début invalide dans CONFIG.startDate. Format attendu: 'YYYY-MM-DDTHH:mm:ss+ZZ:ZZ'");
+                  return Infinity;
              }
-            return START_TIMESTAMP + (gameId - 2) * INTERVAL_MS;
+              if (isNaN(INTERVAL_MS) || INTERVAL_MS <= 0) {
+                  console.error("Intervalle invalide dans CONFIG.intervalHours. Doit être un nombre positif.");
+                  return Infinity;
+              }
+             return START_TIMESTAMP + (gameId - 2) * INTERVAL_MS;
         }
 
         // --- Initialisation des éléments configurables ---
         function initializeConfigurableElements() {
+            // Favicon
+            const faviconLink = document.getElementById('favicon-link');
+            if (faviconLink && CONFIG.faviconPath) {
+                 faviconLink.href = CONFIG.faviconPath;
+                 // Optionnel: Déterminer le type MIME basé sur l'extension si nécessaire
+                 if (CONFIG.faviconPath.endsWith('.png')) {
+                     faviconLink.type = 'image/png';
+                 } else if (CONFIG.faviconPath.endsWith('.svg')) {
+                     faviconLink.type = 'image/svg+xml';
+                 } else {
+                     faviconLink.type = 'image/x-icon'; // Défaut pour .ico
+                 }
+            } else if (faviconLink && !CONFIG.faviconPath) {
+                 console.warn("Chemin de la favicon non défini dans CONFIG.faviconPath.");
+            } else if (!faviconLink) {
+                console.error("Élément <link> avec ID 'favicon-link' non trouvé dans le <head>.");
+            }
+
             // Slogan
             const sloganElement = document.getElementById('slogan-text');
             if (sloganElement) {
@@ -213,49 +234,42 @@
                 console.error("Élément avec ID 'slogan-text' non trouvé.");
             }
 
+            // Logo Helper Function
+            const setImageOrPlaceholder = (containerId, imgPath, altText, defaultText, imgClasses) => {
+                const container = document.getElementById(containerId);
+                if (container) {
+                     const placeholderTextEl = container.querySelector('.placeholder-text');
+                     // Vider le conteneur sauf le texte placeholder initial
+                     container.querySelectorAll('img').forEach(el => el.remove());
+                     if(placeholderTextEl) placeholderTextEl.style.display = 'block'; // Réaffiche le texte par défaut
+
+                     if (imgPath) {
+                         const img = document.createElement('img');
+                         img.src = imgPath;
+                         img.alt = altText;
+                         if(imgClasses) img.className = imgClasses;
+                         img.onerror = () => { // Si l'image ne charge pas
+                             if(placeholderTextEl) placeholderTextEl.textContent = `${defaultText} (${imgPath} introuvable)`;
+                             img.remove();
+                         };
+                         img.onload = () => { // Si l'image charge bien
+                            if(placeholderTextEl) placeholderTextEl.style.display = 'none'; // Cache le texte
+                         }
+                         container.appendChild(img);
+                     } else {
+                          if(placeholderTextEl) placeholderTextEl.textContent = `${defaultText} (chemin non défini)`;
+                     }
+                 } else {
+                      console.error(`Élément avec ID '${containerId}' non trouvé.`);
+                 }
+            };
+
             // Logo
-            const logoContainer = document.getElementById('logo-container');
-            if (logoContainer) {
-                const placeholderText = logoContainer.querySelector('.placeholder-text');
-                if (CONFIG.logoPath) {
-                     const img = document.createElement('img');
-                     img.src = CONFIG.logoPath;
-                     img.alt = "Logo"; // Vous pouvez aussi ajouter un alt dans CONFIG si besoin
-                     img.className = "h-8 object-contain"; // Ajustez la classe si nécessaire
-                     img.onerror = () => { // Si l'image ne charge pas, affiche le placeholder
-                         if(placeholderText) placeholderText.textContent = `Logo (${CONFIG.logoPath} introuvable)`;
-                         img.remove();
-                     };
-                     if(placeholderText) placeholderText.style.display = 'none'; // Cache le texte si l'image est définie
-                     logoContainer.appendChild(img);
-                } else {
-                     if(placeholderText) placeholderText.textContent = 'Logo (chemin non défini)';
-                }
-            } else {
-                 console.error("Élément avec ID 'logo-container' non trouvé.");
-            }
+            setImageOrPlaceholder('logo-container', CONFIG.logoPath, 'Logo', 'Logo', 'h-8 object-contain');
 
             // Avatar
-            const avatarContainer = document.getElementById('avatar-container');
-             if (avatarContainer) {
-                 const placeholderText = avatarContainer.querySelector('.placeholder-text');
-                 if (CONFIG.avatarPath) {
-                     const img = document.createElement('img');
-                     img.src = CONFIG.avatarPath;
-                     img.alt = "Avatar Stratège";
-                     // L'image prendra la taille du conteneur grâce au CSS
-                     img.onerror = () => { // Si l'image ne charge pas, affiche le placeholder
-                         if(placeholderText) placeholderText.textContent = `Avatar (${CONFIG.avatarPath} introuvable)`;
-                         img.remove();
-                     };
-                     if(placeholderText) placeholderText.style.display = 'none'; // Cache le texte si l'image est définie
-                     avatarContainer.appendChild(img);
-                 } else {
-                      if(placeholderText) placeholderText.textContent = 'Avatar (chemin non défini)';
-                 }
-             } else {
-                  console.error("Élément avec ID 'avatar-container' non trouvé.");
-             }
+            setImageOrPlaceholder('avatar-container', CONFIG.avatarPath, 'Avatar Stratège', 'Avatar Stratège', ''); // Pas de classes spécifiques, prend la taille du parent
+
         }
 
 
@@ -266,25 +280,24 @@
         let timeUntilNextUnlock = Infinity;
         let countdownIntervalId = null;
 
-        function calculateCurrentState() {
-             const now = new Date().getTime();
-             currentUnlockedGameIndex = -1; // Réinitialise
-             nextGameToUnlockIndex = -1;
-             timeUntilNextUnlock = Infinity;
+        function calculateCurrentState() { /* ... code inchangé ... */
+              const now = new Date().getTime();
+              currentUnlockedGameIndex = -1; // Réinitialise
+              nextGameToUnlockIndex = -1;
+              timeUntilNextUnlock = Infinity;
 
-             STRATEGE_GAMES.forEach((game, index) => {
-                 if (now >= getUnlockTime(game.id)) {
-                     currentUnlockedGameIndex = index;
-                 }
-             });
+              STRATEGE_GAMES.forEach((game, index) => {
+                  if (now >= getUnlockTime(game.id)) {
+                      currentUnlockedGameIndex = index;
+                  }
+              });
 
-             if (currentUnlockedGameIndex < STRATEGE_GAMES.length - 1) {
-                 nextGameToUnlockIndex = currentUnlockedGameIndex + 1;
-                 timeUntilNextUnlock = getUnlockTime(STRATEGE_GAMES[nextGameToUnlockIndex].id);
-             }
+              if (currentUnlockedGameIndex < STRATEGE_GAMES.length - 1) {
+                  nextGameToUnlockIndex = currentUnlockedGameIndex + 1;
+                  timeUntilNextUnlock = getUnlockTime(STRATEGE_GAMES[nextGameToUnlockIndex].id);
+              }
         }
 
-        // --- Fonctions d'Affichage (displayCurrentState, displayGameCard, displayCountdown - inchangées) ---
         function displayCurrentState() { /* ... code inchangé ... */
             gameDisplay.innerHTML = ''; // Nettoie
 
@@ -341,66 +354,79 @@
         }
 
         function displayCountdown(targetTimestamp) { /* ... code inchangé ... */
-            const existingCountdown = document.getElementById('countdown-card');
-            if (existingCountdown) return;
+             const existingCountdown = document.getElementById('countdown-card');
+             if (existingCountdown) return; // Ne pas recréer si déjà présent
 
-            const countdownDiv = document.createElement('div');
-            countdownDiv.id = 'countdown-card';
-            countdownDiv.className = 'countdown-card';
-            countdownDiv.innerHTML = `
-                 <div class="countdown-label">Prochaine activité débloquée dans :</div>
-                 <div id="countdown-timer" class="countdown-timer">Calcul...</div>
-            `;
-            if(nextGameToUnlockIndex !== -1) {
-                const nextGame = STRATEGE_GAMES[nextGameToUnlockIndex];
-                countdownDiv.innerHTML += `<p class="text-sm text-violet-600 mt-3">À venir : Jeu ${nextGame.id} - ${nextGame.title}</p>`;
-            }
-            gameDisplay.appendChild(countdownDiv);
-            startCountdown(targetTimestamp, 'countdown-timer');
+             const countdownDiv = document.createElement('div');
+             countdownDiv.id = 'countdown-card';
+             countdownDiv.className = 'countdown-card';
+             countdownDiv.innerHTML = `
+                  <div class="countdown-label">Prochaine activité débloquée dans :</div>
+                  <div id="countdown-timer" class="countdown-timer">Calcul...</div>
+             `;
+             if(nextGameToUnlockIndex !== -1) {
+                 const nextGame = STRATEGE_GAMES[nextGameToUnlockIndex];
+                 countdownDiv.innerHTML += `<p class="text-sm text-violet-600 mt-3">À venir : Jeu ${nextGame.id} - ${nextGame.title}</p>`;
+             }
+             gameDisplay.appendChild(countdownDiv);
+             startCountdown(targetTimestamp, 'countdown-timer');
         }
 
-        // --- Compte à Rebours (inchangé, mais utilise les variables globales mises à jour) ---
         function startCountdown(targetTimestamp, elementId) { /* ... code inchangé ... */
-             if (countdownIntervalId) clearInterval(countdownIntervalId);
+              if (countdownIntervalId) clearInterval(countdownIntervalId);
 
-            const countdownElement = document.getElementById(elementId);
-             if (!countdownElement || isNaN(targetTimestamp) || targetTimestamp === Infinity) {
-                  if(countdownElement) countdownElement.closest('#countdown-card').innerHTML = '<p class="text-lg font-semibold text-green-700">Toutes les activités sont débloquées !</p>';
-                  return;
-             }
+             const countdownElement = document.getElementById(elementId);
+              if (!countdownElement || isNaN(targetTimestamp) || targetTimestamp === Infinity) {
+                   // Si plus de compte à rebours ou erreur, nettoyer l'élément potentiel
+                   const countdownCard = document.getElementById('countdown-card');
+                   if (countdownCard && !STRATEGE_GAMES[STRATEGE_GAMES.length - 1].unlocked) { // Ne pas afficher si tout est débloqué
+                        countdownCard.innerHTML = '<p class="text-lg font-semibold text-red-600">Erreur de date ou intervalle.</p>';
+                   } else if (countdownCard) {
+                       countdownCard.remove(); // Supprimer la carte si tout est débloqué
+                   }
+                   return;
+              }
 
-            const updateTimer = () => {
-                const now = new Date().getTime();
-                const distance = targetTimestamp - now;
+             const updateTimer = () => {
+                 const now = new Date().getTime();
+                 const distance = targetTimestamp - now;
 
-                if (distance <= 0) {
-                    clearInterval(countdownIntervalId);
-                    countdownElement.textContent = "Débloqué !";
-                    setTimeout(() => {
-                        calculateCurrentState(); // Recalcule l'état
-                        displayCurrentState(); // Met à jour l'affichage COMPLET
-                    }, 1000);
-                    return;
-                }
+                 if (distance <= 0) {
+                     clearInterval(countdownIntervalId);
+                     countdownElement.textContent = "Débloqué !";
+                     // Attendre un peu avant de rafraîchir pour que l'utilisateur voie "Débloqué !"
+                     setTimeout(() => {
+                         calculateCurrentState(); // Recalcule l'état
+                         displayCurrentState(); // Met à jour l'affichage COMPLET
+                     }, 1500); // Attente de 1.5s
+                     return;
+                 }
 
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                let countdownText = "";
-                if (days > 0) countdownText += `${days}j `;
-                countdownText += `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
-                countdownElement.textContent = countdownText;
-            };
+                 let countdownText = "";
+                 if (days > 0) countdownText += `${days}j `;
+                 countdownText += `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
 
-            updateTimer();
-            countdownIntervalId = setInterval(updateTimer, 1000);
+                 // Vérifier si l'élément existe toujours avant de le mettre à jour
+                 const currentCountdownElement = document.getElementById(elementId);
+                 if (currentCountdownElement) {
+                     currentCountdownElement.textContent = countdownText;
+                 } else {
+                      clearInterval(countdownIntervalId); // Arrêter si l'élément a disparu
+                 }
+             };
+
+             updateTimer(); // Afficher immédiatement
+             countdownIntervalId = setInterval(updateTimer, 1000); // Mettre à jour toutes les secondes
         }
 
         // --- Initialisation au chargement du DOM ---
         document.addEventListener('DOMContentLoaded', () => {
-            initializeConfigurableElements(); // Met à jour logo, avatar, slogan
+            initializeConfigurableElements(); // Met à jour logo, avatar, slogan, favicon
             calculateCurrentState();        // Détermine quel jeu/countdown afficher
             displayCurrentState();          // Affiche l'état initial
         });
