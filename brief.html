@@ -3,22 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Parcours des jeux & rôles — Infographie</title>
-  <meta name="description" content="Infographie claire des activités et de la répartition des rôles pour chaque jeu : Joue, Interagit, Analyse." />
+  <title>Parcours des jeux & rôles — formation ASIN</title>
+  <meta name="description" content="Interface apprenants : jeux par équipes (Créatif, Médiateur, Pilote), filtres et disponibilité selon la date. Formation ASIN." />
   <meta name="theme-color" content="#0EA5E9">
-  <meta property="og:title" content="Parcours des jeux & rôles — Infographie">
-  <meta property="og:description" content="14 jeux, 3 équipes, 3 rôles : Catalyseur, Explorateur, Stratège. Filtres + impression.">
+  <meta property="og:title" content="Parcours des jeux & rôles — formation ASIN">
+  <meta property="og:description" content="Jeux filtrés par jour et moment. Rejoins ton équipe pour voir quoi faire immédiatement.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://formation-asin.example.com/jeux-et-roles">
+  <meta property="og:image" content="https://formation-asin.example.com/assets/asin-banner.jpg">
+  <link rel="canonical" href="https://formation-asin.example.com/jeux-et-roles">
   <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          colors: {
-            brand: { gold: '#D4AF37', sky: '#0EA5E9', leaf: '#10B981', berry: '#EC4899' }
-          },
+          colors: { brand: { gold: '#D4AF37', sky: '#0EA5E9', leaf: '#10B981', berry: '#EC4899' } },
           container: { center: true, padding: { DEFAULT: '1rem', sm: '1.5rem' } },
           fontFamily: { sans: ['ui-sans-serif','system-ui','-apple-system','Segoe UI','Roboto','Inter','Noto Sans','sans-serif'] }
         }
@@ -26,344 +26,235 @@
     }
   </script>
   <style>
-    :root{
-      --bg:#ffffff; --card:#F8FAFC; --text:#0F172A;
-      --muted:#64748B; --ring:#0EA5E9;
-      --catalyseur:#D4AF37; --explorateur:#6366F1; --stratege:#10B981;
-    }
-    @media print{
-      #controls, #legend, #footer, .no-print{ display:none !important; }
-      header{ position: static !important; }
-      main{ padding:0 !important; }
-      .card{ break-inside: avoid; }
-      body::before{
-        content: 'Parcours des jeux & rôles — ' attr(data-print-date);
-        display:block; margin:0 0 8px; font: 600 12px/1.2 ui-sans-serif,system-ui; color:#334155;
-      }
-    }
+    :root{ --bg:#ffffff; --card:#F8FAFC; --text:#0F172A; --muted:#64748B; --ring:#0EA5E9; --creatif:rgba(254,205,64,1); --mediateur:rgba(50,166,217,1); --pilote:rgba(137,106,174,1); --accentTeam:var(--ring); --slot-matin:#0ea5e9; --slot-apres:#f59e0b; }
+    body.team-Créatif{ --accentTeam:var(--creatif) }
+    body.team-Médiateur{ --accentTeam:var(--mediateur) }
+    body.team-Pilote{ --accentTeam:var(--pilote) }
+    .sr-only:not(:focus):not(:active){ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0 }
+    #roleBanner{ border-color: color-mix(in oklab, var(--accentTeam) 52%, #fff 48%); box-shadow: inset 6px 0 0 var(--accentTeam) }
+    #roleBanner #roleName{ color: color-mix(in oklab, var(--accentTeam) 60%, #0f172a 40%) }
+    .card[data-accent]{ border-color: color-mix(in oklab, var(--accentTeam) 38%, #e2e8f0 62%); box-shadow: inset 6px 0 0 var(--accentTeam), 0 1px 0 0 rgba(2,6,23,.04) }
+    .card[data-accent] header{ position:relative }
+    .card[data-accent] header::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:linear-gradient(90deg,var(--accentTeam),transparent); opacity:.25 }
+    .row-team{ box-shadow: inset 6px 0 0 var(--rowAccent), inset 0 0 0 1px rgba(148,163,184,.18); background:linear-gradient(90deg,rgba(16,24,40,.02),rgba(255,255,255,0)) }
+    .focus-accent:focus-visible{ outline:2px solid var(--accentTeam); outline-offset:3px; border-radius:12px }
+    .card.slot-matin header::before, .card.slot-apres header::before{ content:""; position:absolute; top:0; left:0; right:0; height:3px; opacity:.65 }
+    .card.slot-matin header::before{ background:linear-gradient(90deg,var(--slot-matin),transparent) }
+    .card.slot-apres header::before{ background:linear-gradient(90deg,var(--slot-apres),transparent) }
+    .card.slot-matin{ background-image:linear-gradient(180deg,rgba(14,165,233,.06),transparent 22%) }
+    .card.slot-apres{ background-image:linear-gradient(180deg,rgba(245,158,11,.08),transparent 22%) }
+    .glyph{display:inline-block;position:relative;width:12px;height:22px;border:3px solid currentColor;border-right:0;border-radius:9999px 0 0 9999px;vertical-align:middle}
+    .glyph::after{content:"";position:absolute;left:6px;top:50%;transform:translate(-50%,-50%);width:6px;height:6px;border-radius:9999px;background:currentColor}
   </style>
 </head>
-<body class="bg-white text-slate-900 font-sans antialiased" data-print-date="">
-  <!-- Skip Link -->
+<body class="bg-white text-slate-900 font-sans antialiased">
   <a href="#grid" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-3 focus:py-2 focus:rounded-lg focus:bg-sky-600 focus:text-white">Aller au contenu</a>
-
-  <!-- HEADER -->
-  <header class="border-b border-slate-200 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/60 sticky top-0 z-30 print:static">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <span class="inline-flex items-center gap-2">
-          <span class="inline-flex h-9 px-3 items-center justify-center rounded-xl bg-slate-100 ring-1 ring-slate-200 text-slate-700 font-semibold">formation ASIN</span>
-        </span>
-        <h1 class="text-xl sm:text-2xl font-semibold">Parcours des jeux & rôles</h1>
+  <header class="border-b border-slate-800 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3">
+      <div class="flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <span class="inline-flex h-9 px-3 items-center justify-center rounded-xl bg-white/10 ring-1 ring-white/15 text-white/90 font-semibold">formation ASIN</span>
+          <h1 class="text-xl sm:text-2xl font-semibold text-white">Parcours des jeux & rôles</h1>
+        </div>
       </div>
-      <div class="flex items-center gap-2">
-        <button id="printBtn" class="no-print inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand.sky" type="button">
-          <svg aria-hidden="true" viewBox="0 0 24 24" class="h-4 w-4"><path fill="currentColor" d="M6 7V3h12v4H6zm12 2H6a3 3 0 0 0-3 3v4h4v5h10v-5h4v-4a3 3 0 0 0-3-3zm-3 10H9v-3h6v3zM5 12h14a1 1 0 1 1 0 2H5a1 1 0 1 1 0-2z"/></svg>
-          Imprimer / PDF
-        </button>
+      <div id="dateBanner" class="mt-2 text-sm text-white/90 bg-white/10 ring-1 ring-white/15 rounded-xl px-3 py-2 flex flex-wrap items-center gap-2">
+        <span class="font-medium">Aujourd'hui :</span>
+        <span id="activeDayLabel" class="px-2 py-0.5 rounded bg-white text-slate-900 font-medium"></span>
+        <span class="hidden sm:inline">•</span>
+        <span id="activeHint" class="text-white/80"></span>
+        <span class="hidden sm:inline">•</span>
+        <span id="nextSwitch" class="text-white/70"></span>
+      </div>
+      <div id="roleBanner" class="mt-2 hidden text-sm text-white bg-white/10 ring-1 ring-white/15 rounded-xl px-3 py-2 flex items-center gap-2">
+        <span class="inline-flex items-center gap-2"><span id="roleDot" class="h-2.5 w-2.5 rounded-full"></span><span id="roleGlyph" class="glyph" style="color:var(--accentTeam)"></span><strong id="roleName"></strong></span>
+        <span class="text-white/80">— tu verras d’abord tes tâches.</span>
+        <button id="changeRole" class="ml-auto text-white/90 hover:underline">Changer d’équipe</button>
+      </div>
+      <div id="toolbar" class="mt-2 flex flex-col lg:flex-row items-stretch lg:items-center gap-3">
+        <form id="filterForm" class="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-3" aria-describedby="resultCount">
+          <div class="sm:col-span-2">
+            <label for="searchInput" class="sr-only">Recherche</label>
+            <input id="searchInput" type="search" placeholder="Mot-clé (ex. interview, message-clé)" class="w-full rounded-xl border border-white/20 bg-white/10 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/30 px-3 py-2" />
+          </div>
+          <div class="flex items-center gap-2 justify-end">
+            <label class="text-sm text-white/90">Moment</label>
+            <button id="slotSwitch" type="button" aria-label="Basculer matin / après-midi" data-state="" class="relative inline-flex h-9 w-20 items-center rounded-full bg-slate-700/70 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40">
+              <span class="absolute left-1 text-[11px] font-medium text-white/80 select-none">AM</span>
+              <span class="absolute right-1 text-[11px] font-medium text-white/80 select-none">PM</span>
+              <span id="slotThumb" class="h-6 w-6 translate-x-1 rounded-full bg-white shadow transition-transform"></span>
+            </button>
+            <button id="slotClear" type="button" class="text-xs px-2 py-1 rounded-lg border border-white/20 bg-white/10 text-white hover:bg-white/15">Tous</button>
+            <select id="slotFilter" class="hidden" aria-hidden="true"><option value=""></option><option value="matin">matin</option><option value="apres">apres</option></select>
+          </div>
+          <label class="hidden" aria-hidden="true">
+            <span class="sr-only">Équipe</span>
+            <select id="teamFilter" class="hidden"><option value=""></option><option value="Créatif">Créatif</option><option value="Médiateur">Médiateur</option><option value="Pilote">Pilote</option></select>
+          </label>
+          <label class="hidden" aria-hidden="true">
+            <span class="sr-only">Jeu</span>
+            <select id="gameFilter" class="hidden"><option value=""></option></select>
+          </label>
+          <label id="dayFilterWrap" class="hidden">
+            <span class="sr-only">Jour</span>
+            <select id="dayFilter" class="hidden"><option value="auto">Auto</option><option value="1">Jour 1</option><option value="2">Jour 2</option><option value="all">Tous</option></select>
+          </label>
+        </form>
+        <p id="resultCount" class="text-sm text-white/80"></p>
       </div>
     </div>
   </header>
-
-  <!-- CONTROLS (sticky sur PC) -->
-  <section id="controls" class="border-b border-slate-200 bg-slate-50/60 lg:sticky lg:top-0 lg:z-20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-      <form id="filterForm" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3" aria-describedby="resultCount">
-        <fieldset class="contents" aria-label="Filtres des jeux">
-          <legend class="sr-only">Filtres des jeux</legend>
-
-          <!-- FILTRE ÉQUIPE -->
-          <label class="block">
-            <span class="block text-sm font-medium text-slate-700">Filtrer par équipe</span>
-            <select id="teamFilter" class="mt-1 w-full rounded-xl border-slate-300 bg-white text-sm focus:border-brand.sky focus:ring-brand.sky">
-              <option value="">Toutes les équipes</option>
-              <option value="Catalyseur">Catalyseur</option>
-              <option value="Explorateur">Explorateur</option>
-              <option value="Stratège">Stratège</option>
-            </select>
-          </label>
-
-          <!-- RECHERCHE -->
-          <label class="block">
-            <span class="block text-sm font-medium text-slate-700">Recherche (titre / contenu)</span>
-            <input id="searchInput" type="search" placeholder="Ex. interview, soundbite…" class="mt-1 w-full rounded-xl border-slate-300 bg-white text-sm focus:border-brand.sky focus:ring-brand.sky" />
-          </label>
-
-          <!-- OPTIONS -->
-          <div class="flex items-end justify-between gap-2">
-            <label class="inline-flex items-center gap-2">
-              <input id="soloOnly" type="checkbox" class="rounded border-slate-300 text-brand.sky focus:ring-brand.sky">
-              <span class="text-sm text-slate-700">Jeux solo uniquement</span>
-            </label>
-            <button id="resetBtn" type="button" class="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand.sky">
-              Réinitialiser
-            </button>
-          </div>
-        </fieldset>
-      </form>
-      <p id="resultCount" class="mt-2 text-sm text-slate-600" aria-live="polite"></p>
-    </div>
-  </section>
-
-  <!-- LEGEND -->
+  
   <aside id="legend" class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
     <div class="flex flex-wrap items-center gap-3 text-sm">
-      <span class="inline-flex items-center gap-2">
-        <span class="h-2.5 w-2.5 rounded-full" style="background:var(--catalyseur)"></span>Catalyseur
-      </span>
-      <span class="inline-flex items-center gap-2">
-        <span class="h-2.5 w-2.5 rounded-full" style="background:var(--explorateur)"></span>Explorateur
-      </span>
-      <span class="inline-flex items-center gap-2">
-        <span class="h-2.5 w-2.5 rounded-full" style="background:var(--stratege)"></span>Stratège
-      </span>
-      <span class="inline-flex items-center gap-2">
-        <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 ring-1 ring-emerald-200">JOUE</span>
-        <span class="px-2 py-0.5 rounded-full bg-sky-100 text-sky-700 ring-1 ring-sky-200">INTERAGIT</span>
-        <span class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 ring-1 ring-rose-200">ANALYSE</span>
-      </span>
+      <span class="inline-flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full" style="background:var(--creatif)"></span>Créatif</span>
+      <span class="inline-flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full" style="background:var(--mediateur)"></span>Médiateur</span>
+      <span class="inline-flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full" style="background:var(--pilote)"></span>Pilote</span>
+      <span class="inline-flex items-center gap-2"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 ring-1 ring-emerald-200">JOUE</span><span class="px-2 py-0.5 rounded-full bg-sky-100 text-sky-700 ring-1 ring-sky-200">INTERAGIT</span><span class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 ring-1 ring-rose-200">ANALYSE</span></span>
     </div>
   </aside>
-
-  <!-- CONTENT -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 pb-16">
-    <!-- CORRECTION 1: Suppression de xl:grid-cols-4 -->
-    <div id="grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div>
-  </main>
-
-  <!-- FOOTER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 pb-16"><div id="grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div></main>
   <footer id="footer" class="border-t border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 text-sm text-slate-600 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-      <p>Pour une équipe (3× rôles)</p>
-      <span class="inline-flex items-center gap-2 text-slate-700">formation ASIN</span>
-    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 text-sm text-slate-600 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"><p>Interface apprenants — formation ASIN</p><span class="inline-flex items-center gap-2 text-slate-700">formation ASIN</span></div>
   </footer>
-
-  <!-- TEMPLATE CARD -->
+  <div id="roleDialog" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" aria-hidden="true"></div>
+    <div role="dialog" aria-modal="true" aria-labelledby="roleDlgTitle" class="relative mx-auto mt-16 w-full max-w-2xl">
+      <div class="rounded-3xl overflow-hidden shadow-2xl ring-1 ring-slate-900/10">
+        <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 px-6 py-6 text-white">
+          <h2 id="roleDlgTitle" class="text-xl font-semibold">Rejoins ton équipe</h2>
+          <p class="text-sm text-white/80 mt-1">Indique ton équipe pour afficher tes actions dans chaque jeu.</p>
+        </div>
+        <div class="bg-white px-6 pt-6 pb-4">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <button data-team="Créatif" class="group relative rounded-2xl border border-yellow-300/60 bg-gradient-to-br from-yellow-50 to-white p-5 text-left shadow-sm hover:shadow-lg transition focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400">
+              <div class="absolute -top-3 -left-3 h-10 w-10 rounded-2xl blur-xl opacity-60" style="background:var(--creatif)"></div>
+              <div class="relative inline-flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full" style="background:var(--creatif)"></span><span class="glyph" style="color:var(--creatif)"></span><strong class="text-slate-900">Créatif</strong></div>
+              <p class="relative text-sm text-slate-800 mt-2">Tu rejoins l’équipe Créatif.</p>
+            </button>
+            <button data-team="Médiateur" class="group relative rounded-2xl border border-sky-300/60 bg-gradient-to-br from-sky-50 to-white p-5 text-left shadow-sm hover:shadow-lg transition focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400">
+              <div class="absolute -top-3 -left-3 h-10 w-10 rounded-2xl blur-xl opacity-60" style="background:var(--mediateur)"></div>
+              <div class="relative inline-flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full" style="background:var(--mediateur)"></span><span class="glyph" style="color:var(--mediateur)"></span><strong class="text-slate-900">Médiateur</strong></div>
+              <p class="relative text-sm text-slate-800 mt-2">Tu rejoins l’équipe Médiateur.</p>
+            </button>
+            <button data-team="Pilote" class="group relative rounded-2xl border border-purple-300/60 bg-gradient-to-br from-purple-50 to-white p-5 text-left shadow-sm hover:shadow-lg transition focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400">
+              <div class="absolute -top-3 -left-3 h-10 w-10 rounded-2xl blur-xl opacity-60" style="background:var(--pilote)"></div>
+              <div class="relative inline-flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full" style="background:var(--pilote)"></span><span class="glyph" style="color:var(--pilote)"></span><strong class="text-slate-900">Pilote</strong></div>
+              <p class="relative text-sm text-slate-800 mt-2">Tu rejoins l’équipe Pilote.</p>
+            </button>
+          </div>
+          <div class="mt-5 flex items-center justify-end">
+            <button id="roleDlgClose" class="text-sm text-slate-700 hover:text-slate-900">Plus tard</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <template id="cardTmpl">
     <article class="card h-full rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500" tabindex="0" role="group">
       <header class="px-4 sm:px-5 pt-4 pb-3 border-b border-slate-100 flex items-start justify-between gap-3">
-        <div>
-          <h3 class="text-base font-semibold text-slate-900"></h3>
-          <p class="text-xs text-slate-600 mt-0.5"></p>
-        </div>
+        <div><h3 class="text-base font-semibold text-slate-900"></h3><p class="text-xs text-slate-600 mt-0.5"></p></div>
         <span class="shrink-0 px-2 py-1 text-xs rounded-full ring-1 bg-slate-50 text-slate-700 ring-slate-200"></span>
       </header>
       <div class="p-4 sm:p-5 space-y-3"></div>
     </article>
   </template>
-
-  <!-- JS -->
   <script>
-  // Données des 14 jeux
-  const GAMES = [
-    { id:1, title:"Jeu d’improvisation d’introduction", solo:true,
-      items:[
-        {team:"Catalyseur", role:"JOUE", text:"Improvise son intro. Objectif : créer une connexion immédiate."},
-        {team:"Explorateur", role:"ANALYSE", text:"Évalue l'originalité de l'accroche (Est-ce surprenant ?)."},
-        {team:"Stratège", role:"ANALYSE", text:"Évalue la clarté du sujet (A-t-on compris de quoi il va parler ?)."}
-      ] },
-    { id:2, title:"Jeu du miroir (gestuelle)", solo:false,
-      items:[
-        {team:"Explorateur", role:"JOUE", text:"Mène les gestes. Teste des mouvements créatifs et variés."},
-        {team:"Stratège", role:"INTERAGIT", text:"Imite en miroir avec précision technique."},
-        {team:"Catalyseur", role:"ANALYSE", text:"Évalue la synchronisation et la connexion du binôme."}
-      ] },
-    { id:3, title:"Minute de clarté (synthèse rapide)", solo:true,
-      items:[
-        {team:"Stratège", role:"JOUE", text:"Présentation 60s. Structure parfaite (ex : Problème → Solution)."},
-        {team:"Catalyseur", role:"ANALYSE", text:"Évalue l'impact (Est-ce convaincant ?)."},
-        {team:"Explorateur", role:"ANALYSE", text:"Évalue l'angle (Nouvelle façon de voir le sujet ?)."}
-      ] },
-    { id:4, title:"Interview à l’aveugle (écoute active)", solo:false,
-      items:[
-        {team:"Catalyseur", role:"JOUE", text:"Interviewé. Reformule avec empathie ce qui a été entendu."},
-        {team:"Explorateur", role:"INTERAGIT", text:"Intervieweur. Pose 3 questions ouvertes ou surprenantes."},
-        {team:"Stratège", role:"ANALYSE", text:"Évalue la qualité de la reformulation (écoute active)."}
-      ] },
-    { id:5, title:"Jeu du message-clé (impact & mémorisation)", solo:false,
-      items:[
-        {team:"Stratège", role:"JOUE", text:"Rédige et présente un message-clé efficace et direct."},
-        {team:"Catalyseur", role:"INTERAGIT", text:"Aide à rendre le message plus humain et mémorable."},
-        {team:"Explorateur", role:"ANALYSE", text:"Évalue l’originalité et la facilité à répéter le message."}
-      ] },
-    { id:6, title:"Simulation d’interview (gestion des médias)", solo:false,
-      items:[
-        {team:"Explorateur", role:"JOUE", text:"Interviewé. Utilise les questions pour ouvrir sur sa vision."},
-        {team:"Stratège", role:"INTERAGIT", text:"Journaliste factuel. Questions précises pour tester la maîtrise."},
-        {team:"Catalyseur", role:"ANALYSE", text:"Évalue la relation et l’authenticité sous pression."}
-      ] },
-    { id:7, title:"Jeu du “soundbite” (captation d’attention)", solo:true,
-      items:[
-        {team:"Catalyseur", role:"JOUE", text:"Écrit et lit un soundbite créant une émotion forte."},
-        {team:"Explorateur", role:"ANALYSE", text:"Évalue la force de l'image (visuel, métaphore)."},
-        {team:"Stratège", role:"ANALYSE", text:"Évalue la concision (le moins de mots possible)."}
-      ] },
-    { id:8, title:"Jeu du porte-parole", solo:false,
-      items:[
-        {team:"Stratège", role:"JOUE", text:"Prise de parole claire, maîtrise du message-clé."},
-        {team:"Catalyseur", role:"INTERAGIT", text:"Questions centrées valeurs/émotions (« Que ressentez-vous ? »)."},
-        {team:"Explorateur", role:"ANALYSE", text:"Évalue la cohérence et la capacité à ne pas se faire dévier."}
-      ] },
-    { id:9, title:"Réactivité face caméra", solo:true,
-      items:[
-        {team:"Explorateur", role:"JOUE", text:"Répond à la question surprise : spontanéité et créativité."},
-        {team:"Stratège", role:"ANALYSE", text:"Évalue la structure improvisée (début, milieu, fin)."},
-        {team:"Catalyseur", role:"ANALYSE", text:"Évalue le naturel (voix, regard, aisance)."}
-      ] },
-    { id:10, title:"Empathie et transparence en action", solo:true,
-      items:[
-        {team:"Catalyseur", role:"JOUE", text:"Prépare et lit un message 100% authentique dans l’empathie."},
-        {team:"Stratège", role:"ANALYSE", text:"Évalue la clarté de l’information (transparence)."},
-        {team:"Explorateur", role:"ANALYSE", text:"Évalue l’ajustesse de l’empathie (ni trop, ni trop peu)."}
-      ] },
-    { id:11, title:"Conférence de presse sous tension (simulée)", solo:false,
-      items:[
-        {team:"Stratège", role:"JOUE", text:"Porte-parole : contrôle et répétition des messages-clés."},
-        {team:"Explorateur", role:"INTERAGIT", text:"Journaliste : questions pièges et déstabilisantes."},
-        {team:"Catalyseur", role:"ANALYSE", text:"Évalue gestion du stress et posture non-verbale."}
-      ] },
-    { id:12, title:"Questions pièges & réponses maîtrisées", solo:false,
-      items:[
-        {team:"Catalyseur", role:"JOUE", text:"Répond en désamorçant le piège avec empathie avant le « pont »."},
-        {team:"Stratège", role:"INTERAGIT", text:"Questions pièges logiques ou factuelles."},
-        {team:"Explorateur", role:"ANALYSE", text:"Évalue l’efficacité (pont + message-clé)."}
-      ] },
-    { id:13, title:"Mini-conférence filmée (expression libre)", solo:true,
-      items:[
-        {team:"Stratège", role:"JOUE", text:"Présentation structurée (ex : 3 parties claires)."},
-        {team:"Catalyseur", role:"ANALYSE", text:"Évalue la connexion avec l’audience (storytelling)."},
-        {team:"Explorateur", role:"ANALYSE", text:"Évalue l’originalité (a-t-on appris quelque chose ?)."}
-      ] },
-    { id:14, title:"Débrief collectif filmé", solo:false,
-      items:[
-        {team:"Tous", role:"JOUE", text:"Auto-évaluation en regardant les vidéos."},
-        {team:"Catalyseur", role:"ANALYSE", text:"Feedback sur langage corporel et authenticité."},
-        {team:"Explorateur", role:"ANALYSE", text:"Feedback sur idées originales et prises de risque."},
-        {team:"Stratège", role:"ANALYSE", text:"Feedback sur clarté de la structure et efficacité des messages."}
-      ] }
-  ];
-
-  const teamColor = (team) => ({
-    "Catalyseur":"var(--catalyseur)",
-    "Explorateur":"var(--explorateur)",
-    "Stratège":"var(--stratege)",
-    "Tous":"#334155"
-  }[team]||"#334155");
-
-  const roleBadge = (role) => {
-    const base = "px-2 py-0.5 text-[11px] font-medium rounded-full ring-1";
-    if(role==="JOUE") return `${base} bg-emerald-100 text-emerald-700 ring-emerald-200`;
-    if(role==="INTERAGIT") return `${base} bg-sky-100 text-sky-700 ring-sky-200`;
-    return `${base} bg-rose-100 text-rose-700 ring-rose-200`; // ANALYSE
-  };
-
-  // DOM refs
-  const grid = document.getElementById('grid');
-  const cardTmpl = document.getElementById('cardTmpl');
-  const teamFilter = document.getElementById('teamFilter');
-  const soloOnly = document.getElementById('soloOnly');
-  const searchInput = document.getElementById('searchInput');
-  const resetBtn = document.getElementById('resetBtn');
-  const resultCount = document.getElementById('resultCount');
-
-  // Set print date
-  document.body.setAttribute('data-print-date', new Date().toLocaleDateString('fr-FR'));
-
-  function updateCount(n){ resultCount.textContent = `${n} jeu(x) affiché(s) sur ${GAMES.length}`; }
-
-  function renderCards(list){
-    grid.innerHTML = "";
-    if(!list.length){
-      const empty = document.createElement('div');
-      empty.className = "col-span-full flex flex-col items-center justify-center gap-2 py-16 text-center border border-dashed border-slate-300 rounded-2xl bg-slate-50";
-      empty.innerHTML = `<div class="text-slate-700 font-medium">Aucun jeu ne correspond aux filtres</div>
-        <p class="text-sm text-slate-600">Essayez d'assouplir les filtres ou <button type="button" id="emptyReset" class="underline decoration-sky-500 text-sky-700 font-medium">réinitialisez</button>.</p>`;
-      grid.appendChild(empty);
-      empty.querySelector('#emptyReset')?.addEventListener('click', ()=> resetBtn.click());
-      updateCount(0);
-      return;
-    }
-
-    list.forEach(game => {
-      const node = cardTmpl.content.cloneNode(true);
-      const article = node.querySelector('article');
-      const h3 = node.querySelector('h3');
-      const sub = node.querySelector('header p');
-      const chip = node.querySelector('header span');
-      const body = node.querySelector('div.p-4');
-
-      const hid = `game-title-${game.id}`; h3.id = hid; article.setAttribute('aria-labelledby', hid);
-
-      // Filtrer les LIGNES par équipe si demandé
-      const itemsToShow = teamFilter.value ? game.items.filter(it => it.team === teamFilter.value) : game.items;
-
-      // Si, après filtrage d'équipe, plus de lignes -> ne pas afficher la carte
-      if(itemsToShow.length === 0) return;
-
-      h3.textContent = `${game.id}. ${game.title}`;
-      sub.textContent = game.solo ? "Jeu solo" : "Jeu en binôme / groupe";
-      chip.textContent = game.solo ? "SOLO" : "ÉQUIPE";
-
-      itemsToShow.forEach(it=>{
-        const row = document.createElement('div');
-        row.className = "flex items-start gap-3 p-2 rounded-xl bg-slate-50 ring-1 ring-slate-100";
-        const dot = document.createElement('span');
-        dot.className = "mt-1 h-2.5 w-2.5 rounded-full shrink-0";
-        dot.style.background = teamColor(it.team);
-        dot.setAttribute('role','img');
-        dot.setAttribute('aria-label', `Couleur équipe ${it.team}`);
-        const team = document.createElement('span');
-        team.className = "text-sm font-medium text-slate-900"; team.textContent = it.team;
-        const badge = document.createElement('span');
-        badge.className = roleBadge(it.role); badge.textContent = it.role;
-        const text = document.createElement('p');
-        text.className = "text-sm text-slate-700"; text.textContent = it.text;
-
-        const left = document.createElement('div'); left.className = "flex items-center gap-2 min-w-[8rem] shrink-0"; left.append(dot, team, badge);
-        
-        // CORRECTION 2: Remplacement de sm: par md:
-        const wrap = document.createElement('div'); wrap.className = "flex flex-col md:flex-row md:items-center gap-2 md:gap-3 w-full"; wrap.append(left, text);
-        row.append(wrap); body.append(row);
-      });
-
-      grid.appendChild(node);
-    });
-    updateCount(grid.childElementCount || 0);
-  }
-
-  function matchesFilters(game){
-    if(soloOnly.checked && !game.solo) return false;
-    const itemsFiltered = teamFilter.value ? game.items.filter(it => it.team === teamFilter.value) : game.items;
-    if(teamFilter.value && itemsFiltered.length === 0) return false;
-
-    const q = searchInput.value.trim().toLowerCase();
-    if(q){
-      const inTitle = game.title.toLowerCase().includes(q);
-      const inText  = itemsFiltered.some(it => (it.team+" "+it.role+" "+it.text).toLowerCase().includes(q));
-      if(!inTitle && !inText) return false;
-    }
-    return true;
-  }
-
-  function applyFilters(){ renderCards(GAMES.filter(matchesFilters)); }
-
-  // Debounce simple
-  function debounce(fn, wait=200){ let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn(...args), wait); }; }
-
-  // Events
-  teamFilter.addEventListener('change', applyFilters);
-  soloOnly.addEventListener('change', applyFilters);
-  searchInput.addEventListener('input', debounce(applyFilters, 150));
-  document.getElementById('filterForm').addEventListener('submit', (e)=>{ e.preventDefault(); applyFilters(); });
-  resetBtn.addEventListener('click', ()=>{
-    teamFilter.value = ""; soloOnly.checked = false; searchInput.value = "";
-    applyFilters(); resetBtn.focus();
-  });
-  document.getElementById('printBtn').addEventListener('click', ()=> window.print());
-
-  // Init
-  applyFilters();
+    const GAMES_FULL=[
+      {id:1,title:"Impro d'intro",solo:true,items:[{team:"Créatif",role:"JOUE",text:"Présente-toi en 30–60s. Vise la connexion immédiate avec ton public."},{team:"Médiateur",role:"ANALYSE",text:"Dis si l'accroche étonne vraiment. Explique en une phrase."},{team:"Pilote",role:"ANALYSE",text:"Confirme que le sujet est compris en 1 phrase claire."}]},
+      {id:2,title:"Miroir (gestuelle)",solo:false,items:[{team:"Médiateur",role:"JOUE",text:"Conduis les gestes : varie amplitude, rythme et directions."},{team:"Pilote",role:"INTERAGIT",text:"Réplique les gestes avec précision. Reste synchro."},{team:"Créatif",role:"ANALYSE",text:"Observe la connexion du duo. Note une force, un axe à améliorer."}]},
+      {id:3,title:"Minute de clarté",solo:true,items:[{team:"Pilote",role:"JOUE",text:"Expose en 60s : Problème → Solution → Bénéfice. Va à l'essentiel."},{team:"Créatif",role:"ANALYSE",text:"Dis si cela donne envie. Propose un exemple parlant."},{team:"Médiateur",role:"ANALYSE",text:"Indique si l'angle est neuf. Suggère une variante."}]},
+      {id:4,title:"Interview à l’aveugle",solo:false,items:[{team:"Créatif",role:"JOUE",text:"Réponds puis reformule avec empathie ce que tu as entendu."},{team:"Médiateur",role:"INTERAGIT",text:"Pose 3 questions ouvertes et inattendues."},{team:"Pilote",role:"ANALYSE",text:"Valide la qualité de la reformulation (fidèle et concise)."}]},
+      {id:5,title:"Message-clé",solo:false,items:[{team:"Pilote",role:"JOUE",text:"Écris 1 phrase clé, directe et mémorisable."},{team:"Créatif",role:"INTERAGIT",text:"Rends-la plus humaine (image, métaphore, verbe actif)."},{team:"Médiateur",role:"ANALYSE",text:"Teste si la phrase se répète facilement (sans notes)."}]},
+      {id:6,title:"Simulation d’interview",solo:false,items:[{team:"Médiateur",role:"JOUE",text:"Réponds comme interviewé. Ouvre vers ta vision quand c'est pertinent."},{team:"Pilote",role:"INTERAGIT",text:"Joue le journaliste : questions précises et factuelles."},{team:"Créatif",role:"ANALYSE",text:"Observe la relation et l'authenticité sous pression."}]},
+      {id:7,title:"Soundbite",solo:true,items:[{team:"Créatif",role:"JOUE",text:"Écris une phrase choc de 6–12 mots qui donne une image claire."},{team:"Médiateur",role:"ANALYSE",text:"Dis si l'image mentale est forte et immédiate."},{team:"Pilote",role:"ANALYSE",text:"Raccourcis si possible. Supprime les mots inutiles."}]},
+      {id:8,title:"Porte-parole",solo:false,items:[{team:"Pilote",role:"JOUE",text:"Prends la parole en gardant ton message-clé en tête."},{team:"Créatif",role:"INTERAGIT",text:"Pose 2 questions centrées valeurs/émotions (ex. « Qu'est-ce que ça change ? »)."},{team:"Médiateur",role:"ANALYSE",text:"Vérifie la cohérence et la capacité à rester sur le cap."}]},
+      {id:9,title:"Réactivité face caméra",solo:true,items:[{team:"Médiateur",role:"JOUE",text:"Réponds à la question surprise. Sois spontané et précis."},{team:"Pilote",role:"ANALYSE",text:"Repère le début/milieu/fin. Signale la partie à renforcer."},{team:"Créatif",role:"ANALYSE",text:"Note le naturel : voix, regard, posture."}]},
+      {id:10,title:"Empathie & transparence",solo:true,items:[{team:"Créatif",role:"JOUE",text:"Lis un message 100% authentique et bienveillant."},{team:"Pilote",role:"ANALYSE",text:"Clarifie l'info principale sans jargon."},{team:"Médiateur",role:"ANALYSE",text:"Évite le trop-plein : vise juste dans l'empathie."}]},
+      {id:11,title:"Conférence de presse (tension)",solo:false,items:[{team:"Pilote",role:"JOUE",text:"Reste maître du message. Répète tes points clés."},{team:"Médiateur",role:"INTERAGIT",text:"Pose des questions piégeuses mais pertinentes."},{team:"Créatif",role:"ANALYSE",text:"Observe gestion du stress et langage non-verbal."}]},
+      {id:12,title:"Questions pièges & réponses",solo:false,items:[{team:"Créatif",role:"JOUE",text:"Désamorce d'abord avec empathie, puis fais ton pont."},{team:"Pilote",role:"INTERAGIT",text:"Formule des questions logiques/factuelles pour tester le fond."},{team:"Médiateur",role:"ANALYSE",text:"Évalue l'efficacité (pont + message-clé)."}]},
+      {id:13,title:"Mini-conférence filmée",solo:true,items:[{team:"Pilote",role:"JOUE",text:"Présente en 3 parties claires (idée → preuve → appel)."},{team:"Créatif",role:"ANALYSE",text:"Cherche la connexion : histoire, exemple, image."},{team:"Médiateur",role:"ANALYSE",text:"Dis si on apprend quelque chose de neuf."}]},
+      {id:14,title:"Débrief collectif filmé",solo:false,items:[{team:"Tous",role:"JOUE",text:"Regarde ta vidéo et auto-évalue-toi en 2 points : + / ➜."},{team:"Créatif",role:"ANALYSE",text:"Commente le langage corporel et l'authenticité."},{team:"Médiateur",role:"ANALYSE",text:"Souligne les idées neuves et les prises de risque."},{team:"Pilote",role:"ANALYSE",text:"Évalue la structure et l'efficacité du message."}]}
+    ];
+    const RULES={
+      1:["Tirage d’un sujet simple","Chaque participant improvise 30–60s (nom, accroche, sujet)","Feedback rapide : +1 point fort / 1 axe"],
+      2:["Binômes A/B : A mène, B imite 60–90s","On inverse les rôles","Mini-débrief sur ce qui aide/gêne"],
+      3:["Tirage d’un thème","1 min de préparation","Présentation 60s","Note rapide : structure, clarté, impact"],
+      4:["En binômes : l’intervieweur pose 3 questions","L’interviewé répond sans voir / yeux fermés","Il reformule la question avant de répondre","Feedback sur écoute + reformulation"],
+      5:["Rédige 2–3 messages (≤ 12–15 mots)","Amélioration en binômes","Présentation puis vote du meilleur"],
+      6:["Brief : contexte + messages autorisés","Simulation d’interview 2–4 min","Visionnage + retours pairs/formateur"],
+      7:["Rappel du format (10–12 mots max)","Écriture en 3 min","Lecture et sélection par le groupe"],
+      11:["Brief collectif","Déclaration du porte-parole 1–2 min","Questions par 3–5 \"journalistes\" 5–8 min","Observation + grille + débrief"],
+      12:["En binômes : un pose des questions pièges","L’autre : reformulation → pont → message-clé","On inverse les rôles","Retour en grand groupe"]
+    };
+    const ORDER=[1,2,3,4,5,6,7,12,11];
+    const VISIBLE=ORDER.map((origId,idx)=>{const src=GAMES_FULL.find(g=>g.id===origId);return {...src,origId,displayId:idx+1}});
+    const DISPLAY_ORDER=VISIBLE.map(g=>g.displayId);
+    const slotMap=new Map();[1,2,3].forEach(id=>slotMap.set(id,'matin'));[4,5].forEach(id=>slotMap.set(id,'apres'));[6,7].forEach(id=>slotMap.set(id,'matin'));[8,9].forEach(id=>slotMap.set(id,'apres'));
+    const dayMap=new Map();[1,2,3,4,5].forEach(id=>dayMap.set(id,1));[6,7,8,9].forEach(id=>dayMap.set(id,2));
+    const grid=document.getElementById('grid');
+    const cardTmpl=document.getElementById('cardTmpl');
+    const teamFilter=document.getElementById('teamFilter');
+    const gameFilter=document.getElementById('gameFilter');
+    const dayFilterWrap=document.getElementById('dayFilterWrap');
+    const dayFilter=document.getElementById('dayFilter');
+    const slotFilter=document.getElementById('slotFilter');
+    const slotSwitch=document.getElementById('slotSwitch');
+    const slotThumb=document.getElementById('slotThumb');
+    const slotClear=document.getElementById('slotClear');
+    const searchInput=document.getElementById('searchInput');
+    const resultCount=document.getElementById('resultCount');
+    const activeDayLabel=document.getElementById('activeDayLabel');
+    const activeHint=document.getElementById('activeHint');
+    const nextSwitch=document.getElementById('nextSwitch');
+    const roleDialog=document.getElementById('roleDialog');
+    const roleDlgClose=document.getElementById('roleDlgClose');
+    const roleBanner=document.getElementById('roleBanner');
+    const roleName=document.getElementById('roleName');
+    const roleDot=document.getElementById('roleDot');
+    const changeRoleBtn=document.getElementById('changeRole');
+    function getDay(id){return dayMap.get(id)||null}
+    function getSlot(id){return slotMap.get(id)||null}
+    function dayFromDate(d){const m=d.getMonth(),dd=d.getDate();if(m===9&&(dd===27||dd===30))return 1;if(m===9&&(dd===28||dd===31))return 2;return 1}
+    function nextSwitchDate(d){const m=d.getMonth(),dd=d.getDate();if(m!==9)return new Date(d.getFullYear(),9,27,0,0,0);const seq=[27,28,30,31];const n=seq.find(x=>x>dd);return n?new Date(d.getFullYear(),9,n,0,0,0):null}
+    function teamColor(t){if(t==='Créatif')return 'var(--creatif)';if(t==='Médiateur')return 'var(--mediateur)';if(t==='Pilote')return 'var(--pilote)';return '#334155'}
+    function roleBadge(r){const b="px-2 py-0.5 text-[11px] font-medium rounded-full ring-1";if(r==='JOUE')return `${b} bg-emerald-100 text-emerald-700 ring-emerald-200`;if(r==='INTERAGIT')return `${b} bg-sky-100 text-sky-700 ring-sky-200`;return `${b} bg-rose-100 text-rose-700 ring-rose-200`}
+    function currentAllowedDisplayIds(){const override=dayFilterWrap.classList.contains('!block')&&dayFilter.value!=='auto';const day=override?(dayFilter.value==='all'?'all':Number(dayFilter.value)):dayFromDate(new Date());if(day==='all')return DISPLAY_ORDER;return day===1?[1,2,3,4,5]:[6,7,8,9]}
+    function refreshGameOptions(){const allowed=currentAllowedDisplayIds();gameFilter.innerHTML='<option value=""></option>';const f=document.createDocumentFragment();allowed.forEach(id=>{const o=document.createElement('option');o.value=String(id);const g=VISIBLE.find(x=>x.displayId===id);o.textContent=`Jeu ${id} — ${g?.title||''}`;f.appendChild(o)});gameFilter.appendChild(f)}
+    function updateCount(n){resultCount.textContent=`${n} jeu(x) affiché(s)`}
+    function scheduleLabel(id){const d=getDay(id);const s=getSlot(id)==='matin'?'Matin':'Après-midi';return d?`Jour ${d} • ${s}`:''}
+    function renderCards(list){grid.innerHTML="";if(!list.length){const e=document.createElement('div');e.className="col-span-full flex flex-col items-center justify-center gap-2 py-16 text-center border border-dashed border-slate-300 rounded-2xl bg-slate-50";e.innerHTML=`<div class=\"text-slate-700 font-medium\">Aucune activité disponible</div><p class=\"text-sm text-slate-600\">Reviens au prochain créneau ou élargis tes filtres.</p>`;grid.appendChild(e);updateCount(0);return}const frag=document.createDocumentFragment();list.forEach(game=>{const node=cardTmpl.content.cloneNode(true);const article=node.querySelector('article');const h3=node.querySelector('h3');const sub=node.querySelector('header p');const chip=node.querySelector('header span');const body=node.querySelector('div.p-4');const hid=`game-title-${game.displayId}`;h3.id=hid;article.setAttribute('aria-labelledby',hid);const itemsToShow=teamFilter.value?game.items.filter(it=>it.team===teamFilter.value):game.items;if(itemsToShow.length===0)return;h3.textContent=`${game.displayId}. ${game.title}`;sub.textContent=scheduleLabel(game.displayId);chip.textContent=game.solo?"SOLO":"ÉQUIPE";chip.id=`chip-${game.displayId}`;article.setAttribute('aria-describedby',chip.id);if(teamFilter.value){article.setAttribute('data-accent','')}else{article.removeAttribute('data-accent')}const sl=getSlot(game.displayId);article.classList.toggle('slot-matin',sl==='matin');article.classList.toggle('slot-apres',sl==='apres');
+      if(RULES[game.origId]){
+        const rules=document.createElement('ul');
+        rules.className='mt-3 text-sm text-slate-800 space-y-1';
+        rules.setAttribute('aria-label','Déroulement');
+        rules.innerHTML=RULES[game.origId].map(s=>`<li class=\"flex items-start gap-2\"><span class=\"mt-1 h-1.5 w-1.5 rounded-full\" style=\"background:${sl==='matin'?'var(--slot-matin)':'var(--slot-apres)'}\"></span><span>${s}</span></li>`).join('');
+        body.append(rules);
+      }
+      itemsToShow.forEach(it=>{const row=document.createElement('div');row.className="row-team flex items-start gap-3 p-2 rounded-xl bg-slate-50";row.style.setProperty('--rowAccent',teamColor(it.team));const dot=document.createElement('span');dot.className="mt-1 h-2.5 w-2.5 rounded-full shrink-0";dot.style.background=teamColor(it.team);dot.setAttribute('role','img');dot.setAttribute('aria-label',`Couleur équipe ${it.team}`);const team=document.createElement('span');team.className="text-sm font-medium text-slate-900";team.textContent=it.team;const badge=document.createElement('span');badge.className=roleBadge(it.role);badge.textContent=it.role;const text=document.createElement('p');text.className="text-sm text-slate-800";text.textContent=it.text;const left=document.createElement('div');left.className="flex items-center gap-2 min-w-[8rem] shrink-0";left.append(dot,team,badge);const wrap=document.createElement('div');wrap.className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3 w-full";wrap.append(left,text);row.append(wrap);body.append(row)});frag.appendChild(node)});grid.appendChild(frag);updateCount(grid.childElementCount||0)}
+    function matchesFilters(game){const allowed=currentAllowedDisplayIds();if(!allowed.includes(game.displayId))return false;if(gameFilter.value&&String(game.displayId)!==gameFilter.value)return false;if(slotFilter.value&&getSlot(game.displayId)!==slotFilter.value)return false;const itemsFiltered=teamFilter.value?game.items.filter(it=>it.team===teamFilter.value):game.items;if(teamFilter.value&&itemsFiltered.length===0)return false;const q=searchInput.value.trim().toLowerCase();if(q){const inTitle=game.title.toLowerCase().includes(q);const inText=itemsFiltered.some(it=>(it.team+" "+it.role+" "+it.text).toLowerCase().includes(q));if(!inTitle&&!inText)return false}return true}
+    function applyFilters(){refreshGameOptions();const allowed=currentAllowedDisplayIds();const filtered=VISIBLE.filter(matchesFilters).sort((a,b)=>DISPLAY_ORDER.indexOf(a.displayId)-DISPLAY_ORDER.indexOf(b.displayId)).filter(g=>allowed.includes(g.displayId));renderCards(filtered)}
+    function debounce(fn,wait=200){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),wait)}}
+    function updateBanner(){const now=new Date();const day=dayFromDate(now);activeDayLabel.textContent=`Jour ${day}`;activeHint.textContent=day===1?'Matin : Jeux 1–3 · Après-midi : Jeux 4–5':'Matin : Jeux 6–7 · Après-midi : Jeux 8–9';const nxt=nextSwitchDate(now);nextSwitch.textContent=nxt?`Prochain basculement : ${nxt.toLocaleDateString('fr-FR',{day:'2-digit',month:'long'})} à 00:00`:''}
+    window.addEventListener('keydown',e=>{if(e.ctrlKey&&e.shiftKey&&(e.key==='E'||e.key==='e')){e.preventDefault();dayFilterWrap.classList.toggle('hidden');dayFilterWrap.classList.toggle('!block');applyFilters();if(!dayFilterWrap.classList.contains('hidden'))dayFilter.focus()}})
+    function applyTeamAccentToBody(t){document.body.classList.remove('team-Créatif','team-Médiateur','team-Pilote');if(t){document.body.classList.add('team-'+t)}}
+    function openRoleDialog(){roleDialog.classList.remove('hidden');setTimeout(()=>{roleDialog.querySelector('[data-team]')?.focus()},0)}
+    function closeRoleDialog(){roleDialog.classList.add('hidden')}
+    roleDialog.addEventListener('click',e=>{if(e.target===roleDialog)closeRoleDialog()})
+    roleDlgClose.addEventListener('click',closeRoleDialog)
+    roleDialog.querySelectorAll('[data-team]').forEach(btn=>{btn.addEventListener('click',()=>{const t=btn.getAttribute('data-team');try{localStorage.setItem('asin:userTeam',t)}catch{}teamFilter.value=t;roleName.textContent=t;roleDot.style.background=teamColor(t);document.getElementById('roleGlyph').style.color=teamColor(t);roleBanner.classList.remove('hidden');applyTeamAccentToBody(t);closeRoleDialog();applyFilters();document.getElementById('grid').scrollIntoView({behavior:'smooth'})})})
+    changeRoleBtn.addEventListener('click',()=>{openRoleDialog()})
+    function initRoleFromStorage(){let t=null;try{t=localStorage.getItem('asin:userTeam')}catch{}const allowed=['Créatif','Médiateur','Pilote'];if(!t||!allowed.includes(t)){try{localStorage.removeItem('asin:userTeam')}catch{} openRoleDialog();return;}teamFilter.value=t;roleName.textContent=t;roleDot.style.background=teamColor(t);document.getElementById('roleGlyph').style.color=teamColor(t);roleBanner.classList.remove('hidden');applyTeamAccentToBody(t);}
+    teamFilter.addEventListener('change',()=>{try{localStorage.setItem('asin:userTeam',teamFilter.value||'')}catch{}if(teamFilter.value){roleName.textContent=teamFilter.value;roleDot.style.background=teamColor(teamFilter.value);roleBanner.classList.remove('hidden')}else{roleBanner.classList.add('hidden')}applyTeamAccentToBody(teamFilter.value);applyFilters()})
+    gameFilter.addEventListener('change',applyFilters)
+    dayFilter.addEventListener('change',applyFilters)
+    function setSlotUI(v){slotSwitch.dataset.state=v;if(v==='apres'){slotThumb.style.transform='translateX(2.75rem)';slotSwitch.classList.remove('bg-slate-700/70','bg-sky-300/70');slotSwitch.classList.add('bg-amber-300/70')}else if(v==='matin'){slotThumb.style.transform='translateX(0.25rem)';slotSwitch.classList.remove('bg-slate-700/70','bg-amber-300/70');slotSwitch.classList.add('bg-sky-300/70')}else{slotThumb.style.transform='translateX(1.5rem)';slotSwitch.classList.remove('bg-amber-300/70','bg-sky-300/70');slotSwitch.classList.add('bg-slate-700/70')}}
+    slotSwitch.addEventListener('click',()=>{const cur=slotSwitch.dataset.state||'';const next=cur===''?'matin':(cur==='matin'?'apres':'');slotFilter.value=next;setSlotUI(next);applyFilters()})
+    slotClear.addEventListener('click',()=>{slotFilter.value='';setSlotUI('');applyFilters()})
+    searchInput.addEventListener('input',debounce(applyFilters,150))
+    document.getElementById('filterForm').addEventListener('submit',e=>{e.preventDefault();applyFilters()})
+    function init(){updateBanner();refreshGameOptions();initRoleFromStorage();setSlotUI(slotFilter.value||"");applyFilters()}
+    init()
+    setInterval(()=>{updateBanner();applyFilters()},60*1000)
   </script>
 </body>
 </html>
