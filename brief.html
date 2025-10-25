@@ -4,10 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>FIL D’ACTIVITÉS — formation ASIN</title>
-  <meta name="description" content="Interface apprenants : jeux par équipes (Créatif, Médiateur, Pilote), bande sombre compacte, moment AM/PM, disponibilité selon la date." />
+  <meta name="description" content="Interface apprenants : jeux par équipes (Créatif, Médiateur, Pilote), filtre équipe par modale, moment AM/PM, jours verrouillés par date." />
   <meta name="theme-color" content="#0EA5E9">
   <meta property="og:title" content="FIL D’ACTIVITÉS — formation ASIN">
-  <meta property="og:description" content="Rejoins ton équipe et vois immédiatement quoi faire dans chaque jeu.">
+  <meta property="og:description" content="Rejoins ton équipe et vois immédiatement tes actions dans chaque jeu.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://formation-asin.example.com/fil-d-activites">
   <meta property="og:image" content="https://formation-asin.example.com/assets/asin-banner.jpg">
@@ -15,51 +15,73 @@
   <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind.config = { theme: { extend: { colors: { brand: { gold: '#D4AF37', sky: '#0EA5E9' } }, container: { center: true, padding: { DEFAULT: '1rem', sm: '1.5rem' } }, fontFamily: { sans: ['Inter','ui-sans-serif','system-ui','-apple-system','Segoe UI','Roboto','Noto Sans','sans-serif'] } } } }
+    tailwind.config = {
+      theme: {
+        extend: {
+          // Configuration de Tailwind provenant du fichier "fonctionnel" (bande_sombre_compacte)
+          colors: { brand: { gold: '#D4AF37', sky: '#0EA5E9', leaf: '#10B981', berry: '#EC4899' } },
+          container: { center: true, padding: { DEFAULT: '1rem', sm: '1.5rem' } },
+          fontFamily: { sans: ['ui-sans-serif','system-ui','-apple-system','Segoe UI','Roboto','Inter','Noto Sans','sans-serif'] }
+        }
+      }
+    }
   </script>
   <style>
-    :root{ --bg:#ffffff; --card:#F8FAFC; --text:#0F172A; --muted:#64748B; --creatif:rgba(254,205,64,1); --mediateur:rgba(50,166,217,1); --pilote:rgba(137,106,174,1); --slot-matin:#0ea5e9; --slot-apres:#f59e0b }
+    /* Styles CSS provenant du fichier "fonctionnel" (bande_sombre_compacte) */
+    :root{ --bg:#ffffff; --card:#F8FAFC; --text:#0F172A; --muted:#64748B; --ring:#0EA5E9; --creatif:rgba(254,205,64,1); --mediateur:rgba(50,166,217,1); --pilote:rgba(137,106,174,1); --accentTeam:var(--ring); --slot-matin:#0ea5e9; --slot-apres:#f59e0b; }
     body.team-Créatif{ --accentTeam:var(--creatif) }
     body.team-Médiateur{ --accentTeam:var(--mediateur) }
     body.team-Pilote{ --accentTeam:var(--pilote) }
     .sr-only:not(:focus):not(:active){ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0 }
+    #roleCapsule{ border-color: color-mix(in oklab, var(--accentTeam) 52%, #fff 48%); box-shadow: inset 6px 0 0 var(--accentTeam) }
+    #roleCapsule #roleName{ color: color-mix(in oklab, var(--accentTeam) 60%, #ffffff 40%) }
     .card[data-accent]{ border-color: color-mix(in oklab, var(--accentTeam) 38%, #e2e8f0 62%); box-shadow: inset 6px 0 0 var(--accentTeam), 0 1px 0 0 rgba(2,6,23,.04) }
+    .card[data-accent] header{ position:relative }
+    .card[data-accent] header::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:linear-gradient(90deg,var(--accentTeam),transparent); opacity:.25 }
     .row-team{ box-shadow: inset 6px 0 0 var(--rowAccent), inset 0 0 0 1px rgba(148,163,184,.18); background:linear-gradient(90deg,rgba(16,24,40,.02),rgba(255,255,255,0)) }
     .card.slot-matin header::before, .card.slot-apres header::before{ content:""; position:absolute; top:0; left:0; right:0; height:3px; opacity:.65 }
     .card.slot-matin header::before{ background:linear-gradient(90deg,var(--slot-matin),transparent) }
     .card.slot-apres header::before{ background:linear-gradient(90deg,var(--slot-apres),transparent) }
     .card.slot-matin{ background-image:linear-gradient(180deg,rgba(14,165,233,.06),transparent 22%) }
     .card.slot-apres{ background-image:linear-gradient(180deg,rgba(245,158,11,.08),transparent 22%) }
-    .clickable{cursor:pointer}
     .search-collapsed{width:42px}
     .search-expanded{width:100%}
     .search-input{transition:width .25s ease}
+    .clickable{cursor:pointer}
+    footer .quote{opacity:.9}
   </style>
 </head>
-<body class="bg-white text-slate-900 font-sans antialiased">
+<body class="min-h-screen flex flex-col bg-white text-slate-900 font-sans antialiased">
   <a href="#grid" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-3 focus:py-2 focus:rounded-lg focus:bg-sky-600 focus:text-white">Aller au contenu</a>
 
+  <!-- Structure du Header 1 (Titre) - de "code_complet" -->
   <div class="border-b border-slate-800 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3">
       <h1 class="text-lg sm:text-xl font-semibold tracking-tight"><span class="inline-flex h-8 px-3 items-center justify-center rounded-xl bg-white/10 ring-1 ring-white/15 mr-2">FORMATION ASIN</span> FIL D’ACTIVITÉS</h1>
     </div>
   </div>
 
+  <!-- Structure du Header 2 (Sticky) - de "code_complet" -->
   <header class="border-b border-slate-800 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white sticky top-0 z-30">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3">
       <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        
+        <!-- Capsule d'équipe - HTML de "bande_sombre_compacte" (pour le design et le glyphe) -->
         <div id="roleCapsule" class="flex items-center gap-2 bg-white/10 ring-1 ring-white/15 rounded-xl px-3 py-1.5">
           <span id="roleDot" class="h-2.5 w-2.5 rounded-full"></span>
           <strong id="roleName">—</strong>
-          <span class="text-white/80">tu verras d’abord tes tâches</span>
           <button id="changeRole" class="ml-2 text-white/90 hover:underline">Changer d’équipe</button>
         </div>
+
+        <!-- Infos Jour - de "code_complet" (compatible avec JS) -->
         <div class="flex items-center gap-2 text-sm">
           <span class="font-medium">Aujourd'hui :</span>
           <button id="activeDayLabel" class="px-2 py-0.5 rounded bg-white text-slate-900 font-medium clickable" type="button" aria-label="Jour actif"></button>
           <span>•</span>
           <span id="activeHint" class="text-white/90"></span>
         </div>
+
+        <!-- Filtre Moment - de "code_complet" (compatible avec JS) -->
         <div class="flex items-center gap-2">
           <label class="text-sm text-white/90">Moment</label>
           <button id="slotSwitch" type="button" aria-label="Basculer matin / après-midi" data-state="" class="relative inline-flex h-9 w-20 items-center rounded-full bg-slate-700/70 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40">
@@ -70,11 +92,18 @@
           <button id="slotClear" type="button" class="text-xs px-2 py-1 rounded-lg border border-white/20 bg-white/10 text-white hover:bg-white/15">Tous</button>
           <select id="slotFilter" class="hidden" aria-hidden="true"><option value=""></option><option value="matin">matin</option><option value="apres">apres</option></select>
         </div>
+
+        <!-- Selects cachés pour le JS - de "bande_sombre_compacte" -->
+        <select id="teamFilter" class="hidden"><option value=""></option><option value="Créatif">Créatif</option><option value="Médiateur">Médiateur</option><option value="Pilote">Pilote</option></select>
+        <select id="gameFilter" class="hidden"><option value=""></option></select>
+        <select id="dayFilter" class="hidden"><option value="auto">Auto</option><option value="1">Jour 1</option><option value="2">Jour 2</option><option value="all">Tous</option></select>
+
       </div>
     </div>
   </header>
 
-  <aside id="legend" class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+  <!-- Légende - de "code_complet" -->
+  <aside class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
     <div class="flex flex-wrap items-center gap-3 text-sm">
       <span class="inline-flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full" style="background:var(--creatif)"></span>Créatif</span>
       <span class="inline-flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full" style="background:var(--mediateur)"></span>Médiateur</span>
@@ -83,23 +112,30 @@
     </div>
   </aside>
 
+  <!-- Section Recherche et Compteur - de "code_complet" -->
   <section class="max-w-7xl mx-auto px-4 sm:px-6 -mt-2 mb-2 flex items-center justify-between gap-3">
+    <!-- Le JS trouvera cet ID même s'il n'est pas dans le header -->
     <p id="resultCount" class="text-sm text-slate-600"></p>
+    
+    <!-- Barre de recherche - HTML de "code_complet" mais stylée pour le fond clair, compatible avec le JS de "bande_sombre_compacte" -->
     <div class="flex items-center gap-2 w-full sm:w-80">
       <button id="searchToggle" type="button" class="h-9 w-10 inline-flex items-center justify-center rounded-xl bg-slate-100 ring-1 ring-slate-200 hover:bg-slate-50" aria-label="Rechercher"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></button>
-      <input id="searchInput" type="search" placeholder="Mot-clé (ex. interview, message-clé)" class="search-input search-collapsed h-9 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand.sky px-3" />
+      <input id="searchInput" type="search" placeholder="Mot-clé (ex. interview, message-clé)" class="search-input search-collapsed h-9 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 px-3" />
     </div>
   </section>
 
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 pb-16"><div id="grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div></main>
+  <!-- Grille principale - de "code_complet" -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 pb-10 flex-1"><div id="grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div></main>
 
-  <footer class="mt-8 border-t border-slate-800 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white">
+  <!-- Footer - de "code_complet" -->
+  <footer class="mt-0 border-t border-slate-800 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 text-center space-y-1">
       <p class="font-semibold tracking-wide">FIL D’ACTIVITÉS — formation ASIN</p>
       <p class="text-sm text-white/80">« La parole est moitié à celui qui parle, moitié à celui qui écoute. » — Montaigne</p>
     </div>
   </footer>
 
+  <!-- Fenêtre Modale (Dialog) - HTML de "bande_sombre_compacte" (pour le design) -->
   <div id="roleDialog" class="fixed inset-0 z-50 hidden">
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" aria-hidden="true"></div>
     <div role="dialog" aria-modal="true" aria-labelledby="roleDlgTitle" class="relative mx-auto mt-16 w-full max-w-2xl">
@@ -134,6 +170,7 @@
     </div>
   </div>
 
+  <!-- Template de carte - de "code_complet" (identique) -->
   <template id="cardTmpl">
     <article class="card h-full rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500" tabindex="0" role="group">
       <header class="px-4 sm:px-5 pt-4 pb-3 border-b border-slate-100 flex items-start justify-between gap-3">
@@ -144,6 +181,7 @@
     </article>
   </template>
 
+  <!-- Script - 100% de "bande_sombre_compacte" (pour la fonctionnalité) -->
   <script>
     const GAMES_FULL=[
       {id:1,title:"Impro d'intro",solo:true,items:[{team:"Créatif",role:"JOUE",text:"Présente-toi en 30–60s. Vise la connexion immédiate avec ton public."},{team:"Médiateur",role:"ANALYSE",text:"Dis si l'accroche étonne vraiment. Explique en une phrase."},{team:"Pilote",role:"ANALYSE",text:"Confirme que le sujet est compris en 1 phrase claire."}]},
@@ -178,17 +216,17 @@
 
     const grid=document.getElementById('grid');
     const cardTmpl=document.getElementById('cardTmpl');
-    const teamFilter=document.createElement('select');
-    teamFilter.id='teamFilter';
-    const gameFilter=document.createElement('select');
-    gameFilter.id='gameFilter';
+    // Récupération des IDs depuis le HTML
+    const teamFilter=document.getElementById('teamFilter');
+    const gameFilter=document.getElementById('gameFilter');
+    const dayFilter=document.getElementById('dayFilter');
     const slotFilter=document.getElementById('slotFilter');
     const slotSwitch=document.getElementById('slotSwitch');
     const slotThumb=document.getElementById('slotThumb');
     const slotClear=document.getElementById('slotClear');
     const searchInput=document.getElementById('searchInput');
     const searchToggle=document.getElementById('searchToggle');
-    const resultCount=document.getElementById('resultCount');
+    const resultCount=document.getElementById('resultCount'); // Trouvera le <p> dans la <section>
     const activeDayLabel=document.getElementById('activeDayLabel');
     const activeHint=document.getElementById('activeHint');
     const roleDialog=document.getElementById('roleDialog');
@@ -203,23 +241,66 @@
     function getDay(id){return dayMap.get(id)||null}
     function getSlot(id){return slotMap.get(id)||null}
 
-    function dayFromDate(d){ const m=d.getMonth(),dd=d.getDate(); if(m===9&&(dd===27||dd===30))return 1; if(m===9&&(dd===28||dd===31))return 2; return 1 }
+    function dayFromDate(d){
+      const m=d.getMonth(),dd=d.getDate();
+      // Correction finale.
+      // Jour 1: 27, 29, 30
+      if(m===9&&(dd===27||dd===29||dd===30))return 1;
+      // Jour 2: 28, 31
+      if(m===9&&(dd===28||dd===31))return 2;
+      return 1; // Par défaut
+    }
 
-    function teamColor(t){ if(t==='Créatif')return 'var(--creatif)'; if(t==='Médiateur')return 'var(--mediateur)'; if(t==='Pilote')return 'var(--pilote)'; return '#334155' }
+    function teamColor(t){
+      if(t==='Créatif')return 'var(--creatif)';
+      if(t==='Médiateur')return 'var(--mediateur)';
+      if(t==='Pilote')return 'var(--pilote)';
+      return '#334155'
+    }
+    function roleBadge(r){
+      const b="px-2 py-0.5 text-[11px] font-medium rounded-full ring-1";
+      if(r==='JOUE')return `${b} bg-emerald-100 text-emerald-700 ring-emerald-200`;
+      if(r==='INTERAGIT')return `${b} bg-sky-100 text-sky-700 ring-sky-200`;
+      return `${b} bg-rose-100 text-rose-700 ring-rose-200`
+    }
 
-    function roleBadge(r){ const b="px-2 py-0.5 text-[11px] font-medium rounded-full ring-1"; if(r==='JOUE')return `${b} bg-emerald-100 text-emerald-700 ring-emerald-200`; if(r==='INTERAGIT')return `${b} bg-sky-100 text-sky-700 ring-sky-200`; return `${b} bg-rose-100 text-rose-700 ring-rose-200` }
+    function currentAllowedDisplayIds(){
+      const day=adminMode && adminDay? adminDay : dayFromDate(new Date());
+      return day===1?[1,2,3,4,5]:[6,7,8,9]
+    }
 
-    function currentAllowedDisplayIds(){ const day=adminMode && adminDay? adminDay : dayFromDate(new Date()); return day===1?[1,2,3,4,5]:[6,7,8,9] }
+    function refreshGameOptions(){
+      const allowed=currentAllowedDisplayIds();
+      gameFilter.innerHTML='<option value=""></option>';
+      const f=document.createDocumentFragment();
+      allowed.forEach(id=>{
+        const o=document.createElement('option');
+        o.value=String(id);
+        const g=VISIBLE.find(x=>x.displayId===id);
+        o.textContent=`Jeu ${id} — ${g? g.title: ''}`;
+        f.appendChild(o)
+      });
+      gameFilter.appendChild(f)
+    }
 
-    function refreshGameOptions(){ const allowed=currentAllowedDisplayIds(); gameFilter.innerHTML='<option value=""></option>'; const f=document.createDocumentFragment(); allowed.forEach(id=>{ const o=document.createElement('option'); o.value=String(id); const g=VISIBLE.find(x=>x.displayId===id); o.textContent=`Jeu ${id} — ${g? g.title: ''}`; f.appendChild(o) }); gameFilter.appendChild(f) }
+    function updateCount(n){ if(resultCount) resultCount.textContent=`${n} jeu(x) affiché(s)` }
 
-    function updateCount(n){ resultCount.textContent=`${n} jeu(x) affiché(s)` }
-
-    function scheduleLabel(id){ const d=getDay(id); const s=getSlot(id)==='matin'?'Matin':'Après-midi'; return d?`Jour ${d} • ${s}`:'' }
+    function scheduleLabel(id){
+      const d=getDay(id);
+      const s=getSlot(id)==='matin'?'Matin':'Après-midi';
+      return d?`Jour ${d} • ${s}`:''
+    }
 
     function renderCards(list){
       grid.innerHTML="";
-      if(!list.length){ const e=document.createElement('div'); e.className="col-span-full flex flex-col items-center justify-center gap-2 py-16 text-center border border-dashed border-slate-300 rounded-2xl bg-slate-50"; e.innerHTML=`<div class=\"text-slate-700 font-medium\">Aucune activité disponible</div><p class=\"text-sm text-slate-600\">Reviens au prochain créneau ou élargis tes filtres.</p>`; grid.appendChild(e); updateCount(0); return }
+      if(!list.length){
+        const e=document.createElement('div');
+        e.className="col-span-full flex flex-col items-center justify-center gap-2 py-16 text-center border border-dashed border-slate-300 rounded-2xl bg-slate-50";
+        e.innerHTML=`<div class=\"text-slate-700 font-medium\">Aucune activité disponible</div><p class=\"text-sm text-slate-600\">Reviens au prochain créneau ou élargis tes filtres.</p>`;
+        grid.appendChild(e);
+        updateCount(0);
+        return
+      }
       const frag=document.createDocumentFragment();
       list.forEach(game=>{
         const node=cardTmpl.content.cloneNode(true);
@@ -229,54 +310,221 @@
         const chip=node.querySelector('header span');
         const body=node.querySelector('div.p-4');
         const hid=`game-title-${game.displayId}`;
-        h3.id=hid; article.setAttribute('aria-labelledby',hid);
-        const itemsToShow=teamFilter.value?game.items.filter(it=>it.team===teamFilter.value):game.items; if(itemsToShow.length===0)return;
-        h3.textContent=`${game.displayId}. ${game.title}`; sub.textContent=scheduleLabel(game.displayId);
-        chip.textContent=game.solo?"SOLO":"ÉQUIPE"; chip.id=`chip-${game.displayId}`; article.setAttribute('aria-describedby',chip.id);
-        if(teamFilter.value){article.setAttribute('data-accent','')}else{article.removeAttribute('data-accent')}
-        const sl=getSlot(game.displayId); article.classList.toggle('slot-matin',sl==='matin'); article.classList.toggle('slot-apres',sl==='apres');
-        const p=document.createElement('p'); p.className='text-sm text-slate-900'; p.textContent=EXPLAIN[game.origId]||''; body.append(p);
-        itemsToShow.forEach(it=>{ const row=document.createElement('div'); row.className="row-team flex items-start gap-3 p-2 rounded-xl bg-slate-50"; row.style.setProperty('--rowAccent',teamColor(it.team)); const dot=document.createElement('span'); dot.className="mt-1 h-2.5 w-2.5 rounded-full shrink-0"; dot.style.background=teamColor(it.team); dot.setAttribute('role','img'); dot.setAttribute('aria-label',`Couleur équipe ${it.team}`); const team=document.createElement('span'); team.className="text-sm font-medium text-slate-900"; team.textContent=it.team; const badge=document.createElement('span'); badge.className=roleBadge(it.role); badge.textContent=it.role; const text=document.createElement('p'); text.className="text-sm text-slate-900"; text.textContent=it.text; const left=document.createElement('div'); left.className="flex items-center gap-2 min-w-[8rem] shrink-0"; left.append(dot,team,badge); const wrap=document.createElement('div'); wrap.className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3 w-full"; wrap.append(left,text); row.append(wrap); body.append(row) });
+        h3.id=hid;
+        article.setAttribute('aria-labelledby',hid);
+        const chosenTeam = teamFilter ? teamFilter.value : '';
+        const itemsToShow=chosenTeam?game.items.filter(it=>it.team===chosenTeam):game.items;
+        if(itemsToShow.length===0) return;
+        h3.textContent=`${game.displayId}. ${game.title}`;
+        sub.textContent=scheduleLabel(game.displayId);
+        chip.textContent=game.solo?"SOLO":"ÉQUIPE";
+        chip.id=`chip-${game.displayId}`;
+        article.setAttribute('aria-describedby',chip.id);
+        if(chosenTeam){article.setAttribute('data-accent','')}else{article.removeAttribute('data-accent')}
+        const sl=getSlot(game.displayId);
+        article.classList.toggle('slot-matin',sl==='matin');
+        article.classList.toggle('slot-apres',sl==='apres');
+        const p=document.createElement('p');
+        p.className='text-sm text-slate-900';
+        p.textContent=EXPLAIN[game.origId]||'';
+        body.append(p);
+        itemsToShow.forEach(it=>{
+          const row=document.createElement('div');
+          row.className="row-team flex items-start gap-3 p-2 rounded-xl bg-slate-50";
+          row.style.setProperty('--rowAccent',teamColor(it.team));
+          const dot=document.createElement('span');
+          dot.className="mt-1 h-2.5 w-2.5 rounded-full shrink-0";
+          dot.style.background=teamColor(it.team);
+          dot.setAttribute('role','img');
+          dot.setAttribute('aria-label',`Couleur équipe ${it.team}`);
+          const team=document.createElement('span');
+          team.className="text-sm font-medium text-slate-900";
+          team.textContent=it.team;
+          const badge=document.createElement('span');
+          badge.className=roleBadge(it.role);
+          badge.textContent=it.role;
+          const text=document.createElement('p');
+          text.className="text-sm text-slate-900";
+          text.textContent=it.text;
+          const left=document.createElement('div');
+          left.className="flex items-center gap-2 min-w-[8rem] shrink-0";
+          left.append(dot,team,badge);
+          const wrap=document.createElement('div');
+          wrap.className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3 w-full";
+          wrap.append(left,text);
+          row.append(wrap);
+          body.append(row)
+        });
         frag.appendChild(node)
-      }); grid.appendChild(frag); updateCount(grid.childElementCount||0)
+      });
+      grid.appendChild(frag);
+      updateCount(grid.childElementCount||0)
     }
 
-    function matchesFilters(game){ const allowed=currentAllowedDisplayIds(); if(!allowed.includes(game.displayId))return false; if(gameFilter.value&&String(game.displayId)!==gameFilter.value)return false; if(slotFilter.value&&getSlot(game.displayId)!==slotFilter.value)return false; const itemsFiltered=teamFilter.value?game.items.filter(it=>it.team===teamFilter.value):game.items; if(teamFilter.value&&itemsFiltered.length===0)return false; const q=searchInput.value.trim().toLowerCase(); if(q){ const inTitle=game.title.toLowerCase().includes(q); const inText=itemsFiltered.some(it=>(it.team+" "+it.role+" "+it.text).toLowerCase().includes(q)); if(!inTitle&&!inText)return false } return true }
+    function matchesFilters(game){
+      const allowed=currentAllowedDisplayIds();
+      if(!allowed.includes(game.displayId))return false;
+      if(gameFilter && gameFilter.value && String(game.displayId)!==gameFilter.value)return false;
+      if(slotFilter.value&&getSlot(game.displayId)!==slotFilter.value)return false;
+      const chosenTeam = teamFilter ? teamFilter.value : '';
+      const itemsFiltered=chosenTeam?game.items.filter(it=>it.team===chosenTeam):game.items;
+      if(chosenTeam&&itemsFiltered.length===0)return false;
+      const q=searchInput.value.trim().toLowerCase();
+      if(q){
+        const inTitle=game.title.toLowerCase().includes(q);
+        const inText=itemsFiltered.some(it=>(it.team+" "+it.role+" "+it.text).toLowerCase().includes(q));
+        if(!inTitle&&!inText)return false
+      }
+      return true
+    }
 
-    function applyFilters(){ refreshGameOptions(); const allowed=currentAllowedDisplayIds(); const filtered=VISIBLE.filter(matchesFilters).sort((a,b)=>DISPLAY_ORDER.indexOf(a.displayId)-DISPLAY_ORDER.indexOf(b.displayId)).filter(g=>allowed.includes(g.displayId)); renderCards(filtered) }
+    function applyFilters(){
+      refreshGameOptions();
+      const allowed=currentAllowedDisplayIds();
+      const filtered=VISIBLE
+        .filter(matchesFilters)
+        .sort((a,b)=>DISPLAY_ORDER.indexOf(a.displayId)-DISPLAY_ORDER.indexOf(b.displayId))
+        .filter(g=>allowed.includes(g.displayId));
+      renderCards(filtered)
+    }
 
     function debounce(fn,wait=200){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),wait)}}
 
-    function updateBanner(){ const now=new Date(); const day=adminMode && adminDay? adminDay : dayFromDate(now); activeDayLabel.textContent=`Jour ${day}`; activeHint.textContent=day===1?'Matin : Jeux 1–3 · Après-midi : Jeux 4–5':'Matin : Jeux 6–7 · Après-midi : Jeux 8–9' }
+    function updateBanner(){
+      const now=new Date();
+      const day=adminMode && adminDay? adminDay : dayFromDate(now);
+      activeDayLabel.textContent=`Jour ${day}`;
+      activeHint.textContent=day===1?'Matin : Jeux 1–3 · Après-midi : Jeux 4–5':'Matin : Jeux 6–7 · Après-midi : Jeux 8–9';
+    }
 
-    window.addEventListener('keydown',e=>{ if(e.ctrlKey&&e.shiftKey&&(e.key==='E'||e.key==='e')){ e.preventDefault(); adminMode=!adminMode; if(adminMode){ document.body.dataset.admin='1'; activeDayLabel.classList.add('ring-2','ring-white/40'); activeDayLabel.title='Cliquer pour alterner Jour 1 / Jour 2 (mode encadrant)'; }else{ document.body.removeAttribute('data-admin'); adminDay=null; activeDayLabel.classList.remove('ring-2','ring-white/40'); activeDayLabel.removeAttribute('title'); } updateBanner(); applyFilters(); } })
+    window.addEventListener('keydown',e=>{
+      if(e.ctrlKey&&e.shiftKey&&(e.key==='E'||e.key==='e')){
+        e.preventDefault();
+        adminMode=!adminMode;
+        if(adminMode){
+          document.body.dataset.admin='1';
+          activeDayLabel.classList.add('ring-2','ring-white/40');
+          activeDayLabel.title='Cliquer pour alterner Jour 1 / Jour 2 (mode encadrant)';
+        }else{
+          document.body.removeAttribute('data-admin');
+          adminDay=null;
+          activeDayLabel.classList.remove('ring-2','ring-white/40');
+          activeDayLabel.removeAttribute('title');
+        }
+        updateBanner();
+        applyFilters();
+      }
+    });
 
-    activeDayLabel.addEventListener('click',()=>{ if(!adminMode) return; adminDay = (adminDay===1?2: adminDay===2?1 : (dayFromDate(new Date())===1?2:1)); updateBanner(); applyFilters() })
+    activeDayLabel.addEventListener('click',()=>{
+      if(!adminMode) return;
+      adminDay = (adminDay===1?2: adminDay===2?1 : (dayFromDate(new Date())===1?2:1));
+      updateBanner();
+      applyFilters();
+    });
 
-    function applyTeamAccentToBody(t){ document.body.classList.remove('team-Créatif','team-Médiateur','team-Pilote'); if(t){document.body.classList.add('team-'+t)} }
-    function openRoleDialog(){ roleDialog.classList.remove('hidden'); setTimeout(()=>{roleDialog.querySelector('[data-team]')?.focus()},0) }
-    function closeRoleDialog(){ roleDialog.classList.add('hidden') }
-    roleDialog.addEventListener('click',e=>{ if(e.target===roleDialog) closeRoleDialog() })
+    function applyTeamAccentToBody(t){
+      document.body.classList.remove('team-Créatif','team-Médiateur','team-Pilote');
+      if(t){document.body.classList.add('team-'+t)}
+    }
+    function openRoleDialog(){
+      roleDialog.classList.remove('hidden');
+      setTimeout(()=>{roleDialog.querySelector('[data-team]')?.focus()},0)
+    }
+    function closeRoleDialog(){roleDialog.classList.add('hidden')}
+    roleDialog.addEventListener('click',e=>{if(e.target===roleDialog)closeRoleDialog()})
     roleDlgClose.addEventListener('click',closeRoleDialog)
 
-    roleDialog.querySelectorAll('[data-team]').forEach(btn=>{ btn.addEventListener('click',()=>{ const t=btn.getAttribute('data-team'); try{localStorage.setItem('asin:userTeam',t)}catch{}; teamFilter.value=t; roleName.textContent=t; roleDot.style.background=teamColor(t); applyTeamAccentToBody(t); roleCapsule.classList.remove('hidden'); closeRoleDialog(); applyFilters(); document.getElementById('grid').scrollIntoView({behavior:'smooth'}) }) })
+    roleDialog.querySelectorAll('[data-team]').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const t=btn.getAttribute('data-team');
+        try{localStorage.setItem('asin:userTeam',t)}catch{}
+        if(teamFilter) teamFilter.value=t;
+        roleName.textContent=t;
+        roleDot.style.background=teamColor(t);
+        applyTeamAccentToBody(t);
+        roleCapsule.classList.remove('hidden');
+        closeRoleDialog();
+        applyFilters();
+        document.getElementById('grid').scrollIntoView({behavior:'smooth'})
+      })
+    })
 
-    function initRoleFromStorage(){ let t=null; try{t=localStorage.getItem('asin:userTeam')}catch{}; if(t){ teamFilter.value=t; roleName.textContent=t; roleDot.style.background=teamColor(t); applyTeamAccentToBody(t); roleCapsule.classList.remove('hidden') } }
+    function initRoleFromStorage(){
+      let t=null;try{t=localStorage.getItem('asin:userTeam')}catch{}
+      if(t){ if(teamFilter) teamFilter.value=t; roleName.textContent=t; roleDot.style.background=teamColor(t); applyTeamAccentToBody(t); roleCapsule.classList.remove('hidden') }
+    }
 
-    changeRoleBtn.addEventListener('click',()=>{ openRoleDialog() })
+    changeRoleBtn.addEventListener('click',()=>{openRoleDialog()})
 
-    function setSlotUI(v){ slotSwitch.dataset.state=v; if(v==='apres'){ slotThumb.style.transform='translateX(2.75rem)'; slotSwitch.classList.remove('bg-slate-700/70','bg-sky-300/70'); slotSwitch.classList.add('bg-amber-300/70') } else if(v==='matin'){ slotThumb.style.transform='translateX(0.25rem)'; slotSwitch.classList.remove('bg-slate-700/70','bg-amber-300/70'); slotSwitch.classList.add('bg-sky-300/70') } else { slotThumb.style.transform='translateX(1.5rem)'; slotSwitch.classList.remove('bg-amber-300/70','bg-sky-300/70'); slotSwitch.classList.add('bg-slate-700/70') } }
+    function setSlotUI(v){
+      slotSwitch.dataset.state=v;
+      if(v==='apres'){
+        slotThumb.style.transform='translateX(2.75rem)';
+        slotSwitch.classList.remove('bg-slate-700/70','bg-sky-300/7V0');
+        slotSwitch.classList.add('bg-amber-300/70')
+      }else if(v==='matin'){
+        slotThumb.style.transform='translateX(0.25rem)';
+        slotSwitch.classList.remove('bg-slate-700/70','bg-amber-300/70');
+        slotSwitch.classList.add('bg-sky-300/70')
+      }else{
+        slotThumb.style.transform='translateX(1.5rem)';
+        slotSwitch.classList.remove('bg-amber-300/70','bg-sky-300/70');
+        slotSwitch.classList.add('bg-slate-700/70')
+      }
+    }
 
-    slotSwitch.addEventListener('click',()=>{ const cur=slotSwitch.dataset.state||''; const next=cur===''?'matin':(cur==='matin'?'apres':''); slotFilter.value=next; setSlotUI(next); applyFilters() })
-    document.getElementById('slotClear').addEventListener('click',()=>{ slotFilter.value=''; setSlotUI(''); applyFilters() })
+    slotSwitch.addEventListener('click',()=>{
+      const cur=slotSwitch.dataset.state||'';
+      const next=cur===''?'matin':(cur==='matin'?'apres':'');
+      slotFilter.value=next;
+      setSlotUI(next);
+      applyFilters()
+    })
+
+    // Pas de formulaire à soumettre, mais on garde le 'preventDefault' au cas où
+    const form = document.getElementById('filterForm');
+    if(form) {
+      form.addEventListener('submit',e=>{e.preventDefault();applyFilters()})
+    }
+
+    document.getElementById('slotClear').addEventListener('click',()=>{slotFilter.value='';setSlotUI('');applyFilters()})
 
     document.getElementById('searchInput').addEventListener('input',debounce(applyFilters,150))
-    document.getElementById('searchToggle').addEventListener('click',()=>{ const input=searchInput; if(input.classList.contains('search-collapsed')){ input.classList.remove('search-collapsed'); input.classList.add('search-expanded'); input.focus(); } else { if(!input.value){ input.classList.remove('search-expanded'); input.classList.add('search-collapsed'); } else { applyFilters() } } })
+    document.getElementById('searchToggle').addEventListener('click',()=>{
+      const input=searchInput;
+      if(input.classList.contains('search-collapsed')){
+        input.classList.remove('search-collapsed');
+        input.classList.add('search-expanded');
+        input.focus();
+      }else{
+        if(!input.value){
+          input.classList.remove('search-expanded');
+          input.classList.add('search-collapsed');
+        } else { applyFilters(); }
+      }
+    })
 
-    function init(){ updateBanner(); initRoleFromStorage(); openRoleDialog(); setSlotUI(slotFilter.value||""); applyFilters() }
-    init(); setInterval(()=>{updateBanner();applyFilters()},60*1000)
+    function init(){
+      updateBanner();
+      refreshGameOptions();
+      initRoleFromStorage();
+      openRoleDialog();
+      setSlotUI(slotFilter.value||"");
+      applyFilters();
+    }
 
-    ;(function(){ try{ console.assert([1,2,3,4,5,6,7,8,9].length===9,'9 ids référencés'); const fake='Pilote'; localStorage.setItem('asin:userTeam',fake); initRoleFromStorage(); console.assert(document.getElementById('roleName').textContent===fake,'Capsule rôle OK'); console.log('%cTests OK','color:lightgreen') }catch(e){ console.warn('Tests failed',e) } })()
+    init();
+    setInterval(()=>{updateBanner();applyFilters()},60*1000)
+
+    ;(function(){
+      try{
+        console.assert([1,2,3,4,5,6,7,8,9].length===9,'9 ids référencés');
+        const fake='Pilote'; localStorage.setItem('asin:userTeam',fake); initRoleFromStorage(); console.assert(document.getElementById('roleName').textContent===fake,'Capsule rôle OK');
+        console.log('%cTests OK','color:lightgreen')
+      }catch(e){ console.warn('Tests failed',e) }
+    })()
   </script>
 </body>
 </html>
+
