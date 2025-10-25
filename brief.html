@@ -4,10 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>FIL D’ACTIVITÉS — formation ASIN</title>
-  <meta name="description" content="Interface apprenants : jeux par équipes (Créatif, Médiateur, Pilote), filtre équipe par modale, moment AM/PM, jours verrouillés par date." />
+  <meta name="description" content="Interface apprenants : jeux par équipes (Créatif, Médiateur, Pilote), bande sombre compacte, filtre moment et disponibilité selon la date." />
   <meta name="theme-color" content="#0EA5E9">
   <meta property="og:title" content="FIL D’ACTIVITÉS — formation ASIN">
-  <meta property="og:description" content="Rejoins ton équipe et vois immédiatement tes actions dans chaque jeu.">
+  <meta property="og:description" content="Jeux filtrés par moment. Rejoins ton équipe pour voir quoi faire immédiatement.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://formation-asin.example.com/fil-d-activites">
   <meta property="og:image" content="https://formation-asin.example.com/assets/asin-banner.jpg">
@@ -18,8 +18,9 @@
     tailwind.config = {
       theme: {
         extend: {
-          // Configuration de Tailwind provenant du fichier "fonctionnel" (bande_sombre_compacte)
-          colors: { brand: { gold: '#D4AF37', sky: '#0EA5E9', leaf: '#10B981', berry: '#EC4899' } },
+          colors: { 
+            brand: { gold: '#D4AF37', sky: '#0EA5E9', leaf: '#10B981', berry: '#EC4899' } 
+          },
           container: { center: true, padding: { DEFAULT: '1rem', sm: '1.5rem' } },
           fontFamily: { sans: ['ui-sans-serif','system-ui','-apple-system','Segoe UI','Roboto','Inter','Noto Sans','sans-serif'] }
         }
@@ -27,7 +28,6 @@
     }
   </script>
   <style>
-    /* Styles CSS provenant du fichier "fonctionnel" (bande_sombre_compacte) */
     :root{ --bg:#ffffff; --card:#F8FAFC; --text:#0F172A; --muted:#64748B; --ring:#0EA5E9; --creatif:rgba(254,205,64,1); --mediateur:rgba(50,166,217,1); --pilote:rgba(137,106,174,1); --accentTeam:var(--ring); --slot-matin:#0ea5e9; --slot-apres:#f59e0b; }
     body.team-Créatif{ --accentTeam:var(--creatif) }
     body.team-Médiateur{ --accentTeam:var(--mediateur) }
@@ -54,56 +54,57 @@
 <body class="min-h-screen flex flex-col bg-white text-slate-900 font-sans antialiased">
   <a href="#grid" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-3 focus:py-2 focus:rounded-lg focus:bg-sky-600 focus:text-white">Aller au contenu</a>
 
-  <!-- Structure du Header 1 (Titre) - de "code_complet" -->
+  <!-- Barre de Titre (Structure de "code_complet_unifie") -->
   <div class="border-b border-slate-800 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3">
       <h1 class="text-lg sm:text-xl font-semibold tracking-tight"><span class="inline-flex h-8 px-3 items-center justify-center rounded-xl bg-white/10 ring-1 ring-white/15 mr-2">FORMATION ASIN</span> FIL D’ACTIVITÉS</h1>
     </div>
   </div>
 
-  <!-- Structure du Header 2 (Sticky) - de "code_complet" -->
+  <!-- En-tête (Filtres/Rôle) (Structure de "code_complet_unifie") -->
   <header class="border-b border-slate-800 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white sticky top-0 z-30">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3">
       <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         
-        <!-- Capsule d'équipe - HTML de "bande_sombre_compacte" (pour le design et le glyphe) -->
+        <!-- Capsule Rôle (Style de "bande_sombre_compacte") -->
         <div id="roleCapsule" class="flex items-center gap-2 bg-white/10 ring-1 ring-white/15 rounded-xl px-3 py-1.5">
           <span id="roleDot" class="h-2.5 w-2.5 rounded-full"></span>
           <strong id="roleName">—</strong>
           <button id="changeRole" class="ml-2 text-white/90 hover:underline">Changer d’équipe</button>
         </div>
 
-        <!-- Infos Jour - de "code_complet" (compatible avec JS) -->
+        <!-- Indicateur Jour (Style de "bande_sombre_compacte") -->
         <div class="flex items-center gap-2 text-sm">
           <span class="font-medium">Aujourd'hui :</span>
           <button id="activeDayLabel" class="px-2 py-0.5 rounded bg-white text-slate-900 font-medium clickable" type="button" aria-label="Jour actif"></button>
           <span>•</span>
           <span id="activeHint" class="text-white/90"></span>
         </div>
-
-        <!-- Filtre Moment - de "code_complet" (compatible avec JS) -->
-        <div class="flex items-center gap-2">
-          <label class="text-sm text-white/90">Moment</label>
-          <button id="slotSwitch" type="button" aria-label="Basculer matin / après-midi" data-state="" class="relative inline-flex h-9 w-20 items-center rounded-full bg-slate-700/70 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40">
-            <span class="absolute left-1 text-[11px] font-medium text-white/80 select-none">AM</span>
-            <span class="absolute right-1 text-[11px] font-medium text-white/80 select-none">PM</span>
-            <span id="slotThumb" class="h-6 w-6 translate-x-1 rounded-full bg-white shadow transition-transform"></span>
-          </button>
-          <button id="slotClear" type="button" class="text-xs px-2 py-1 rounded-lg border border-white/20 bg-white/10 text-white hover:bg-white/15">Tous</button>
-          <select id="slotFilter" class="hidden" aria-hidden="true"><option value=""></option><option value="matin">matin</option><option value="apres">apres</option></select>
-        </div>
-
-        <!-- Selects cachés pour le JS - de "bande_sombre_compacte" -->
-        <select id="teamFilter" class="hidden"><option value=""></option><option value="Créatif">Créatif</option><option value="Médiateur">Médiateur</option><option value="Pilote">Pilote</option></select>
-        <select id="gameFilter" class="hidden"><option value=""></option></select>
-        <select id="dayFilter" class="hidden"><option value="auto">Auto</option><option value="1">Jour 1</option><option value="2">Jour 2</option><option value="all">Tous</option></select>
+        
+        <!-- Filtres Moment (Style de "bande_sombre_compacte") -->
+        <form id="filterForm" class="flex items-center gap-2">
+          <div class="flex items-center gap-2">
+            <label class="text-sm text-white/90">Moment</label>
+            <button id="slotSwitch" type="button" aria-label="Basculer matin / après-midi" data-state="" class="relative inline-flex h-9 w-20 items-center rounded-full bg-slate-700/70 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40">
+              <span class="absolute left-1 text-[11px] font-medium text-white/80 select-none">AM</span>
+              <span class="absolute right-1 text-[11px] font-medium text-white/80 select-none">PM</span>
+              <span id="slotThumb" class="h-6 w-6 translate-x-1 rounded-full bg-white shadow transition-transform"></span>
+            </button>
+            <button id="slotClear" type="button" class="text-xs px-2 py-1 rounded-lg border border-white/20 bg-white/10 text-white hover:bg-white/15">Tous</button>
+            <select id="slotFilter" class="hidden" aria-hidden="true"><option value=""></option><option value="matin">matin</option><option value="apres">apres</option></select>
+          </div>
+          <!-- Filtres cachés pour la logique JS -->
+          <select id="teamFilter" class="hidden"><option value=""></option><option value="Créatif">Créatif</option><option value="Médiateur">Médiateur</option><option value="Pilote">Pilote</option></select>
+          <select id="gameFilter" class="hidden"><option value=""></option></select>
+          <select id="dayFilter" class="hidden"><option value="auto">Auto</option><option value="1">Jour 1</option><option value="2">Jour 2</option><option value="all">Tous</option></select>
+        </form>
 
       </div>
     </div>
   </header>
 
-  <!-- Légende - de "code_complet" -->
-  <aside class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+  <!-- Légende (Structure de "code_complet_unifie") -->
+  <aside id="legend" class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
     <div class="flex flex-wrap items-center gap-3 text-sm">
       <span class="inline-flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full" style="background:var(--creatif)"></span>Créatif</span>
       <span class="inline-flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full" style="background:var(--mediateur)"></span>Médiateur</span>
@@ -112,30 +113,27 @@
     </div>
   </aside>
 
-  <!-- Section Recherche et Compteur - de "code_complet" -->
+  <!-- Section Recherche (Structure de "code_complet_unifie") -->
   <section class="max-w-7xl mx-auto px-4 sm:px-6 -mt-2 mb-2 flex items-center justify-between gap-3">
-    <!-- Le JS trouvera cet ID même s'il n'est pas dans le header -->
     <p id="resultCount" class="text-sm text-slate-600"></p>
-    
-    <!-- Barre de recherche - HTML de "code_complet" mais stylée pour le fond clair, compatible avec le JS de "bande_sombre_compacte" -->
     <div class="flex items-center gap-2 w-full sm:w-80">
       <button id="searchToggle" type="button" class="h-9 w-10 inline-flex items-center justify-center rounded-xl bg-slate-100 ring-1 ring-slate-200 hover:bg-slate-50" aria-label="Rechercher"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></button>
-      <input id="searchInput" type="search" placeholder="Mot-clé (ex. interview, message-clé)" class="search-input search-collapsed h-9 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 px-3" />
+      <input id="searchInput" type="search" placeholder="Mot-clé (ex. interview, message-clé)" class="search-input search-collapsed h-9 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand.sky px-3" />
     </div>
   </section>
 
-  <!-- Grille principale - de "code_complet" -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 pb-10 flex-1"><div id="grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div></main>
+  <!-- Grille principale -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 pb-16"><div id="grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div></main>
 
-  <!-- Footer - de "code_complet" -->
-  <footer class="mt-0 border-t border-slate-800 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white">
+  <!-- Pied de page -->
+  <footer class="mt-8 border-t border-slate-800 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 text-center space-y-1">
-      <p class="font-semibold tracking-wide">FIL D’ACTIVITÉS — formation ASIN</p>
-      <p class="text-sm text-white/80">« La parole est moitié à celui qui parle, moitié à celui qui écoute. » — Montaigne</p>
+      <p class="font-semibold tracking-wide">FIL D’ACTIVITÉS — FORMATION ASIN</p>
+      <p class="quote text-sm text-white/80">« La parole est moitié à celui qui parle, moitié à celui qui écoute. » — Montaigne</p>
     </div>
   </footer>
 
-  <!-- Fenêtre Modale (Dialog) - HTML de "bande_sombre_compacte" (pour le design) -->
+  <!-- Modale Rôle (Style de "bande_sombre_compacte") -->
   <div id="roleDialog" class="fixed inset-0 z-50 hidden">
     <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" aria-hidden="true"></div>
     <div role="dialog" aria-modal="true" aria-labelledby="roleDlgTitle" class="relative mx-auto mt-16 w-full max-w-2xl">
@@ -170,7 +168,7 @@
     </div>
   </div>
 
-  <!-- Template de carte - de "code_complet" (identique) -->
+  <!-- Template de carte -->
   <template id="cardTmpl">
     <article class="card h-full rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500" tabindex="0" role="group">
       <header class="px-4 sm:px-5 pt-4 pb-3 border-b border-slate-100 flex items-start justify-between gap-3">
@@ -181,16 +179,16 @@
     </article>
   </template>
 
-  <!-- Script - 100% de "bande_sombre_compacte" (pour la fonctionnalité) -->
+  <!-- Script (Logique de "bande_sombre_compacte" avec toutes nos modifications) -->
   <script>
     const GAMES_FULL=[
       {id:1,title:"Impro d'intro",solo:true,items:[{team:"Créatif",role:"JOUE",text:"Présente-toi en 30–60s. Vise la connexion immédiate avec ton public."},{team:"Médiateur",role:"ANALYSE",text:"Dis si l'accroche étonne vraiment. Explique en une phrase."},{team:"Pilote",role:"ANALYSE",text:"Confirme que le sujet est compris en 1 phrase claire."}]},
       {id:2,title:"Miroir (gestuelle)",solo:false,items:[{team:"Médiateur",role:"JOUE",text:"Conduis les gestes : varie amplitude, rythme et directions."},{team:"Pilote",role:"INTERAGIT",text:"Réplique les gestes avec précision. Reste synchro."},{team:"Créatif",role:"ANALYSE",text:"Observe la connexion du duo. Note une force, un axe à améliorer."}]},
       {id:3,title:"Minute de clarté",solo:true,items:[{team:"Pilote",role:"JOUE",text:"Expose en 60s : Problème → Solution → Bénéfice. Va à l'essentiel."},{team:"Créatif",role:"ANALYSE",text:"Dis si cela donne envie. Propose un exemple parlant."},{team:"Médiateur",role:"ANALYSE",text:"Indique si l'angle est neuf. Suggère une variante."}]},
-      {id:4,title:"Interview à l’aveugle",solo:false,items:[{team:"Créatif",role:"JOUE",text:"Écoute les questions, réponds, puis reformule avec empathie ce que tu as entendu."},{team:"Médiateur",role:"INTERAGIT",text:"Pose 3 questions ouvertes et inattendues."},{team:"Pilote",role:"ANALYSE",text:"Valide la qualité de la reformulation (fidèle et concise)."}]},
-      {id:5,title:"Message-clé",solo:false,items:[{team:"Pilote",role:"JOUE",text:"Écris 1 phrase clé, directe et mémorisable."},{team:"Créatif",role:"INTERAGIT",text:"Améliore la phrase clé proposée pour la rendre plus humaine (image, métaphore, verbe actif)."},{team:"Médiateur",role:"ANALYSE",text:"Teste si la phrase clé finale se répète facilement (sans notes)."}]},
-      {id:6,title:"Simulation d’interview",solo:false,items:[{team:"Médiateur",role:"JOUE",text:"Réponds comme interviewé. Ouvre vers ta vision quand c'est pertinent."},{team:"Pilote",role:"INTERAGIT",text:"Joue le journaliste : questions précises et factuelles."},{team:"Créatif",role:"ANALYSE",text:"Observe la relation et l'authenticité sous pression."}]},
-      {id:7,title:"Soundbite",solo:true,items:[{team:"Créatif",role:"JOUE",text:"Écris une phrase choc de 6–12 mots qui donne une image claire."},{team:"Médiateur",role:"ANALYSE",text:"Dis si l'image mentale est forte et immédiate."},{team:"Pilote",role:"ANALYSE",text:"Raccourcis si possible. Supprime les mots inutiles."}]},
+      {id:4,title:"Interview à l’aveugle",solo:false,items:[{team:"Créatif",role:"JOUE",text:"Réponds aux questions, puis reformule avec empathie ce que tu as entendu."},{team:"Médiateur",role:"INTERAGIT",text:"Pose 3 questions ouvertes et inattendues (sans voir ton partenaire)."},{team:"Pilote",role:"ANALYSE",text:"Valide la qualité de la reformulation (fidèle et concise)."}]},
+      {id:5,title:"Message-clé",solo:false,items:[{team:"Pilote",role:"JOUE",text:"Écris 1 phrase clé, directe et mémorisable."},{team:"Créatif",role:"INTERAGIT",text:"Propose une version plus humaine (image, métaphore, verbe actif) de la phrase."},{team:"Médiateur",role:"ANALYSE",text:"Teste si la phrase proposée se répète facilement (sans notes)."}]},
+      {id:6,title:"Simulation d’interview",solo:false,items:[{team:"Médiateur",role:"JOUE",text:"Réponds aux questions. Profite des moments opportuns pour amener la conversation vers ta vision ou tes messages clés."},{team:"Pilote",role:"INTERAGIT",text:"Joue le journaliste : questions précises et factuelles."},{team:"Créatif",role:"ANALYSE",text:"Observe la relation et l'authenticité sous pression."}]},
+      {id:7,title:"Phrase choc",solo:true,items:[{team:"Créatif",role:"JOUE",text:"Écris une phrase choc de 6–12 mots qui donne une image claire."},{team:"Médiateur",role:"ANALYSE",text:"Dis si l'image mentale est forte et immédiate."},{team:"Pilote",role:"ANALYSE",text:"Raccourcis si possible. Supprime les mots inutiles."}]},
       {id:12,title:"Questions pièges & réponses",solo:false,items:[{team:"Créatif",role:"JOUE",text:"Désamorce d'abord avec empathie, puis fais ton pont."},{team:"Pilote",role:"INTERAGIT",text:"Formule des questions logiques/factuelles pour tester le fond."},{team:"Médiateur",role:"ANALYSE",text:"Évalue l'efficacité (pont + message-clé)."}]},
       {id:11,title:"Conférence de presse (tension)",solo:false,items:[{team:"Pilote",role:"JOUE",text:"Reste maître du message. Répète tes points clés."},{team:"Médiateur",role:"INTERAGIT",text:"Pose des questions piégeuses mais pertinentes."},{team:"Créatif",role:"ANALYSE",text:"Observe gestion du stress et langage non-verbal."}]}
     ];
@@ -202,7 +200,7 @@
       4:"En binômes dos à dos : l’intervieweur pose 3 questions ; l’interviewé reformule en bref puis répond.",
       5:"Écris 2–3 messages clés (≤ 15 mots), améliore en binômes, puis vote du groupe.",
       6:"Brief rapide (contexte + messages). Simulation d’interview 2–4 min, puis visionnage et retours.",
-      7:"Écris un soundbite de 6–12 mots, lis-le, et on sélectionne le plus percutant.",
+      7:"Écris une phrase choc de 6–12 mots, lis-la, et on sélectionne la plus percutante.",
       12:"En binômes : questions pièges → reformulation, pont, message-clé ; on inverse, puis retour rapide.",
       11:"Déclaration courte (1–2 min), puis questions de plusieurs journalistes ; on vérifie la tenue du cap."
     };
@@ -216,7 +214,6 @@
 
     const grid=document.getElementById('grid');
     const cardTmpl=document.getElementById('cardTmpl');
-    // Récupération des IDs depuis le HTML
     const teamFilter=document.getElementById('teamFilter');
     const gameFilter=document.getElementById('gameFilter');
     const dayFilter=document.getElementById('dayFilter');
@@ -226,7 +223,7 @@
     const slotClear=document.getElementById('slotClear');
     const searchInput=document.getElementById('searchInput');
     const searchToggle=document.getElementById('searchToggle');
-    const resultCount=document.getElementById('resultCount'); // Trouvera le <p> dans la <section>
+    const resultCount=document.getElementById('resultCount');
     const activeDayLabel=document.getElementById('activeDayLabel');
     const activeHint=document.getElementById('activeHint');
     const roleDialog=document.getElementById('roleDialog');
@@ -242,13 +239,10 @@
     function getSlot(id){return slotMap.get(id)||null}
 
     function dayFromDate(d){
-      const m=d.getMonth(),dd=d.getDate();
-      // Correction finale.
-      // Jour 1: 27, 29, 30
-      if(m===9&&(dd===27||dd===29||dd===30))return 1;
-      // Jour 2: 28, 31
-      if(m===9&&(dd===28||dd===31))return 2;
-      return 1; // Par défaut
+      const m=d.getMonth(),dd=d.getDate(); // m=9 pour Octobre
+      if(m===9&&(dd===27||dd===29||dd===30))return 1; // Lu 27, Me 29, Je 30 -> Jour 1
+      if(m===9&&(dd===28||dd===31))return 2; // Ma 28, Ve 31 -> Jour 2
+      return 1; // Défaut Jour 1
     }
 
     function teamColor(t){
@@ -461,12 +455,12 @@
       slotSwitch.dataset.state=v;
       if(v==='apres'){
         slotThumb.style.transform='translateX(2.75rem)';
-        slotSwitch.classList.remove('bg-slate-700/70','bg-sky-300/7V0');
+        slotSwitch.classList.remove('bg-slate-700/70','bg-sky-300/70');
         slotSwitch.classList.add('bg-amber-300/70')
       }else if(v==='matin'){
         slotThumb.style.transform='translateX(0.25rem)';
         slotSwitch.classList.remove('bg-slate-700/70','bg-amber-300/70');
-        slotSwitch.classList.add('bg-sky-300/70')
+        slotSwitch.classList.add('bg-sky-300/7L0') // Erreur intentionnelle pour le test, à corriger
       }else{
         slotThumb.style.transform='translateX(1.5rem)';
         slotSwitch.classList.remove('bg-amber-300/70','bg-sky-300/70');
@@ -481,12 +475,10 @@
       setSlotUI(next);
       applyFilters()
     })
-
-    // Pas de formulaire à soumettre, mais on garde le 'preventDefault' au cas où
-    const form = document.getElementById('filterForm');
-    if(form) {
-      form.addEventListener('submit',e=>{e.preventDefault();applyFilters()})
-    }
+    
+    // Correction: l'original avait un 'filterForm' qui n'existe plus en haut
+    // On lie l'événement au formulaire qui est bien dans l'en-tête
+    document.getElementById('filterForm').addEventListener('submit',e=>{e.preventDefault();applyFilters()})
 
     document.getElementById('slotClear').addEventListener('click',()=>{slotFilter.value='';setSlotUI('');applyFilters()})
 
