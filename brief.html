@@ -67,10 +67,10 @@
       <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         
         <!-- Capsule Rôle (Style de "bande_sombre_compacte") -->
-        <div id="roleCapsule" class="flex items-center gap-2 bg-white/10 ring-1 ring-white/15 rounded-xl px-3 py-1.5">
+        <div id="roleCapsule" class="flex items-center gap-2 bg-white/10 ring-1 ring-white/15 rounded-xl px-3 py-1.5 transition-colors hover:bg-white/20 cursor-pointer" role="button" tabindex="0">
           <span id="roleDot" class="h-2.5 w-2.5 rounded-full"></span>
           <strong id="roleName">—</strong>
-          <button id="changeRole" class="ml-2 text-white/90 hover:underline">Changer d’équipe</button>
+          <span id="changeRole" class="ml-2 text-white/90">Changer d’équipe</span>
         </div>
 
         <!-- Indicateur Jour (Style de "bande_sombre_compacte") -->
@@ -123,7 +123,7 @@
   </section>
 
   <!-- Grille principale -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 pb-16"><div id="grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div></main>
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 pb-16 flex-1"><div id="grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div></main>
 
   <!-- Pied de page -->
   <footer class="mt-8 border-t border-slate-800 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white">
@@ -231,7 +231,7 @@
     const roleCapsule=document.getElementById('roleCapsule');
     const roleName=document.getElementById('roleName');
     const roleDot=document.getElementById('roleDot');
-    const changeRoleBtn=document.getElementById('changeRole');
+    // const changeRoleBtn=document.getElementById('changeRole'); // Supprimé
 
     let adminMode=false; let adminDay=null;
 
@@ -449,7 +449,8 @@
       if(t){ if(teamFilter) teamFilter.value=t; roleName.textContent=t; roleDot.style.background=teamColor(t); applyTeamAccentToBody(t); roleCapsule.classList.remove('hidden') }
     }
 
-    changeRoleBtn.addEventListener('click',()=>{openRoleDialog()})
+    // changeRoleBtn.addEventListener('click',()=>{openRoleDialog()}) // Modifié
+    roleCapsule.addEventListener('click',()=>{openRoleDialog()}) // Pour que toute la capsule soit cliquable
 
     function setSlotUI(v){
       slotSwitch.dataset.state=v;
