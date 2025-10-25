@@ -260,7 +260,7 @@
 
     const prefersReduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
     const goTo=i=>{const c=Math.max(0,Math.min(RAW_GAMES.length-1,i));const t=document.querySelector(`article[data-index="${c}"]`); if(t) t.scrollIntoView({behavior:prefersReduced?'auto':'smooth',inline:'center',block:'nearest'}); };
-    document.getElementById('jumpStart').addEventListener('click',()=>{const idx = Math.max(0, RAW_GAMES.findIndex(g=>!isUnlocked(g)) - 1); goTo(idx<0?0:idx);});
+    document.getElementById('jumpStart').addEventListener('click',()=>{ const idx = RAW_GAMES.findIndex(g=>!isUnlocked(g)); goTo(idx === -1 ? RAW_GAMES.length - 1 : Math.max(0, idx - 1)); });
   }
 
   function updateDepth(){
