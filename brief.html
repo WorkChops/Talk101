@@ -182,7 +182,8 @@
   <!-- Script (Fusion des logiques) -->
   <script>
     const GAMES_FULL=[
-      {id:1,title:"Impro d'intro",solo:true,items:[{team:"Créatif",role:"JOUE",text:"Présente-toi en 20s max. Vise la connexion immédiate avec ton public."},{team:"Médiateur",role:"ANALYSE",text:"Dis si l'accroche étonne vraiment. Explique en une phrase."},{team:"Pilote",role:"ANALYSE",text:"Confirme que le sujet est compris en 1 phrase claire."}]},
+      // Changement : Jeu 1 mis à jour (50s et contenu)
+      {id:1,title:"Impro d'intro",solo:true,items:[{team:"Créatif",role:"JOUE",text:"Présente-toi en 50s max : phrase d'accroche, nom, prénom, poste et attentes."},{team:"Médiateur",role:"ANALYSE",text:"Dis si l'accroche étonne vraiment. Explique en une phrase."},{team:"Pilote",role:"ANALYSE",text:"Confirme que le sujet est compris en 1 phrase claire."}]},
       {id:2,title:"Interview miroir",solo:false,items:[{team:"Médiateur",role:"JOUE",text:"Réponds aux questions du Pilote."}, {team:"Pilote",role:"INTERAGIT",text:"Pose 2-3 questions ouvertes au Médiateur."}, {team:"Créatif",role:"INTERAGIT",text:"Observe et imite les gestes et le ton du Médiateur pendant qu'il répond."}]},
       {id:3,title:"Minute de clarté",solo:true,items:[{team:"Pilote",role:"JOUE",text:"Expose en 30s : Problème → Solution → Bénéfice. Va à l'essentiel."},{team:"Créatif",role:"ANALYSE",text:"Dis si cela donne envie. Propose un exemple parlant."},{team:"Médiateur",role:"ANALYSE",text:"Indique si l'angle est neuf. Suggère une variante."}]},
       {id:4,title:"Interview à l’aveugle",solo:false,items:[{team:"Créatif",role:"JOUE",text:"Écoute la question, reformule-la avec empathie puis réponds."},{team:"Médiateur",role:"INTERAGIT",text:"Pose 3 questions ouvertes et inattendues à ton binôme."},{team:"Pilote",role:"ANALYSE",text:"Valide la qualité de la reformulation (fidèle et concise)."}]},
@@ -194,7 +195,8 @@
     ];
 
     const EXPLAIN={
-      1:"Improvise une présentation de toi-même en 20s max. Vise la clarté et l'impact. Un retour te sera donné.",
+      // Changement : Jeu 1 mis à jour (50s et contenu)
+      1:"Improvise une présentation de 50s max (accroche, nom, prénom, poste, attentes). Vise clarté et impact. Un retour te sera donné.",
       2:"En trio : le Pilote pose les questions, le Médiateur répond, et le Créatif imite le Médiateur. On tourne les rôles.",
       3:"Tire un thème, prépare 40s, puis présente en 30s. L'objectif : être clair et direct.",
       4:"En binômes dos à dos : l’intervieweur pose 3 questions ; l’interviewé reformule en bref puis répond.",
