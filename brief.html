@@ -181,26 +181,41 @@
 
   <!-- Script (Fusion des logiques) -->
   <script>
+    // Changement : Jargon simplifié dans GAMES_FULL
     const GAMES_FULL=[
-      // Changement : Jeu 1 mis à jour (50s et contenu)
-      {id:1,title:"Impro d'intro",solo:true,items:[{team:"Créatif",role:"JOUE",text:"Présente-toi en 50s max : phrase d'accroche, nom, prénom, poste et attentes."},{team:"Médiateur",role:"ANALYSE",text:"Dis si l'accroche étonne vraiment. Explique en une phrase."},{team:"Pilote",role:"ANALYSE",text:"Confirme que le sujet est compris en 1 phrase claire."}]},
-      {id:2,title:"Interview miroir",solo:false,items:[{team:"Médiateur",role:"JOUE",text:"Réponds aux questions du Pilote."}, {team:"Pilote",role:"INTERAGIT",text:"Pose 2-3 questions ouvertes au Médiateur."}, {team:"Créatif",role:"INTERAGIT",text:"Observe et imite les gestes et le ton du Médiateur pendant qu'il répond."}]},
-      {id:3,title:"Minute de clarté",solo:true,items:[{team:"Pilote",role:"JOUE",text:"Expose en 30s : Problème → Solution → Bénéfice. Va à l'essentiel."},{team:"Créatif",role:"ANALYSE",text:"Dis si cela donne envie. Propose un exemple parlant."},{team:"Médiateur",role:"ANALYSE",text:"Indique si l'angle est neuf. Suggère une variante."}]},
-      {id:4,title:"Interview à l’aveugle",solo:false,items:[{team:"Créatif",role:"JOUE",text:"Écoute la question, reformule-la avec empathie puis réponds."},{team:"Médiateur",role:"INTERAGIT",text:"Pose 3 questions ouvertes et inattendues à ton binôme."},{team:"Pilote",role:"ANALYSE",text:"Valide la qualité de la reformulation (fidèle et concise)."}]},
-      {id:5,title:"Message-clé",solo:false,items:[{team:"Pilote",role:"JOUE",text:"Propose 1 phrase clé pour le groupe, directe et mémorisable."},{team:"Créatif",role:"INTERAGIT",text:"Prends la phrase clé proposée et rends-la plus humaine (image, métaphore)."},{team:"Médiateur",role:"ANALYSE",text:"Teste si la phrase clé finale se répète facilement (sans notes)."}]},
+      {id:1,title:"Impro d'intro (Révéler votre style)",solo:true,items:[{team:"Créatif",role:"JOUE",text:"Se présenter avec originalité (90s max). Révéler votre style unique et inclure un silence de 3s."},
+{team:"Médiateur",role:"ANALYSE",text:"Identifier les points forts de l'accroche et noter si le style semble authentique."},
+{team:"Pilote",role:"ANALYSE",text:"Résumer la présentation en une seule phrase marquante."}]},
+      
+      {id:2,title:"Miroir (Gestuelle synchronisée)",solo:false,items:[{team:"Médiateur",role:"JOUE",text:"Guider des gestes lents et intentionnels (sans parole). Se concentrer sur la fluidité."}, {team:"Pilote",role:"INTERAGIT",text:"Imiter les gestes (sans parole), en se concentrant sur l'intention et pas seulement la forme."}, {team:"Créatif",role:"ANALYSE",text:"Observer la synchronisation du duo et la stabilité de leur posture (ancrage)."}]},
+      
+      {id:3,title:"Pitch percutant (Point de vue inattendu)",solo:true,items:[{team:"Pilote",role:"JOUE",text:"Présenter un sujet (75s max) avec un point de vue inattendu ou polémique. Utiliser une métaphore forte."},
+{team:"Créatif",role:"ANALYSE",text:"Proposer des images ou des mots plus forts pour améliorer l'impact du discours."},
+{team:"Médiateur",role:"ANALYSE",text:"Évaluer la clarté du discours et la cohérence entre les gestes et les paroles."}]},
+      
+      {id:4,title:"Interview à l'aveugle (Écoute des intentions)",solo:false,items:[{team:"Créatif",role:"JOUE",text:"Dos à dos, répondre aux questions avec calme. Se concentrer sur le ton de sa propre voix."},{team:"Médiateur",role:"INTERAGIT",text:"Dos à dos, poser des questions qui semblent amicales mais peuvent aussi être un piège (intention cachée)."},
+{team:"Pilote",role:"ANALYSE",text:"Évaluer si le Créatif a bien décelé l'intention cachée dans les questions du Médiateur."}]},
+      
+      {id:5,title:"Message-clé (Série de questions pièges)",solo:false,items:[{team:"Pilote",role:"JOUE",text:"Défendre ses messages clés. Ne pas se laisser déstabiliser par les questions agressives et les reformuler."},
+{team:"Créatif",role:"INTERAGIT",text:"Jouer un journaliste 'agressif'. Poser des questions pièges en utilisant des mots négatifs (ex: 'Vous échouez à...')."},
+{team:"Médiateur",role:"ANALYSE",text:"Évaluer si le message clé du Pilote reste clair et mémorable, même sous la pression."}]},
+      
+      // Activités 6-9 (Jour 2) laissées inchangées
       {id:6,title:"Simulation d’interview",solo:false,items:[{team:"Médiateur",role:"JOUE",text:"Réponds aux questions. Profite des moments opportuns pour amener la conversation vers ta vision ou tes messages clés."},{team:"Pilote",role:"INTERAGIT",text:"Joue le journaliste : questions précises et factuelles."},{team:"Créatif",role:"ANALYSE",text:"Observe la relation et l'authenticité sous pression."}]},
       {id:7,title:"Soundbite",solo:true,items:[{team:"Créatif",role:"JOUE",text:"Écris une phrase choc de 6–12 mots qui donne une image claire."},{team:"Médiateur",role:"ANALYSE",text:"Dis si l'image mentale est forte et immédiate."},{team:"Pilote",role:"ANALYSE",text:"Raccourcis si possible. Supprime les mots inutiles."}]},
       {id:12,title:"Questions pièges & réponses",solo:false,items:[{team:"Créatif",role:"JOUE",text:"Désamorce d'abord avec empathie, puis fais ton pont."},{team:"Pilote",role:"INTERAGIT",text:"Formule des questions logiques/factuelles pour tester le fond."},{team:"Médiateur",role:"ANALYSE",text:"Évalue l'efficacité (pont + message-clé)."}]},
       {id:11,title:"Conférence de presse (tension)",solo:false,items:[{team:"Pilote",role:"JOUE",text:"Reste maître du message. Répète tes points clés."},{team:"Médiateur",role:"INTERAGIT",text:"Pose des questions piégeuses mais pertinentes."},{team:"Créatif",role:"ANALYSE",text:"Observe gestion du stress et langage non-verbal."}]}
     ];
 
+    // Changement : Jargon simplifié dans EXPLAIN
     const EXPLAIN={
-      // Changement : Jeu 1 mis à jour (50s et contenu)
-      1:"Improvise une présentation de 50s max (accroche, nom, prénom, poste, attentes). Vise clarté et impact. Un retour te sera donné.",
-      2:"En trio : le Pilote pose les questions, le Médiateur répond, et le Créatif imite le Médiateur. On tourne les rôles.",
-      3:"Tire un thème, prépare 40s, puis présente en 30s. L'objectif : être clair et direct.",
-      4:"En binômes dos à dos : l’intervieweur pose 3 questions ; l’interviewé reformule en bref puis répond.",
-      5:"Écris 2–3 messages clés (≤ 15 mots), améliore en binômes, puis vote du groupe.",
+      1:"Présentez-vous librement (90s max) pour révéler votre style personnel (geste, anecdote...). Incluez un silence volontaire de 3s. Le groupe applaudit.",
+      2:"En binôme, face à face et sans parler. Le Médiateur guide des gestes lents, le Pilote imite. Le Créatif observe la synchronisation.",
+      3:"Présentez un sujet (75s max) avec un point de vue surprenant ou polémique. Utilisez une métaphore forte pour marquer les esprits.",
+      4:"En binôme, dos à dos. Le Médiateur pose des questions avec une intention cachée. Le Créatif répond en essayant de déceler cette intention juste au son de la voix.",
+      5:"En groupe. Le Pilote défend ses messages clés. Le Créatif joue le journaliste et l'attaque avec des questions pièges (mots négatifs). Le Pilote doit répondre sans se déstabiliser.",
+      
+      // Activités 6-9 (Jour 2) laissées inchangées
       6:"Brief rapide (contexte + messages). Simulation d’interview 2–4 min, puis visionnage et retours.",
       7:"Écris un soundbite de 6–12 mots, lis-le, et on sélectionne le plus percutant.",
       12:"En binômes : questions pièges → reformulation, pont, message-clé ; on inverse, puis retour rapide.",
