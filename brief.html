@@ -3,15 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FIL D’ACTIVITÉS — formation ASIN</title>
-  <meta name="description" content="Interface apprenants : jeux par équipes (Créatif, Médiateur, Pilote), filtre équipe par modale, moment AM/PM, jours verrouillés par date." />
+  <title>FIL D’ACTIVITÉS — PRISE DE PAROLE MÉDIATIQUE</title>
+  <meta name="description" content="Interface apprenants CNSS : activités pédagogiques par équipes, prise de parole médiatique." />
   <meta name="theme-color" content="#0EA5E9">
-  <meta property="og:title" content="FIL D’ACTIVITÉS — formation ASIN">
-  <meta property="og:description" content="Rejoins ton équipe et vois immédiatement tes actions dans chaque jeu.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://formation-asin.example.com/fil-d-activites">
-  <meta property="og:image" content="https://formation-asin.example.com/assets/asin-banner.jpg">
-  <link rel="canonical" href="https://formation-asin.example.com/fil-d-activites">
   <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -19,7 +13,7 @@
       theme: {
         extend: {
           colors: {
-            brand: { gold: '#D4AF37', sky: '#0EA5E9' }
+            brand: { gold: '#D4AF37', sky: '#0EA5E9', cnss: '#005596' }
           },
           fontFamily: {
             sans: ['Inter','ui-sans-serif','system-ui','-apple-system','Segoe UI','Roboto','Noto Sans','sans-serif']
@@ -30,139 +24,147 @@
   </script>
   <style>
     :root{
-      --creatif: rgba(254,205,64,1);
-      --mediateur: rgba(50,166,217,1);
-      --pilote: rgba(137,106,174,1);
+      /* Couleurs basées sur les rôles de la fiche */
+      --creatif: rgba(254,205,64,1);   /* Jaune */
+      --mediateur: rgba(50,166,217,1); /* Bleu clair */
+      --pilote: rgba(137,106,174,1);   /* Violet */
+      
       --slot-matin:#0ea5e9;
       --slot-apres:#f59e0b;
     }
     body.team-Créatif{ --accentTeam:var(--creatif) }
     body.team-Médiateur{ --accentTeam:var(--mediateur) }
     body.team-Pilote{ --accentTeam:var(--pilote) }
+    
     .card[data-accent]{ border-color: color-mix(in oklab, var(--accentTeam) 38%, #e2e8f0 62%); box-shadow: inset 6px 0 0 var(--accentTeam), 0 1px 0 0 rgba(2,6,23,.04) }
     .row-team{ box-shadow: inset 6px 0 0 var(--rowAccent), inset 0 0 0 1px rgba(148,163,184,.18); background:linear-gradient(90deg,rgba(16,24,40,.02),rgba(255,255,255,0)) }
+    
     .card.slot-matin header::before, .card.slot-apres header::before{ content:""; position:absolute; top:0; left:0; right:0; height:3px; opacity:.65 }
     .card.slot-matin header::before{ background:linear-gradient(90deg,var(--slot-matin),transparent) }
     .card.slot-apres header::before{ background:linear-gradient(90deg,var(--slot-apres),transparent) }
+    
     .card.slot-matin{ background-image:linear-gradient(180deg,rgba(14,165,233,.06),transparent 22%) }
     .card.slot-apres{ background-image:linear-gradient(180deg,rgba(245,158,11,.08),transparent 22%) }
+    
     .search-collapsed{width:42px}
     .search-expanded{width:100%}
     .search-input{transition:width .25s ease}
   </style>
 </head>
-<body class="min-h-screen flex flex-col bg-white text-slate-900 font-sans antialiased">
+<body class="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans antialiased">
   <a href="#grid" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-3 focus:py-2 focus:rounded-lg focus:bg-sky-600 focus:text-white">Aller au contenu</a>
 
-  <!-- Titre (Style de "complet_unifie") -->
-  <div class="border-b border-slate-800 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3">
-      <h1 class="text-lg sm:text-xl font-semibold tracking-tight"><span class="inline-flex h-8 px-3 items-center justify-center rounded-xl bg-white/10 ring-1 ring-white/15 mr-2">FORMATION ASIN</span> FIL D’ACTIVITÉS</h1>
+  <!-- En-tête Global -->
+  <div class="border-b border-slate-800 bg-gradient-to-r from-slate-900 via-[#004a80] to-slate-900 text-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+        <h1 class="text-lg sm:text-xl font-bold tracking-tight flex items-center gap-3">
+          <span class="inline-flex h-8 px-3 items-center justify-center rounded-lg bg-white/10 ring-1 ring-white/20 text-xs font-bold uppercase tracking-wider">CNSS LOMÉ</span>
+          <span>PRISE DE PAROLE MÉDIATIQUE</span>
+        </h1>
+        <p class="text-xs text-white/70 hidden sm:block">16 & 17 Décembre 2025</p>
+      </div>
     </div>
   </div>
 
-  <!-- Barre d'outils (Style de "complet_unifie" + fonction de "bande_sombre_compacte") -->
-  <header class="border-b border-slate-800 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white sticky top-0 z-30">
+  <!-- Barre d'outils (Sticky) -->
+  <header class="border-b border-slate-200 bg-white sticky top-0 z-30 shadow-sm/50 backdrop-blur-md bg-white/90 supports-[backdrop-filter]:bg-white/60">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3">
-      <!-- Changement : flex-col lg:flex-row pour rétablir l'ordre d'origine -->
       <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         
-        <!-- Capsule Rôle (Style de "bande_sombre_compacte") -->
-        <div id="roleCapsule" class="flex items-center gap-2 bg-white/10 ring-1 ring-white/15 rounded-xl px-3 py-1.5 transition-colors hover:bg-white/20 cursor-pointer" role="button" tabindex="0">
-          <span id="roleDot" class="h-2.5 w-2.5 rounded-full"></span>
-          <strong id="roleName">—</strong>
-          <!-- Changement : "button" retiré, "tu verras..." retiré, "glyphe" retiré -->
-          <span id="changeRole" class="ml-2 text-white/90">Changer d’équipe</span>
+        <!-- Sélecteur de Rôle -->
+        <div id="roleCapsule" class="flex items-center gap-2 bg-slate-100 ring-1 ring-slate-200 rounded-xl px-3 py-1.5 transition hover:bg-slate-200 cursor-pointer w-fit" role="button" tabindex="0">
+          <span id="roleDot" class="h-2.5 w-2.5 rounded-full bg-slate-400"></span>
+          <strong id="roleName" class="text-slate-700 font-semibold">—</strong>
+          <span class="ml-2 text-xs text-slate-500 font-medium uppercase tracking-wide">Changer d’équipe</span>
         </div>
 
-        <!-- Indicateur Jour (Style de "bande_sombre_compacte") -->
-        <div class="flex items-center gap-2 text-sm">
-          <span class="font-medium">Aujourd'hui :</span>
-          <button id="activeDayLabel" class="px-2 py-0.5 rounded bg-white text-slate-900 font-medium" type="button" aria-label="Jour actif"></button>
-          <span>•</span>
-          <span id="activeHint" class="text-white/90"></span>
-        </div>
+        <!-- Indicateur Jour et Filtres -->
+        <div class="flex items-center justify-between gap-4 flex-wrap">
+          <div class="flex items-center gap-2 text-sm bg-slate-50 px-2 py-1 rounded-lg border border-slate-100">
+            <span class="text-slate-500">Agenda :</span>
+            <button id="activeDayLabel" class="px-2 py-0.5 rounded bg-white text-brand-cnss font-bold shadow-sm ring-1 ring-slate-200" type="button"></button>
+            <span id="activeHint" class="text-slate-400 hidden sm:inline text-xs truncate max-w-[150px]"></span>
+          </div>
 
-        <!-- Filtre Moment (Style de "bande_sombre_compacte") -->
-        <div class="flex items-center gap-2">
-          <label class="text-sm text-white/90">Moment</label>
-          <button id="slotSwitch" type="button" aria-label="Basculer matin / après-midi" data-state="" class="relative inline-flex h-9 w-20 items-center rounded-full bg-slate-700/70 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40">
-            <span class="absolute left-1 text-[11px] font-medium text-white/80 select-none">AM</span>
-            <span class="absolute right-1 text-[11px] font-medium text-white/80 select-none">PM</span>
-            <span id="slotThumb" class="h-6 w-6 translate-x-1 rounded-full bg-white shadow transition-transform"></span>
-          </button>
-          <button id="slotClear" type="button" class="text-xs px-2 py-1 rounded-lg border border-white/20 bg-white/10 text-white hover:bg-white/15">Tous</button>
-          <select id="slotFilter" class="hidden" aria-hidden="true"><option value=""></option><option value="matin">matin</option><option value="apres">apres</option></select>
+          <div class="flex items-center gap-2">
+            <button id="slotSwitch" type="button" aria-label="Basculer matin / après-midi" data-state="" class="relative inline-flex h-8 w-16 items-center rounded-full bg-slate-200 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
+              <span class="absolute left-1.5 text-[10px] font-bold text-slate-500 select-none">AM</span>
+              <span class="absolute right-1.5 text-[10px] font-bold text-slate-500 select-none">PM</span>
+              <span id="slotThumb" class="h-5 w-5 translate-x-1 rounded-full bg-white shadow-sm ring-1 ring-black/5 transition-transform"></span>
+            </button>
+            <button id="slotClear" type="button" class="text-xs px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 font-medium transition">Tout voir</button>
+            <select id="slotFilter" class="hidden" aria-hidden="true"><option value=""></option><option value="matin">matin</option><option value="apres">apres</option></select>
+          </div>
         </div>
 
       </div>
     </div>
   </header>
 
-  <!-- Légende (Style de "complet_unifie") -->
-  <aside class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-    <div class="flex flex-wrap items-center gap-3 text-sm">
-      <span class="inline-flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full" style="background:var(--creatif)"></span>Créatif</span>
-      <span class="inline-flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full" style="background:var(--mediateur)"></span>Médiateur</span>
-      <span class="inline-flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full" style="background:var(--pilote)"></span>Pilote</span>
-      <span class="inline-flex items-center gap-2"><span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 ring-1 ring-emerald-200">JOUE</span><span class="px-2 py-0.5 rounded-full bg-sky-100 text-sky-700 ring-1 ring-sky-200">INTERAGIT</span><span class="px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 ring-1 ring-rose-200">ANALYSE</span></span>
+  <!-- Légende -->
+  <aside class="max-w-7xl mx-auto px-4 sm:px-6 py-4 bg-slate-50">
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-600">
+      <span class="font-semibold text-slate-400 uppercase tracking-wider mr-1">Légende :</span>
+      <span class="inline-flex items-center gap-1.5"><span class="h-2 w-2 rounded-full" style="background:var(--creatif)"></span>Créatif</span>
+      <span class="inline-flex items-center gap-1.5"><span class="h-2 w-2 rounded-full" style="background:var(--mediateur)"></span>Médiateur</span>
+      <span class="inline-flex items-center gap-1.5"><span class="h-2 w-2 rounded-full" style="background:var(--pilote)"></span>Pilote</span>
+      <div class="w-px h-3 bg-slate-300 mx-1 hidden sm:block"></div>
+      <span class="inline-flex items-center gap-1"><span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 font-medium">JOUE</span> Acteur</span>
+      <span class="inline-flex items-center gap-1"><span class="px-1.5 py-0.5 rounded bg-sky-100 text-sky-700 font-medium">INTERAGIT</span> Partenaire</span>
+      <span class="inline-flex items-center gap-1"><span class="px-1.5 py-0.5 rounded bg-rose-100 text-rose-700 font-medium">ANALYSE</span> Observateur</span>
     </div>
   </aside>
 
-  <!-- Barre Recherche & Compteur (Style de "complet_unifie" + fonction de "bande_sombre_compacte") -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 -mt-2 mb-2 flex items-center justify-between gap-3">
-    <p id="resultCount" class="text-sm text-slate-600"></p>
-    <!-- Changement : Style de la barre de recherche (claire) -->
-    <div class="flex items-center gap-2 w-full sm:w-80">
-      <button id="searchToggle" type="button" class="h-9 w-10 inline-flex items-center justify-center rounded-xl bg-slate-100 ring-1 ring-slate-200 hover:bg-slate-50" aria-label="Rechercher"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></button>
-      <input id="searchInput" type="search" placeholder="Mot-clé (ex. interview, message-clé)" class="search-input search-collapsed h-9 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand.sky px-3" />
+  <!-- Recherche & Compteur -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 mb-4 flex items-center justify-between gap-3">
+    <p id="resultCount" class="text-sm font-medium text-slate-500"></p>
+    <div class="flex items-center gap-2 w-full sm:w-auto">
+      <button id="searchToggle" type="button" class="h-9 w-10 inline-flex items-center justify-center rounded-xl bg-white ring-1 ring-slate-200 hover:bg-slate-50 shadow-sm text-slate-500" aria-label="Rechercher"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></button>
+      <input id="searchInput" type="search" placeholder="Rechercher (ex. 'geste', 'crise')" class="search-input search-collapsed h-9 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 px-3 text-sm shadow-sm" />
     </div>
   </section>
 
   <!-- Grille principale -->
-  <!-- Changement : Ajout de flex-1 pour coller le footer en bas -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 pb-16 flex-1"><div id="grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div></main>
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 pb-16 flex-1">
+    <div id="grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+  </main>
 
   <!-- Pied de page -->
-  <!-- Changement : mt-0 au lieu de mt-8 -->
-  <footer class="mt-0 border-t border-slate-800 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 text-center space-y-1">
-      <!-- Changement : "FORMATION" en majuscules -->
-      <p class="font-semibold tracking-wide">FIL D’ACTIVITÉS — FORMATION ASIN</p>
-      <p class="text-sm text-white/80">« La parole est moitié à celui qui parle, moitié à celui qui écoute. » — Montaigne</p>
+  <footer class="mt-auto border-t border-slate-200 bg-white text-slate-600">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 text-center space-y-2">
+      <p class="font-bold text-slate-800 tracking-wide uppercase text-sm">Prise de parole médiatique</p>
+      <p class="text-xs text-slate-500 max-w-md mx-auto">Formation dispensée au siège CNSS Lomé. Utilisez cette application pour suivre vos rôles en temps réel lors des ateliers pratiques.</p>
     </div>
   </footer>
 
-  <!-- Modale de Rôle (Style de "bande_sombre_compacte") -->
-  <div id="roleDialog" class="fixed inset-0 z-50 hidden">
-    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" aria-hidden="true"></div>
-    <div role="dialog" aria-modal="true" aria-labelledby="roleDlgTitle" class="relative mx-auto mt-16 w-full max-w-2xl">
-      <div class="rounded-3xl overflow-hidden shadow-2xl ring-1 ring-slate-900/10">
-        <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 px-6 py-6 text-white">
-          <h2 id="roleDlgTitle" class="text-xl font-semibold">Rejoins ton équipe</h2>
-          <p class="text-sm text-white/80 mt-1">Indique ton équipe pour afficher tes actions dans chaque jeu.</p>
+  <!-- Modale de Rôle -->
+  <div id="roleDialog" class="fixed inset-0 z-50 hidden transition-opacity duration-300">
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" aria-hidden="true"></div>
+    <div role="dialog" aria-modal="true" aria-labelledby="roleDlgTitle" class="relative mx-auto mt-20 w-full max-w-lg px-4">
+      <div class="rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/20 bg-white transform transition-all scale-100">
+        <div class="bg-slate-900 px-6 py-6 text-white text-center">
+          <h2 id="roleDlgTitle" class="text-xl font-bold">Bienvenue à la CNSS</h2>
+          <p class="text-sm text-white/70 mt-2">Pour commencer, choisissez votre équipe pour la formation.</p>
         </div>
-        <div class="bg-white px-6 pt-6 pb-4">
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <!-- Changement : "glyphe" retiré -->
-            <button data-team="Créatif" class="group relative rounded-2xl border border-yellow-300/60 bg-gradient-to-br from-yellow-50 to-white p-5 text-left shadow-sm hover:shadow-lg transition focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400">
-              <div class="absolute -top-3 -left-3 h-10 w-10 rounded-2xl blur-xl opacity-60" style="background:var(--creatif)"></div>
-              <div class="relative inline-flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full" style="background:var(--creatif)"></span><strong class="text-slate-900">Créatif</strong></div>
-              <p class="relative text-sm text-slate-800 mt-2">Tu rejoins l’équipe Créatif.</p>
-            </button>
-            <button data-team="Médiateur" class="group relative rounded-2xl border border-sky-300/60 bg-gradient-to-br from-sky-50 to-white p-5 text-left shadow-sm hover:shadow-lg transition focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400">
-              <div class="absolute -top-3 -left-3 h-10 w-10 rounded-2xl blur-xl opacity-60" style="background:var(--mediateur)"></div>
-              <div class="relative inline-flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full" style="background:var(--mediateur)"></span><strong class="text-slate-900">Médiateur</strong></div>
-              <p class="relative text-sm text-slate-800 mt-2">Tu rejoins l’équipe Médiateur.</p>
-            </button>
-            <button data-team="Pilote" class="group relative rounded-2xl border border-purple-300/60 bg-gradient-to-br from-purple-50 to-white p-5 text-left shadow-sm hover:shadow-lg transition focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400">
-              <div class="absolute -top-3 -left-3 h-10 w-10 rounded-2xl blur-xl opacity-60" style="background:var(--pilote)"></div>
-              <div class="relative inline-flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full" style="background:var(--pilote)"></span><strong class="text-slate-900">Pilote</strong></div>
-              <p class="relative text-sm text-slate-800 mt-2">Tu rejoins l’équipe Pilote.</p>
-            </button>
-          </div>
-          <div class="mt-5 flex items-center justify-end">
-            <button id="roleDlgClose" class="text-sm text-slate-700 hover:text-slate-900">Plus tard</button>
+        <div class="p-6 space-y-3">
+          <button data-team="Créatif" class="w-full group relative flex items-center gap-4 rounded-xl border border-yellow-200 bg-yellow-50/50 p-4 text-left hover:bg-yellow-50 hover:border-yellow-300 transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2">
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-yellow-100 text-yellow-700 font-bold shadow-sm group-hover:scale-110 transition-transform">C</span>
+            <div><strong class="text-slate-900 block">Équipe Créatif</strong><span class="text-xs text-slate-600">Imaginatifs & Spontanés</span></div>
+          </button>
+          
+          <button data-team="Médiateur" class="w-full group relative flex items-center gap-4 rounded-xl border border-sky-200 bg-sky-50/50 p-4 text-left hover:bg-sky-50 hover:border-sky-300 transition-all focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2">
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sky-100 text-sky-700 font-bold shadow-sm group-hover:scale-110 transition-transform">M</span>
+            <div><strong class="text-slate-900 block">Équipe Médiateur</strong><span class="text-xs text-slate-600">Connecteurs & Diplomates</span></div>
+          </button>
+          
+          <button data-team="Pilote" class="w-full group relative flex items-center gap-4 rounded-xl border border-purple-200 bg-purple-50/50 p-4 text-left hover:bg-purple-50 hover:border-purple-300 transition-all focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2">
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-purple-100 text-purple-700 font-bold shadow-sm group-hover:scale-110 transition-transform">P</span>
+            <div><strong class="text-slate-900 block">Équipe Pilote</strong><span class="text-xs text-slate-600">Directeurs & Structurés</span></div>
+          </button>
+
+          <div class="mt-6 text-center">
+            <button id="roleDlgClose" class="text-xs text-slate-400 hover:text-slate-600 underline decoration-slate-300 underline-offset-4">Choisir plus tard (Mode observateur)</button>
           </div>
         </div>
       </div>
@@ -170,406 +172,547 @@
   </div>
 
   <template id="cardTmpl">
-    <article class="card h-full rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500" tabindex="0" role="group">
-      <header class="px-4 sm:px-5 pt-4 pb-3 border-b border-slate-100 flex items-start justify-between gap-3">
-        <div><h3 class="text-base font-semibold text-slate-900"></h3><p class="text-xs text-slate-600 mt-0.5"></p></div>
-        <span class="shrink-0 px-2 py-1 text-xs rounded-full ring-1 bg-slate-50 text-slate-700 ring-slate-200"></span>
+    <article class="card h-full rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden hover:shadow-md transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 flex flex-col" tabindex="0" role="group">
+      <header class="relative px-5 pt-5 pb-3 border-b border-slate-100">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <h3 class="text-lg font-bold text-slate-800 leading-tight"></h3>
+            <p class="text-xs font-medium text-slate-500 mt-1 uppercase tracking-wide"></p>
+          </div>
+          <span class="shrink-0 px-2 py-1 text-[10px] font-bold uppercase rounded-md bg-slate-100 text-slate-600 border border-slate-200 tracking-wider"></span>
+        </div>
       </header>
-      <div class="p-4 sm:p-5 space-y-3"></div>
+      <div class="p-5 space-y-4 flex-1 flex flex-col">
+        <!-- Description contextuelle (Bande Commune) -->
+        <p class="text-sm text-slate-600 leading-relaxed italic border-l-2 border-slate-200 pl-3 desc-text"></p>
+        <!-- Actions (SMART) -->
+        <div class="actions-container space-y-3 mt-auto pt-2"></div>
+      </div>
     </article>
   </template>
 
-  <!-- Script (Fusion des logiques) -->
   <script>
-    // Changement : Jargon simplifié dans GAMES_FULL
-    const GAMES_FULL=[
-      {id:1,title:"Impro d'intro (Révéler votre style)",solo:true,items:[{team:"Créatif",role:"JOUE",text:"Se présenter avec originalité (90s max). Révéler votre style unique et inclure un silence de 3s."},
-{team:"Médiateur",role:"ANALYSE",text:"Identifier les points forts de l'accroche et noter si le style semble authentique."},
-{team:"Pilote",role:"ANALYSE",text:"Résumer la présentation en une seule phrase marquante."}]},
-      
-      {id:2,title:"Miroir (Gestuelle synchronisée)",solo:false,items:[{team:"Médiateur",role:"JOUE",text:"Guider des gestes lents et intentionnels (sans parole). Se concentrer sur la fluidité."}, {team:"Pilote",role:"INTERAGIT",text:"Imiter les gestes (sans parole), en se concentrant sur l'intention et pas seulement la forme."}, {team:"Créatif",role:"ANALYSE",text:"Observer la synchronisation du duo et la stabilité de leur posture (ancrage)."}]},
-      
-      {id:3,title:"Pitch percutant (Point de vue inattendu)",solo:true,items:[{team:"Pilote",role:"JOUE",text:"Présenter un sujet (75s max) avec un point de vue inattendu ou polémique. Utiliser une métaphore forte."},
-{team:"Créatif",role:"ANALYSE",text:"Proposer des images ou des mots plus forts pour améliorer l'impact du discours."},
-{team:"Médiateur",role:"ANALYSE",text:"Évaluer la clarté du discours et la cohérence entre les gestes et les paroles."}]},
-      
-      {id:4,title:"Interview à l'aveugle (Écoute des intentions)",solo:false,items:[{team:"Créatif",role:"JOUE",text:"Dos à dos, répondre aux questions avec calme. Se concentrer sur le ton de sa propre voix."},{team:"Médiateur",role:"INTERAGIT",text:"Dos à dos, poser des questions qui semblent amicales mais peuvent aussi être un piège (intention cachée)."},
-{team:"Pilote",role:"ANALYSE",text:"Évaluer si le Créatif a bien décelé l'intention cachée dans les questions du Médiateur."}]},
-      
-      {id:5,title:"Message-clé (Série de questions pièges)",solo:false,items:[{team:"Pilote",role:"JOUE",text:"Défendre ses messages clés. Ne pas se laisser déstabiliser par les questions agressives et les reformuler."},
-{team:"Créatif",role:"INTERAGIT",text:"Jouer un journaliste 'agressif'. Poser des questions pièges en utilisant des mots négatifs (ex: 'Vous échouez à...')."},
-{team:"Médiateur",role:"ANALYSE",text:"Évaluer si le message clé du Pilote reste clair et mémorable, même sous la pression."}]},
-      
-      // Activités 6-9 (Jour 2) laissées inchangées
-      {id:6,title:"Simulation d’interview",solo:false,items:[{team:"Médiateur",role:"JOUE",text:"Réponds aux questions. Profite des moments opportuns pour amener la conversation vers ta vision ou tes messages clés."},{team:"Pilote",role:"INTERAGIT",text:"Joue le journaliste : questions précises et factuelles."},{team:"Créatif",role:"ANALYSE",text:"Observe la relation et l'authenticité sous pression."}]},
-      {id:7,title:"Soundbite",solo:true,items:[{team:"Créatif",role:"JOUE",text:"Écris une phrase choc de 6–12 mots qui donne une image claire."},{team:"Médiateur",role:"ANALYSE",text:"Dis si l'image mentale est forte et immédiate."},{team:"Pilote",role:"ANALYSE",text:"Raccourcis si possible. Supprime les mots inutiles."}]},
-      {id:12,title:"Questions pièges & réponses",solo:false,items:[{team:"Créatif",role:"JOUE",text:"Désamorce d'abord avec empathie, puis fais ton pont."},{team:"Pilote",role:"INTERAGIT",text:"Formule des questions logiques/factuelles pour tester le fond."},{team:"Médiateur",role:"ANALYSE",text:"Évalue l'efficacité (pont + message-clé)."}]},
-      {id:11,title:"Conférence de presse (tension)",solo:false,items:[{team:"Pilote",role:"JOUE",text:"Reste maître du message. Répète tes points clés."},{team:"Médiateur",role:"INTERAGIT",text:"Pose des questions piégeuses mais pertinentes."},{team:"Créatif",role:"ANALYSE",text:"Observe gestion du stress et langage non-verbal."}]}
+    // --- DONNÉES MISES À JOUR (Fiche V2) ---
+    // Chaque 'text' utilise désormais la formule : Action Impérative + Objectif/Critère.
+    
+    const GAMES_FULL = [
+      {
+        id: 1,
+        title: "Impro - Météo",
+        solo: true,
+        items: [
+          { team: "Créatif", role: "JOUE", text: "Présentez-vous en 20s avec originalité. Objectif : Marquer les esprits par un geste ou un mot unique." },
+          { team: "Médiateur", role: "JOUE", text: "Présentez-vous en 20s avec originalité. Objectif : Marquer les esprits par un geste ou un mot unique." },
+          { team: "Pilote", role: "JOUE", text: "Présentez-vous en 20s avec originalité. Objectif : Marquer les esprits par un geste ou un mot unique." }
+        ]
+      },
+      {
+        id: 2,
+        title: "Miroir (Gestuelle en Trio)",
+        solo: false,
+        items: [
+          { team: "Médiateur", role: "JOUE", text: "Posez une question ouverte. Objectif : Lancer l'échange pour permettre l'observation." },
+          { team: "Pilote", role: "INTERAGIT", text: "Imitez les gestes de celui qui répond en temps réel. Objectif : Synchronisation parfaite (effet miroir)." },
+          { team: "Créatif", role: "ANALYSE", text: "Répondez à la question tout en étant imité. Objectif : Rester naturel malgré la distraction." }
+        ]
+      },
+      {
+        id: 3,
+        title: "Duel de messages",
+        solo: false,
+        items: [
+          { team: "Pilote", role: "JOUE", text: "Défendez la CNSS en 5 min. Objectif : Placer les 3 messages clés définis par l'équipe." },
+          { team: "Médiateur", role: "JOUE", text: "Incarnez le public sceptique. Objectif : Challenger la clarté des messages par des objections." },
+          { team: "Créatif", role: "ANALYSE", text: "Notez la prestation sur 5. Critère : Les messages ont-ils été compris après une seule écoute ?" }
+        ]
+      },
+      {
+        id: 4,
+        title: "La scène institutionnelle",
+        solo: false,
+        items: [
+          { team: "Médiateur", role: "JOUE", text: "Racontez l'histoire (Narrateur). Critère : Respecter la structure 'Avant / Déclic / Après'." },
+          { team: "Pilote", role: "INTERAGIT", text: "Incarnez le public cible (Bénéficiaire). Objectif : Rendre la scène crédible et humaine." },
+          { team: "Créatif", role: "ANALYSE", text: "Analysez l'émotion dégagée. Objectif : Identifier le moment précis d'authenticité." }
+        ]
+      },
+      {
+        id: 5,
+        title: "Simulation d'interview (TV/Radio)",
+        solo: false,
+        items: [
+          { team: "Médiateur", role: "JOUE", text: "Répondez aux questions. Objectif : Garder son calme et sa cohérence face à la caméra." },
+          { team: "Pilote", role: "INTERAGIT", text: "Animez l'entretien (Journaliste). Objectif : Maintenir le rythme sans laisser de temps mort." },
+          { team: "Créatif", role: "ANALYSE", text: "Observez le non-verbal. Objectif : Repérer les signes de stress ou les tics gestuels." }
+        ]
+      },
+      {
+        id: 6,
+        title: "Interview à l'aveugle",
+        solo: false,
+        items: [
+          { team: "Créatif", role: "JOUE", text: "Répondez sans voir l'interlocuteur. Objectif : Transmettre une émotion sincère uniquement par la voix." },
+          { team: "Médiateur", role: "INTERAGIT", text: "Posez 3 questions précises. Objectif : Tester la clarté des réponses sans support visuel." },
+          { team: "Pilote", role: "ANALYSE", text: "Écoutez l'échange. Critère : La réponse est-elle fluide et pertinente sans l'image ?" }
+        ]
+      },
+      {
+        id: 7,
+        title: "Conférence de presse (Tension)",
+        solo: false,
+        items: [
+          { team: "Pilote", role: "JOUE", text: "Défendez le message sous pression. Objectif : Répondre par des faits sans jamais se justifier." },
+          { team: "Médiateur", role: "INTERAGIT", text: "Posez des questions exigeantes (Journaliste). Objectif : Tester la réactivité du porte-parole." },
+          { team: "Créatif", role: "ANALYSE", text: "Analysez la posture. Objectif : Repérer si le ton reste authentique malgré l'agressivité." }
+        ]
+      }
     ];
 
-    // Changement : Jargon simplifié dans EXPLAIN
-    const EXPLAIN={
-      1:"Présentez-vous librement (90s max) pour révéler votre style personnel (geste, anecdote...). Incluez un silence volontaire de 3s. Le groupe applaudit.",
-      2:"En binôme, face à face et sans parler. Le Médiateur guide des gestes lents, le Pilote imite. Le Créatif observe la synchronisation.",
-      3:"Présentez un sujet (75s max) avec un point de vue surprenant ou polémique. Utilisez une métaphore forte pour marquer les esprits.",
-      4:"En binôme, dos à dos. Le Médiateur pose des questions avec une intention cachée. Le Créatif répond en essayant de déceler cette intention juste au son de la voix.",
-      5:"En groupe. Le Pilote défend ses messages clés. Le Créatif joue le journaliste et l'attaque avec des questions pièges (mots négatifs). Le Pilote doit répondre sans se déstabiliser.",
-      
-      // Activités 6-9 (Jour 2) laissées inchangées
-      6:"Brief rapide (contexte + messages). Simulation d’interview 2–4 min, puis visionnage et retours.",
-      7:"Écris un soundbite de 6–12 mots, lis-le, et on sélectionne le plus percutant.",
-      12:"En binômes : questions pièges → reformulation, pont, message-clé ; on inverse, puis retour rapide.",
-      11:"Déclaration courte (1–2 min), puis questions de plusieurs journalistes ; on vérifie la tenue du cap."
+    // Descriptions contextuelles (Bande Commune) expliquant le jeu
+    const EXPLAIN = {
+      1: "Chaque participant se présente librement et donne son 'état d'esprit' actuel via un mot et un geste unique.",
+      2: "Exercice en trio : un questionneur, un répondant et un imitateur. Le répondant doit rester concentré malgré l'effet miroir.",
+      3: "En équipe, définissez et testez 3 messages clés pour convaincre un public cible spécifique (tiré au sort).",
+      4: "Transformez vos messages clés en une courte scène narrative (Storytelling) mettant en scène la CNSS et un usager.",
+      5: "Entretien filmé en binôme (Journaliste / Invité). L'exercice vise à gérer son image et son message face caméra.",
+      6: "Exercice dos à dos. Focus total sur l'intonation et la voix pour décoder les émotions sans le visuel.",
+      7: "Simulation de crise : un porte-parole affronte une meute de journalistes posant des questions pressantes."
     };
 
-    const ORDER=[1,2,3,4,5,6,7,12,11];
-    const VISIBLE=ORDER.map((origId,idx)=>{const src=GAMES_FULL.find(g=>g.id===origId);return {...src,origId,displayId:idx+1}});
-    const DISPLAY_ORDER=VISIBLE.map(g=>g.displayId);
-
-    const slotMap=new Map();[1,2,3].forEach(id=>slotMap.set(id,'matin'));[4,5].forEach(id=>slotMap.set(id,'apres'));[6,7].forEach(id=>slotMap.set(id,'matin'));[8,9].forEach(id=>slotMap.set(id,'apres'));
-    const dayMap=new Map();[1,2,3,4,5].forEach(id=>dayMap.set(id,1));[6,7,8,9].forEach(id=>dayMap.set(id,2));
-
-    const grid=document.getElementById('grid');
-    const cardTmpl=document.getElementById('cardTmpl');
-    
-    // Le teamFilter est créé en JS avec les options pour que le filtre fonctionne
-    const teamFilter=document.createElement('select'); 
-    teamFilter.id='teamFilter';
-    ['','Créatif','Médiateur','Pilote'].forEach(team => {
-      const opt = document.createElement('option');
-      opt.value = team;
-      opt.textContent = team;
-      teamFilter.appendChild(opt);
+    // Ordre d'affichage
+    const ORDER = [1, 2, 3, 4, 5, 6, 7];
+    const VISIBLE = ORDER.map((origId, idx) => {
+      const src = GAMES_FULL.find(g => g.id === origId);
+      return { ...src, origId, displayId: idx + 1 };
     });
+    const DISPLAY_ORDER = VISIBLE.map(g => g.displayId);
 
-    const gameFilter=document.createElement('select'); gameFilter.id='gameFilter';
-    const slotFilter=document.getElementById('slotFilter');
-    const slotSwitch=document.getElementById('slotSwitch');
-    const slotThumb=document.getElementById('slotThumb');
-    const slotClear=document.getElementById('slotClear');
-    const searchInput=document.getElementById('searchInput');
-    const searchToggle=document.getElementById('searchToggle');
-    const resultCount=document.getElementById('resultCount');
-    const activeDayLabel=document.getElementById('activeDayLabel');
-    const activeHint=document.getElementById('activeHint');
-    const roleDialog=document.getElementById('roleDialog');
-    const roleDlgClose=document.getElementById('roleDlgClose');
-    const roleCapsule=document.getElementById('roleCapsule');
-    const roleName=document.getElementById('roleName');
-    const roleDot=document.getElementById('roleDot');
+    // MAPPING TEMPOREL (Basé sur la fiche PDF)
+    // Jeux 1,2,3,4 -> Jour 1 Matin (9h-13h)
+    // Jeu 5       -> Jour 1 Après-midi (14h-16h)
+    // Jeux 6,7    -> Jour 2 Matin (9h-13h)
+    
+    const slotMap = new Map();
+    [1, 2, 3, 4].forEach(id => slotMap.set(id, 'matin'));
+    [5].forEach(id => slotMap.set(id, 'apres'));
+    [6, 7].forEach(id => slotMap.set(id, 'matin'));
 
-    let adminMode=false; let adminDay=null;
-    // Ajout : Variable pour mémoriser le filtre équipe en mode admin
-    let adminTeamStore = null; 
+    const dayMap = new Map();
+    [1, 2, 3, 4, 5].forEach(id => dayMap.set(id, 1));
+    [6, 7].forEach(id => dayMap.set(id, 2));
 
-    function getDay(id){return dayMap.get(id)||null}
-    function getSlot(id){return slotMap.get(id)||null}
+    // --- DOM ELEMENTS ---
+    const grid = document.getElementById('grid');
+    const cardTmpl = document.getElementById('cardTmpl');
+    
+    // Filtre équipe virtuel (géré via modale)
+    let currentTeamFilter = '';
 
-    function dayFromDate(d){
-      const m=d.getMonth(),dd=d.getDate(); // Octobre = 9
-      if(m===9&&(dd===27||dd===29||dd===30))return 1; // J1: Lu 27, Me 29, Je 30
-      if(m===9&&(dd===28||dd===31))return 2; // J2: Ma 28, Ve 31
-      return 1; // Défaut Jour 1
+    const slotFilter = document.getElementById('slotFilter');
+    const slotSwitch = document.getElementById('slotSwitch');
+    const slotThumb = document.getElementById('slotThumb');
+    const slotClear = document.getElementById('slotClear');
+    const searchInput = document.getElementById('searchInput');
+    const searchToggle = document.getElementById('searchToggle');
+    const resultCount = document.getElementById('resultCount');
+    const activeDayLabel = document.getElementById('activeDayLabel');
+    const activeHint = document.getElementById('activeHint');
+    const roleDialog = document.getElementById('roleDialog');
+    const roleDlgClose = document.getElementById('roleDlgClose');
+    const roleCapsule = document.getElementById('roleCapsule');
+    const roleName = document.getElementById('roleName');
+    const roleDot = document.getElementById('roleDot');
+
+    // Variables d'état
+    let adminMode = false;
+    let adminDay = null; // Force le jour en mode admin
+    let adminTeamStore = null;
+
+    // --- LOGIQUE METIER ---
+
+    function getDay(id) { return dayMap.get(id) || null; }
+    function getSlot(id) { return slotMap.get(id) || null; }
+
+    function dayFromDate(d) {
+      // Mois est 0-indexé (Décembre = 11)
+      const m = d.getMonth();
+      const dd = d.getDate();
+      
+      // JOUR 1 : Mardi 16 Décembre 2025
+      if (m === 11 && dd === 16) return 1;
+      
+      // JOUR 2 : Mercredi 17 Décembre 2025
+      if (m === 11 && dd === 17) return 2;
+      
+      return 1; // Par défaut Jour 1 pour la démo avant l'événement
     }
 
-    function teamColor(t){
-      if(t==='Créatif')return 'var(--creatif)';
-      if(t==='Médiateur')return 'var(--mediateur)';
-      if(t==='Pilote')return 'var(--pilote)';
-      return '#334155'
-    }
-    function roleBadge(r){
-      const b="px-2 py-0.5 text-[11px] font-medium rounded-full ring-1";
-      if(r==='JOUE')return `${b} bg-emerald-100 text-emerald-700 ring-emerald-200`;
-      if(r==='INTERAGIT')return `${b} bg-sky-100 text-sky-700 ring-sky-200`;
-      return `${b} bg-rose-100 text-rose-700 ring-rose-200`
+    function teamColor(t) {
+      if (t === 'Créatif') return 'var(--creatif)';
+      if (t === 'Médiateur') return 'var(--mediateur)';
+      if (t === 'Pilote') return 'var(--pilote)';
+      return '#94a3b8'; // slate-400
     }
 
-    function currentAllowedDisplayIds(){
-      const day=adminMode && adminDay? adminDay : dayFromDate(new Date());
-      return day===1?[1,2,3,4,5]:[6,7,8,9]
+    function roleBadge(r) {
+      const b = "px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wide ring-1 ring-inset";
+      if (r === 'JOUE') return `${b} bg-emerald-50 text-emerald-700 ring-emerald-200/50`;
+      if (r === 'INTERAGIT') return `${b} bg-sky-50 text-sky-700 ring-sky-200/50`;
+      return `${b} bg-rose-50 text-rose-700 ring-rose-200/50`;
     }
 
-    function refreshGameOptions(){
-      const allowed=currentAllowedDisplayIds();
-      gameFilter.innerHTML='<option value=""></option>';
-      const f=document.createDocumentFragment();
-      allowed.forEach(id=>{
-        const o=document.createElement('option');
-        o.value=String(id);
-        const g=VISIBLE.find(x=>x.displayId===id);
-        o.textContent=`Jeu ${id} — ${g? g.title: ''}`;
-        f.appendChild(o)
-      });
-      gameFilter.appendChild(f)
+    // Détermine quels IDs de jeu sont visibles pour le jour actuel
+    function currentAllowedDisplayIds() {
+      const day = adminMode && adminDay ? adminDay : dayFromDate(new Date());
+      // J1: Jeux 1 à 5, J2: Jeux 6 à 7
+      return day === 1 ? [1, 2, 3, 4, 5] : [6, 7];
     }
 
-    function updateCount(n){ if(resultCount) resultCount.textContent=`${n} jeu(x) affiché(s)` }
-
-    function scheduleLabel(id){
-      const d=getDay(id);
-      const s=getSlot(id)==='matin'?'Matin':'Après-midi';
-      return d?`Jour ${d} • ${s}`:''
+    function updateCount(n) {
+      if (resultCount) resultCount.textContent = n > 0 ? `${n} activité${n > 1 ? 's' : ''}` : '';
     }
 
-    function renderCards(list){
-      grid.innerHTML="";
-      if(!list.length){
-        const e=document.createElement('div');
-        e.className="col-span-full flex flex-col items-center justify-center gap-2 py-16 text-center border border-dashed border-slate-300 rounded-2xl bg-slate-50";
-        e.innerHTML=`<div class=\"text-slate-700 font-medium\">Aucune activité disponible</div><p class=\"text-sm text-slate-600\">Reviens au prochain créneau ou élargis tes filtres.</p>`;
+    function scheduleLabel(id) {
+      const d = getDay(id);
+      const s = getSlot(id) === 'matin' ? 'Matin (09h-13h)' : 'Après-midi (14h-16h)';
+      return d ? `Jour ${d} • ${s}` : '';
+    }
+
+    function renderCards(list) {
+      grid.innerHTML = "";
+      if (!list.length) {
+        const e = document.createElement('div');
+        e.className = "col-span-full flex flex-col items-center justify-center gap-3 py-20 text-center border-2 border-dashed border-slate-200 rounded-3xl bg-slate-50/50";
+        e.innerHTML = `<div class="p-3 bg-white rounded-full shadow-sm"><svg class="w-8 h-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div><div class="space-y-1"><p class="text-slate-900 font-semibold">Aucune activité pour ce créneau</p><p class="text-sm text-slate-500">Essayez de changer de filtre (Matin/Après-midi).</p></div>`;
         grid.appendChild(e);
         updateCount(0);
-        return
+        return;
       }
-      const frag=document.createDocumentFragment();
-      list.forEach(game=>{
-        const node=cardTmpl.content.cloneNode(true);
-        const article=node.querySelector('article');
-        const h3=node.querySelector('h3');
-        const sub=node.querySelector('header p');
-        const chip=node.querySelector('header span');
-        const body=node.querySelector('div.p-4');
-        const hid=`game-title-${game.displayId}`;
-        h3.id=hid;
-        article.setAttribute('aria-labelledby',hid);
-        const chosenTeam = teamFilter ? teamFilter.value : '';
-        const itemsToShow=chosenTeam?game.items.filter(it=>it.team===chosenTeam):game.items;
-        if(itemsToShow.length===0) return;
-        h3.textContent=`${game.displayId}. ${game.title}`;
-        sub.textContent=scheduleLabel(game.displayId);
-        chip.textContent=game.solo?"SOLO":"ÉQUIPE";
-        chip.id=`chip-${game.displayId}`;
-        article.setAttribute('aria-describedby',chip.id);
-        if(chosenTeam){article.setAttribute('data-accent','')}else{article.removeAttribute('data-accent')}
-        const sl=getSlot(game.displayId);
-        article.classList.toggle('slot-matin',sl==='matin');
-        article.classList.toggle('slot-apres',sl==='apres');
-        const p=document.createElement('p');
-        p.className='text-sm text-slate-900';
-        p.textContent=EXPLAIN[game.origId]||'';
-        body.append(p);
-        itemsToShow.forEach(it=>{
-          const row=document.createElement('div');
-          row.className="row-team flex items-start gap-3 p-2 rounded-xl bg-slate-50";
-          row.style.setProperty('--rowAccent',teamColor(it.team));
-          const dot=document.createElement('span');
-          dot.className="mt-1 h-2.5 w-2.5 rounded-full shrink-0";
-          dot.style.background=teamColor(it.team);
-          dot.setAttribute('role','img');
-          dot.setAttribute('aria-label',`Couleur équipe ${it.team}`);
-          const team=document.createElement('span');
-          team.className="text-sm font-medium text-slate-900";
-          team.textContent=it.team;
-          const badge=document.createElement('span');
-          badge.className=roleBadge(it.role);
-          badge.textContent=it.role;
-          const text=document.createElement('p');
-          text.className="text-sm text-slate-900";
-          text.textContent=it.text;
-          const left=document.createElement('div');
-          left.className="flex items-center gap-2 min-w-[8rem] shrink-0";
-          left.append(dot,team,badge);
-          const wrap=document.createElement('div');
-          wrap.className="flex flex-col md:flex-row md:items-center gap-2 md:gap-3 w-full";
-          wrap.append(left,text);
-          row.append(wrap);
-          body.append(row)
+      
+      const frag = document.createDocumentFragment();
+      list.forEach(game => {
+        const node = cardTmpl.content.cloneNode(true);
+        const article = node.querySelector('article');
+        const h3 = node.querySelector('h3');
+        const sub = node.querySelector('header p');
+        const chip = node.querySelector('header span');
+        const descP = node.querySelector('.desc-text');
+        const actionsDiv = node.querySelector('.actions-container');
+        
+        const hid = `game-title-${game.displayId}`;
+        h3.id = hid;
+        article.setAttribute('aria-labelledby', hid);
+        
+        // Filtre les items selon l'équipe choisie
+        const itemsToShow = currentTeamFilter ? game.items.filter(it => it.team === currentTeamFilter) : game.items;
+        if (itemsToShow.length === 0) return; // Ne devrait pas arriver si le filtre parent fonctionne bien
+        
+        h3.textContent = `${game.displayId}. ${game.title}`;
+        sub.textContent = scheduleLabel(game.displayId);
+        chip.textContent = game.solo ? "Individuel" : "En Groupe";
+        
+        // Style conditionnel si une équipe est sélectionnée
+        if (currentTeamFilter) {
+          article.setAttribute('data-accent', '');
+        } else {
+          article.removeAttribute('data-accent');
+        }
+        
+        // Style slot temps
+        const sl = getSlot(game.displayId);
+        article.classList.toggle('slot-matin', sl === 'matin');
+        article.classList.toggle('slot-apres', sl === 'apres');
+        
+        // Description globale (Bande Commune)
+        descP.textContent = EXPLAIN[game.origId] || '';
+        
+        // Génération des actions par équipe
+        itemsToShow.forEach(it => {
+          const row = document.createElement('div');
+          row.className = "row-team flex items-start gap-3 p-3 rounded-xl bg-slate-50 transition hover:bg-slate-100";
+          row.style.setProperty('--rowAccent', teamColor(it.team));
+          
+          const dot = document.createElement('span');
+          dot.className = "mt-1.5 h-2.5 w-2.5 rounded-full shrink-0 shadow-sm";
+          dot.style.background = teamColor(it.team);
+          
+          const content = document.createElement('div');
+          content.className = "flex-1 space-y-1";
+          
+          const topRow = document.createElement('div');
+          topRow.className = "flex flex-wrap items-center gap-2";
+          
+          const teamName = document.createElement('span');
+          teamName.className = "text-xs font-bold text-slate-700 uppercase tracking-wider";
+          teamName.textContent = it.team;
+          
+          const badge = document.createElement('span');
+          badge.className = roleBadge(it.role);
+          badge.textContent = it.role;
+          
+          topRow.append(teamName, badge);
+          
+          const text = document.createElement('p');
+          text.className = "text-sm text-slate-800 leading-snug";
+          text.textContent = it.text;
+          
+          content.append(topRow, text);
+          row.append(dot, content);
+          actionsDiv.append(row);
         });
-        frag.appendChild(node)
+        
+        frag.appendChild(node);
       });
       grid.appendChild(frag);
-      updateCount(grid.childElementCount||0)
+      updateCount(grid.childElementCount || 0);
     }
 
-    function matchesFilters(game){
-      const allowed=currentAllowedDisplayIds();
-      if(!allowed.includes(game.displayId))return false;
-      if(gameFilter && gameFilter.value && String(game.displayId)!==gameFilter.value)return false;
-      if(slotFilter.value&&getSlot(game.displayId)!==slotFilter.value)return false;
-      const chosenTeam = teamFilter ? teamFilter.value : '';
-      const itemsFiltered=chosenTeam?game.items.filter(it=>it.team===chosenTeam):game.items;
-      if(chosenTeam&&itemsFiltered.length===0)return false;
-      const q=searchInput.value.trim().toLowerCase();
-      if(q){
-        const inTitle=game.title.toLowerCase().includes(q);
-        const inText=itemsFiltered.some(it=>(it.team+" "+it.role+" "+it.text).toLowerCase().includes(q));
-        if(!inTitle&&!inText)return false
+    function matchesFilters(game) {
+      const allowed = currentAllowedDisplayIds();
+      
+      // 1. Filtre Jour
+      if (!allowed.includes(game.displayId)) return false;
+      
+      // 2. Filtre Slot (Matin/Apres)
+      if (slotFilter.value && getSlot(game.displayId) !== slotFilter.value) return false;
+      
+      // 3. Filtre Equipe
+      const itemsFiltered = currentTeamFilter ? game.items.filter(it => it.team === currentTeamFilter) : game.items;
+      if (currentTeamFilter && itemsFiltered.length === 0) return false;
+      
+      // 4. Recherche Texte
+      const q = searchInput.value.trim().toLowerCase();
+      if (q) {
+        const inTitle = game.title.toLowerCase().includes(q);
+        const inDesc = (EXPLAIN[game.origId] || '').toLowerCase().includes(q);
+        const inText = itemsFiltered.some(it => (it.team + " " + it.role + " " + it.text).toLowerCase().includes(q));
+        if (!inTitle && !inText && !inDesc) return false;
       }
-      return true
+      
+      return true;
     }
 
-    function applyFilters(){
-      refreshGameOptions();
-      const allowed=currentAllowedDisplayIds();
-      const filtered=VISIBLE
+    function applyFilters() {
+      const allowed = currentAllowedDisplayIds();
+      // On filtre, on trie par ordre logique, puis on rend
+      const filtered = VISIBLE
         .filter(matchesFilters)
-        .sort((a,b)=>DISPLAY_ORDER.indexOf(a.displayId)-DISPLAY_ORDER.indexOf(b.displayId))
-        .filter(g=>allowed.includes(g.displayId));
-      renderCards(filtered)
+        .sort((a, b) => DISPLAY_ORDER.indexOf(a.displayId) - DISPLAY_ORDER.indexOf(b.displayId));
+      
+      renderCards(filtered);
     }
 
-    function debounce(fn,wait=200){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),wait)}}
-
-    function updateBanner(){
-      const now=new Date();
-      const day=adminMode && adminDay? adminDay : dayFromDate(now);
-      activeDayLabel.textContent=`Jour ${day}`;
-      activeHint.textContent=day===1?'Matin : Jeux 1–3 · Après-midi : Jeux 4–5':'Matin : Jeux 6–7 · Après-midi : Jeux 8–9';
+    function debounce(fn, wait = 200) {
+      let t;
+      return (...a) => {
+        clearTimeout(t);
+        t = setTimeout(() => fn(...a), wait);
+      };
     }
 
-    // Changement : Logique du mode admin (Ctrl+Shift+E)
-    window.addEventListener('keydown',e=>{
-      if(e.ctrlKey&&e.shiftKey&&(e.key==='E'||e.key==='e')){
-        e.preventDefault();
-        adminMode=!adminMode;
+    function updateBanner() {
+      const now = new Date();
+      const day = adminMode && adminDay ? adminDay : dayFromDate(now);
+      
+      activeDayLabel.textContent = `Jour ${day}`;
+      
+      if (day === 1) {
+        activeHint.textContent = "16 Déc. • Matin: Fondamentaux, Après-midi: Média Training";
+      } else {
+        activeHint.textContent = "17 Déc. • Matin: Crise & Interactions avancées";
+      }
+    }
+
+    // --- UI HELPERS ---
+
+    function setSlotUI(v) {
+      slotSwitch.dataset.state = v;
+      // Reset classes
+      slotSwitch.classList.remove('bg-sky-200', 'bg-amber-200', 'bg-slate-200');
+      slotThumb.classList.remove('translate-x-1', 'translate-x-9');
+      
+      if (v === 'apres') {
+        // PM
+        slotThumb.style.transform = 'translateX(2.25rem)'; // ~36px
+        slotSwitch.classList.add('bg-amber-200');
+      } else if (v === 'matin') {
+        // AM
+        slotThumb.style.transform = 'translateX(0.25rem)'; // 4px
+        slotSwitch.classList.add('bg-sky-200');
+      } else {
+        // Neutre
+        slotThumb.style.transform = 'translateX(1.25rem)'; // Center
+        slotSwitch.classList.add('bg-slate-200');
+      }
+    }
+
+    function applyTeamAccentToBody(t) {
+      document.body.classList.remove('team-Créatif', 'team-Médiateur', 'team-Pilote');
+      if (t) document.body.classList.add('team-' + t);
+    }
+
+    function openRoleDialog() {
+      roleDialog.classList.remove('hidden');
+      // Animation simple
+      setTimeout(() => roleDialog.querySelector('div[role="dialog"]').classList.remove('scale-95', 'opacity-0'), 10);
+    }
+
+    function closeRoleDialog() {
+      roleDialog.classList.add('hidden');
+    }
+
+    // --- EVENT LISTENERS ---
+
+    // 1. Gestion des slots
+    slotSwitch.addEventListener('click', () => {
+      const cur = slotSwitch.dataset.state || '';
+      const next = cur === '' ? 'matin' : (cur === 'matin' ? 'apres' : '');
+      slotFilter.value = next;
+      setSlotUI(next);
+      applyFilters();
+    });
+
+    document.getElementById('slotClear').addEventListener('click', () => {
+      slotFilter.value = '';
+      setSlotUI('');
+      applyFilters();
+    });
+
+    // 2. Recherche
+    document.getElementById('searchInput').addEventListener('input', debounce(applyFilters, 150));
+    document.getElementById('searchToggle').addEventListener('click', () => {
+      const input = searchInput;
+      if (input.classList.contains('search-collapsed')) {
+        input.classList.remove('search-collapsed');
+        input.classList.add('search-expanded');
+        input.focus();
+      } else {
+        if (!input.value) {
+          input.classList.remove('search-expanded');
+          input.classList.add('search-collapsed');
+        } else {
+          // Si du texte, on ré-applique (par sécurité)
+          applyFilters();
+        }
+      }
+    });
+
+    // 3. Modale et Rôles
+    roleCapsule.addEventListener('click', openRoleDialog);
+    
+    roleDialog.querySelectorAll('[data-team]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const t = btn.getAttribute('data-team');
+        localStorage.setItem('cnss:userTeam', t);
         
-        // Gérer le filtre équipe
+        currentTeamFilter = t;
+        roleName.textContent = t;
+        roleDot.style.background = teamColor(t);
+        applyTeamAccentToBody(t);
+        roleCapsule.classList.remove('hidden');
+        
+        closeRoleDialog();
+        
+        // Si adminMode actif, on reset la sauvegarde auto pour pas la corrompre
+        if (adminMode) adminTeamStore = null;
+        
+        applyFilters();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    roleDlgClose.addEventListener('click', () => {
+      closeRoleDialog();
+      // Si l'utilisateur annule, on considère qu'il veut tout voir
+      if (!currentTeamFilter) {
+         roleName.textContent = "Observateur";
+         roleDot.style.background = "#cbd5e1";
+      }
+    });
+
+    roleDialog.addEventListener('click', e => {
+      if (e.target === roleDialog) closeRoleDialog();
+    });
+
+    function initRoleFromStorage() {
+      let t = null;
+      try { t = localStorage.getItem('cnss:userTeam'); } catch {}
+      if (t) {
+        currentTeamFilter = t;
+        roleName.textContent = t;
+        roleDot.style.background = teamColor(t);
+        applyTeamAccentToBody(t);
+      } else {
+        // Pas de rôle ? On ouvre la modale
+        openRoleDialog();
+      }
+    }
+
+    // 4. Mode Admin (Ctrl + Shift + E)
+    window.addEventListener('keydown', e => {
+      if (e.ctrlKey && e.shiftKey && (e.key === 'E' || e.key === 'e')) {
+        e.preventDefault();
+        adminMode = !adminMode;
+
         if (adminMode) {
-          // Mode admin activé
-          document.body.dataset.admin='1';
-          activeDayLabel.classList.add('ring-2','ring-white/40');
-          activeDayLabel.title='Cliquer pour alterner Jour 1 / Jour 2 (mode encadrant)';
+          document.body.dataset.admin = '1';
+          activeDayLabel.classList.add('ring-2', 'ring-sky-500', 'bg-sky-50');
+          activeDayLabel.title = 'Admin: Cliquer pour changer de jour';
           
-          // Si un filtre est actif, le sauvegarder et le désactiver
-          if (teamFilter.value !== "") {
-            adminTeamStore = teamFilter.value;
-            teamFilter.value = "";
-            roleCapsule.classList.add('hidden');
+          // Sauvegarde du filtre utilisateur pour voir tout en mode admin
+          if (currentTeamFilter) {
+            adminTeamStore = currentTeamFilter;
+            currentTeamFilter = ''; // Tout voir
+            roleName.textContent = "VUE GLOBALE";
+            roleDot.style.background = "#334155";
             applyTeamAccentToBody(null);
           }
         } else {
-          // Mode admin désactivé
           document.body.removeAttribute('data-admin');
-          adminDay=null;
-          activeDayLabel.classList.remove('ring-2','ring-white/40');
+          adminDay = null;
+          activeDayLabel.classList.remove('ring-2', 'ring-sky-500', 'bg-sky-50');
           activeDayLabel.removeAttribute('title');
-
-          // Si on avait sauvegardé un filtre, le restaurer
+          
+          // Restauration
           if (adminTeamStore) {
-            teamFilter.value = adminTeamStore;
-            roleCapsule.classList.remove('hidden');
-            applyTeamAccentToBody(teamFilter.value);
+            currentTeamFilter = adminTeamStore;
+            roleName.textContent = currentTeamFilter;
+            roleDot.style.background = teamColor(currentTeamFilter);
+            applyTeamAccentToBody(currentTeamFilter);
             adminTeamStore = null;
           }
         }
-        
         updateBanner();
         applyFilters();
       }
     });
 
-    activeDayLabel.addEventListener('click',()=>{
-      if(!adminMode) return;
-      adminDay = (adminDay===1?2: adminDay===2?1 : (dayFromDate(new Date())===1?2:1));
+    activeDayLabel.addEventListener('click', () => {
+      if (!adminMode) return;
+      // Cycle 1 -> 2 -> 1
+      const current = adminDay || dayFromDate(new Date());
+      adminDay = current === 1 ? 2 : 1;
       updateBanner();
       applyFilters();
     });
 
-    function applyTeamAccentToBody(t){
-      document.body.classList.remove('team-Créatif','team-Médiateur','team-Pilote');
-      if(t){document.body.classList.add('team-'+t)}
-    }
-    function openRoleDialog(){
-      roleDialog.classList.remove('hidden');
-      setTimeout(()=>{roleDialog.querySelector('[data-team]')?.focus()},0)
-    }
-    function closeRoleDialog(){roleDialog.classList.add('hidden')}
-    roleDialog.addEventListener('click',e=>{if(e.target===roleDialog)closeRoleDialog()})
-    roleDlgClose.addEventListener('click',closeRoleDialog)
-
-    // Changement : Logique de sélection de rôle
-    roleDialog.querySelectorAll('[data-team]').forEach(btn=>{
-      btn.addEventListener('click',()=>{
-        const t=btn.getAttribute('data-team');
-        try{localStorage.setItem('asin:userTeam',t)}catch{}
-        if(teamFilter) teamFilter.value=t;
-        roleName.textContent=t;
-        roleDot.style.background=teamColor(t);
-        applyTeamAccentToBody(t);
-        roleCapsule.classList.remove('hidden');
-        closeRoleDialog();
-
-        // Si l'admin sélectionne manuellement un rôle,
-        // on annule la restauration auto au prochain toggle
-        if (adminMode) {
-          adminTeamStore = null; 
-        }
-        
-        applyFilters();
-        document.getElementById('grid').scrollIntoView({behavior:'smooth'})
-      })
-    })
-
-    function initRoleFromStorage(){
-      let t=null;try{t=localStorage.getItem('asin:userTeam')}catch{}
-      if(t){ if(teamFilter) teamFilter.value=t; roleName.textContent=t; roleDot.style.background=teamColor(t); applyTeamAccentToBody(t); roleCapsule.classList.remove('hidden') }
-    }
-
-    // Changement : La capsule entière est cliquable
-    roleCapsule.addEventListener('click',()=>{openRoleDialog()})
-
-    function setSlotUI(v){
-      slotSwitch.dataset.state=v;
-      if(v==='apres'){
-        slotThumb.style.transform='translateX(2.75rem)';
-        slotSwitch.classList.remove('bg-slate-700/70','bg-sky-300/70');
-        slotSwitch.classList.add('bg-amber-300/70')
-      }else if(v==='matin'){
-        slotThumb.style.transform='translateX(0.25rem)';
-        slotSwitch.classList.remove('bg-slate-700/70','bg-amber-300/70');
-        slotSwitch.classList.add('bg-sky-300/70')
-      }else{
-        slotThumb.style.transform='translateX(1.5rem)';
-        slotSwitch.classList.remove('bg-amber-300/70','bg-sky-300/70');
-        slotSwitch.classList.add('bg-slate-700/70')
-      }
-    }
-
-    slotSwitch.addEventListener('click',()=>{
-      const cur=slotSwitch.dataset.state||'';
-      const next=cur===''?'matin':(cur==='matin'?'apres':'');
-      slotFilter.value=next;
-      setSlotUI(next);
-      applyFilters()
-    })
-
-    document.getElementById('slotClear').addEventListener('click',()=>{slotFilter.value='';setSlotUI('');applyFilters()})
-    
-    document.getElementById('searchInput').addEventListener('input',debounce(applyFilters,150))
-    document.getElementById('searchToggle').addEventListener('click',()=>{
-      const input=searchInput;
-      if(input.classList.contains('search-collapsed')){
-        input.classList.remove('search-collapsed');
-        input.classList.add('search-expanded');
-        input.focus();
-      }else{
-        if(!input.value){
-          input.classList.remove('search-expanded');
-          input.classList.add('search-collapsed');
-        } else { applyFilters(); }
-      }
-    })
-
-    function init(){
+    // Initialisation
+    function init() {
       updateBanner();
-      refreshGameOptions();
       initRoleFromStorage();
-      openRoleDialog();
-      setSlotUI(slotFilter.value||"");
+      setSlotUI(slotFilter.value || "");
       applyFilters();
     }
 
     init();
-    setInterval(()=>{updateBanner();applyFilters()},60*1000)
+    
+    // Auto-refresh date toutes les minutes
+    setInterval(() => {
+      updateBanner();
+      // On ne re-applyFilters que si le jour change réellement, 
+      // mais ici simple updateBanner suffit visuellement
+    }, 60000);
 
-    ;(function(){
-      try{
-        console.assert([1,2,3,4,5,6,7,8,9].length===9,'9 ids référencés');
-        const fake='Pilote'; localStorage.setItem('asin:userTeam',fake); initRoleFromStorage(); console.assert(document.getElementById('roleName').textContent===fake,'Capsule rôle OK');
-        console.log('%cTests OK','color:lightgreen')
-      }catch(e){ console.warn('Tests failed',e) }
-    })()
   </script>
 </body>
 </html>
