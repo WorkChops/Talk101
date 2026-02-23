@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FIL D’ACTIVITÉS — QUALITÉ DE L’ACCUEIL CNSS</title>
+  <title>FIL D’ACTIVITÉS — QUALITÉ D'ACCUEIL, RELATION USAGERS ET REPRÉSENTATION PUBLIQUE</title>
   <meta name="description" content="Interface apprenants CNSS : activités pédagogiques par équipes basées sur la fiche Mme Jeux." />
   <meta name="theme-color" content="#0EA5E9">
   <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
@@ -60,7 +60,7 @@
           <span class="inline-flex h-8 px-3 items-center justify-center rounded-lg bg-white/10 ring-1 ring-white/20 text-xs font-bold uppercase tracking-wider">CNSS LOMÉ</span>
           <span>FIL PÉDAGOGIQUE — MME JEUX</span>
         </h1>
-        <p class="text-xs text-white/70 hidden sm:block">16 & 17 Décembre 2025</p>
+        <p class="text-xs text-white/70 hidden sm:block">Février 2026</p>
       </div>
     </div>
   </div>
@@ -131,7 +131,7 @@
   <!-- Pied de page -->
   <footer class="mt-auto border-t border-slate-200 bg-white text-slate-600">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 text-center space-y-2">
-      <p class="font-bold text-slate-800 tracking-wide uppercase text-sm">Prise de parole & Qualité d’accueil</p>
+      <p class="font-bold text-slate-800 tracking-wide uppercase text-sm">Qualité d'Accueil, Relation Usagers et Représentation Publique</p>
       <p class="text-xs text-slate-500 max-w-md mx-auto">Formation agents CNSS Lomé. Suivez vos rôles en temps réel lors des simulations de Madame Jeux.</p>
     </div>
   </footer>
@@ -313,10 +313,8 @@
     function getSlot(id) { return slotMap.get(id) || null; }
 
     function dayFromDate(d) {
-      const m = d.getMonth();
-      const dd = d.getDate();
-      if (m === 11 && dd === 16) return 1;
-      if (m === 11 && dd === 17) return 2;
+      // Février 2026 : Pas de jours précis définis, on retourne le Jour 1 par défaut.
+      // Utilisez le mode Superviseur (Ctrl+Shift+E) pour basculer sur le Jour 2.
       return 1;
     }
 
