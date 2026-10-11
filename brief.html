@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FIL D’ACTIVITÉS — QUALITÉ D'ACCUEIL, RELATION USAGERS ET REPRÉSENTATION PUBLIQUE</title>
-  <meta name="description" content="Interface apprenants CNSS : activités pédagogiques par équipes basées sur la fiche Mme Jeux." />
-  <meta name="theme-color" content="#0EA5E9">
+  <title>FIL D’ACTIVITÉS — PRISE DE PAROLE EN PUBLIC ET FACE AUX MÉDIAS</title>
+  <meta name="description" content="Interface apprenants ASIN : activités pédagogiques par équipes basées sur la formation de M. Donklam ABALO." />
+  <meta name="theme-color" content="#1E3A8A">
   <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -13,7 +13,7 @@
       theme: {
         extend: {
           colors: {
-            brand: { gold: '#D4AF37', sky: '#0EA5E9', cnss: '#005596' }
+            brand: { gold: '#D4AF37', asin: '#1E3A8A', accent: '#3B82F6' }
           },
           fontFamily: {
             sans: ['Inter','ui-sans-serif','system-ui','-apple-system','Segoe UI','Roboto','Noto Sans','sans-serif']
@@ -24,11 +24,13 @@
   </script>
   <style>
     :root{
+      /* Couleurs basées sur les rôles */
       --creatif: rgba(254,205,64,1);   /* Jaune */
       --mediateur: rgba(50,166,217,1); /* Bleu clair */
       --pilote: rgba(137,106,174,1);   /* Violet */
-      --slot-matin:#0ea5e9;
-      --slot-apres:#f59e0b;
+      
+      --slot-matin:#3b82f6; /* Bleu ASIN clair pour le matin */
+      --slot-apres:#f59e0b; /* Ambre pour l'après-midi */
     }
     body.team-Créatif{ --accentTeam:var(--creatif) }
     body.team-Médiateur{ --accentTeam:var(--mediateur) }
@@ -41,7 +43,7 @@
     .card.slot-matin header::before{ background:linear-gradient(90deg,var(--slot-matin),transparent) }
     .card.slot-apres header::before{ background:linear-gradient(90deg,var(--slot-apres),transparent) }
     
-    .card.slot-matin{ background-image:linear-gradient(180deg,rgba(14,165,233,.06),transparent 22%) }
+    .card.slot-matin{ background-image:linear-gradient(180deg,rgba(59,130,246,.06),transparent 22%) }
     .card.slot-apres{ background-image:linear-gradient(180deg,rgba(245,158,11,.08),transparent 22%) }
     
     .search-collapsed{width:42px}
@@ -50,17 +52,17 @@
   </style>
 </head>
 <body class="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans antialiased">
-  <a href="#grid" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-3 focus:py-2 focus:rounded-lg focus:bg-sky-600 focus:text-white">Aller au contenu</a>
+  <a href="#grid" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-3 focus:py-2 focus:rounded-lg focus:bg-blue-800 focus:text-white">Aller au contenu</a>
 
-  <!-- En-tête Global -->
-  <div class="border-b border-slate-800 bg-gradient-to-r from-slate-900 via-[#004a80] to-slate-900 text-white shadow-md">
+  <!-- En-tête Global adapté ASIN -->
+  <div class="border-b border-blue-900 bg-gradient-to-r from-blue-950 via-[#1E3A8A] to-blue-950 text-white shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
         <h1 class="text-lg sm:text-xl font-bold tracking-tight flex items-center gap-3">
-          <span class="inline-flex h-8 px-3 items-center justify-center rounded-lg bg-white/10 ring-1 ring-white/20 text-xs font-bold uppercase tracking-wider">CNSS LOMÉ</span>
-          <span>FIL PÉDAGOGIQUE — MME JEUX</span>
+          <span class="inline-flex h-8 px-3 items-center justify-center rounded-lg bg-white/10 ring-1 ring-white/20 text-xs font-bold uppercase tracking-wider" title="Agence des Systèmes d'Information et du Numérique">ASIN BÉNIN</span>
+          <span>PRISE DE PAROLE EN PUBLIC & MÉDIAS</span>
         </h1>
-        <p class="text-xs text-white/70 hidden sm:block">Février 2026</p>
+        <p class="text-xs text-blue-200 hidden sm:block font-medium">12-16 Octobre 2026</p>
       </div>
     </div>
   </div>
@@ -81,12 +83,12 @@
         <div class="flex items-center justify-between gap-4 flex-wrap">
           <div class="flex items-center gap-2 text-sm bg-slate-50 px-2 py-1 rounded-lg border border-slate-100">
             <span class="text-slate-500">Agenda :</span>
-            <button id="activeDayLabel" class="px-2 py-0.5 rounded bg-white text-brand-cnss font-bold shadow-sm ring-1 ring-slate-200" type="button"></button>
-            <span id="activeHint" class="text-slate-400 hidden sm:inline text-xs truncate max-w-[150px]"></span>
+            <button id="activeDayLabel" class="px-2 py-0.5 rounded bg-white text-brand-asin font-bold shadow-sm ring-1 ring-slate-200" type="button" title="Mode supervision (Ctrl+Shift+E) pour changer"></button>
+            <span id="activeHint" class="text-slate-400 hidden md:inline text-xs truncate max-w-[200px]"></span>
           </div>
 
           <div class="flex items-center gap-2">
-            <button id="slotSwitch" type="button" aria-label="Basculer matin / après-midi" data-state="" class="relative inline-flex h-8 w-16 items-center rounded-full bg-slate-200 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500">
+            <button id="slotSwitch" type="button" aria-label="Basculer matin / après-midi" data-state="" class="relative inline-flex h-8 w-16 items-center rounded-full bg-slate-200 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
               <span class="absolute left-1.5 text-[10px] font-bold text-slate-500 select-none">AM</span>
               <span class="absolute right-1.5 text-[10px] font-bold text-slate-500 select-none">PM</span>
               <span id="slotThumb" class="h-5 w-5 translate-x-1 rounded-full bg-white shadow-sm ring-1 ring-black/5 transition-transform"></span>
@@ -108,9 +110,9 @@
       <span class="inline-flex items-center gap-1.5"><span class="h-2 w-2 rounded-full" style="background:var(--mediateur)"></span>Médiateur</span>
       <span class="inline-flex items-center gap-1.5"><span class="h-2 w-2 rounded-full" style="background:var(--pilote)"></span>Pilote</span>
       <div class="w-px h-3 bg-slate-300 mx-1 hidden sm:block"></div>
-      <span class="inline-flex items-center gap-1"><span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 font-medium uppercase">Joue</span> Acteur</span>
-      <span class="inline-flex items-center gap-1"><span class="px-1.5 py-0.5 rounded bg-sky-100 text-sky-700 font-medium uppercase">Interagit</span> Partenaire</span>
-      <span class="inline-flex items-center gap-1"><span class="px-1.5 py-0.5 rounded bg-rose-100 text-rose-700 font-medium uppercase">Analyse</span> Observateur</span>
+      <span class="inline-flex items-center gap-1"><span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 font-medium uppercase">Joue</span> Acteur principal</span>
+      <span class="inline-flex items-center gap-1"><span class="px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 font-medium uppercase">Interagit</span> Partenaire</span>
+      <span class="inline-flex items-center gap-1"><span class="px-1.5 py-0.5 rounded bg-rose-100 text-rose-700 font-medium uppercase">Analyse</span> Observateur (Feedback)</span>
     </div>
   </aside>
 
@@ -119,7 +121,7 @@
     <p id="resultCount" class="text-sm font-medium text-slate-500"></p>
     <div class="flex items-center gap-2 w-full sm:w-auto">
       <button id="searchToggle" type="button" class="h-9 w-10 inline-flex items-center justify-center rounded-xl bg-white ring-1 ring-slate-200 hover:bg-slate-50 shadow-sm text-slate-500" aria-label="Rechercher"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></button>
-      <input id="searchInput" type="search" placeholder="Rechercher (ex. 'usager', 'smartphone')" class="search-input search-collapsed h-9 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 px-3 text-sm shadow-sm" />
+      <input id="searchInput" type="search" placeholder="Rechercher (ex. 'gestuelle', 'interview')" class="search-input search-collapsed h-9 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 px-3 text-sm shadow-sm" />
     </div>
   </section>
 
@@ -131,8 +133,8 @@
   <!-- Pied de page -->
   <footer class="mt-auto border-t border-slate-200 bg-white text-slate-600">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 text-center space-y-2">
-      <p class="font-bold text-slate-800 tracking-wide uppercase text-sm">Qualité d'Accueil, Relation Usagers et Représentation Publique</p>
-      <p class="text-xs text-slate-500 max-w-md mx-auto">Formation agents CNSS Lomé. Suivez vos rôles en temps réel lors des simulations de Madame Jeux.</p>
+      <p class="font-bold text-slate-800 tracking-wide uppercase text-sm">Formation Chef de Projet ASIN</p>
+      <p class="text-xs text-slate-500 max-w-md mx-auto">12-16 Octobre 2026. Interface d'accompagnement interactif et suivi pédagogique.</p>
     </div>
   </footer>
 
@@ -141,28 +143,28 @@
     <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" aria-hidden="true"></div>
     <div role="dialog" aria-modal="true" aria-labelledby="roleDlgTitle" class="relative mx-auto mt-20 w-full max-w-lg px-4">
       <div class="rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/20 bg-white transform transition-all scale-100">
-        <div class="bg-slate-900 px-6 py-6 text-white text-center">
-          <h2 id="roleDlgTitle" class="text-xl font-bold">Sélection de votre Équipe</h2>
-          <p class="text-sm text-white/70 mt-2">Choisissez l'équipe à laquelle vous appartenez pour voir vos instructions personnalisées.</p>
+        <div class="bg-blue-950 px-6 py-6 text-white text-center">
+          <h2 id="roleDlgTitle" class="text-xl font-bold">Bienvenue, Chef de Projet ASIN</h2>
+          <p class="text-sm text-blue-200 mt-2">Pour optimiser la dynamique de groupe, choisissez votre profil d'équipe pour cette formation.</p>
         </div>
         <div class="p-6 space-y-3">
           <button data-team="Créatif" class="w-full group relative flex items-center gap-4 rounded-xl border border-yellow-200 bg-yellow-50/50 p-4 text-left hover:bg-yellow-50 hover:border-yellow-300 transition-all focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2">
             <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-yellow-100 text-yellow-700 font-bold shadow-sm group-hover:scale-110 transition-transform">C</span>
-            <div><strong class="text-slate-900 block">Équipe Créatif</strong><span class="text-xs text-slate-600">Imaginatifs & Analystes émotionnels</span></div>
+            <div><strong class="text-slate-900 block">Équipe Créatif</strong><span class="text-xs text-slate-600">Imaginatifs, Spontanés & Analystes de l'authenticité</span></div>
           </button>
           
           <button data-team="Médiateur" class="w-full group relative flex items-center gap-4 rounded-xl border border-sky-200 bg-sky-50/50 p-4 text-left hover:bg-sky-50 hover:border-sky-300 transition-all focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2">
             <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sky-100 text-sky-700 font-bold shadow-sm group-hover:scale-110 transition-transform">M</span>
-            <div><strong class="text-slate-900 block">Équipe Médiateur</strong><span class="text-xs text-slate-600">Diplomates & Connecteurs</span></div>
+            <div><strong class="text-slate-900 block">Équipe Médiateur</strong><span class="text-xs text-slate-600">Connecteurs, Empathiques & Facilitateurs de dialogue</span></div>
           </button>
           
           <button data-team="Pilote" class="w-full group relative flex items-center gap-4 rounded-xl border border-purple-200 bg-purple-50/50 p-4 text-left hover:bg-purple-50 hover:border-purple-300 transition-all focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2">
             <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-purple-100 text-purple-700 font-bold shadow-sm group-hover:scale-110 transition-transform">P</span>
-            <div><strong class="text-slate-900 block">Équipe Pilote</strong><span class="text-xs text-slate-600">Directeurs & Structurés</span></div>
+            <div><strong class="text-slate-900 block">Équipe Pilote</strong><span class="text-xs text-slate-600">Directeurs, Structurés & Gardiens du message clé</span></div>
           </button>
 
           <div class="mt-6 text-center">
-            <button id="roleDlgClose" class="text-xs text-slate-400 hover:text-slate-600 underline decoration-slate-300 underline-offset-4">Voir toutes les équipes (Mode superviseur)</button>
+            <button id="roleDlgClose" class="text-xs text-slate-400 hover:text-slate-600 underline decoration-slate-300 underline-offset-4">Voir toutes les instructions (Vue Superviseur)</button>
           </div>
         </div>
       </div>
@@ -170,7 +172,7 @@
   </div>
 
   <template id="cardTmpl">
-    <article class="card h-full rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden hover:shadow-md transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 flex flex-col" tabindex="0" role="group">
+    <article class="card h-full rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden hover:shadow-md transition-shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 flex flex-col" tabindex="0" role="group">
       <header class="relative px-5 pt-5 pb-3 border-b border-slate-100">
         <div class="flex items-start justify-between gap-3">
           <div>
@@ -188,100 +190,120 @@
   </template>
 
   <script>
+    // Structure de données basée sur la Fiche Pédagogique Vague 1 - ASIN (Octobre 2026)
+    // 4 Jours de formation, 6 activités principales de "Madame Jeux"
     const GAMES_FULL = [
       {
         id: 1,
-        title: "Bonjour Gagnant",
+        title: "Impro d'Intro",
         solo: false,
         items: [
-          { team: "Pilote", role: "JOUE", text: "Accueillez un usager (phrase positive + posture ouverte) tout en vous présentant. Transmettez chaleur et disponibilité." },
-          { team: "Médiateur", role: "JOUE", text: "Accueillez un usager (phrase positive + posture ouverte) tout en vous présentant. Transmettez chaleur et disponibilité." },
-          { team: "Créatif", role: "JOUE", text: "Accueillez un usager (phrase positive + posture ouverte) tout en vous présentant. Transmettez chaleur et disponibilité." }
+          { team: "Créatif", role: "JOUE", text: "Présentez-vous avec originalité et spontanéité. Utilisez un objet, un geste ou une anecdote marquante." },
+          { team: "Médiateur", role: "ANALYSE", text: "Relevez les moments d'accroche et de sincérité chez les intervenants." },
+          { team: "Pilote", role: "ANALYSE", text: "Reformulez mentalement la présentation entendue de manière claire et concise." }
         ]
       },
       {
         id: 2,
-        title: "Le Miroir Silencieux",
+        title: "Miroir (Gestuelle)",
         solo: false,
         items: [
-          { team: "Pilote", role: "JOUE", text: "Racontez un problème de votre choix." },
-          { team: "Médiateur", role: "INTERAGIT", text: "Écoutez avec une gestuelle adaptée (hochement de tête, regard, posture) puis reformulez la préoccupation." },
-          { team: "Créatif", role: "ANALYSE", text: "Vérifiez si les gestes du Médiateur prouvent qu'il est réellement attentif." }
+          { team: "Médiateur", role: "JOUE", text: "Guidez le mouvement avec des gestes lents et expressifs, en restant attentif à votre partenaire." },
+          { team: "Pilote", role: "INTERAGIT", text: "Suivez les gestes de votre partenaire avec concentration, justesse et sans parler." },
+          { team: "Créatif", role: "ANALYSE", text: "Observez la synchronisation du duo et formulez un retour constructif sur leur connexion corporelle." }
         ]
       },
       {
         id: 3,
-        title: "L’Enquêteur Bienveillant",
+        title: "Minute de Clarté",
         solo: false,
         items: [
-          { team: "Médiateur", role: "JOUE", text: "Incarnez un usager confus qui raconte son histoire de manière désordonnée (simulation dos à dos)." },
-          { team: "Pilote", role: "INTERAGIT", text: "Posez des questions ciblées et reformulez pour clarifier le besoin réel (« Si je comprends bien... »)." },
-          { team: "Créatif", role: "ANALYSE", text: "Notez la patience de l'agent et la précision de la reformulation." }
+          { team: "Pilote", role: "JOUE", text: "Présentez un sujet (1 minute max) avec une progression logique et un ton affirmé. Allez droit au but." },
+          { team: "Créatif", role: "ANALYSE", text: "Proposez des suggestions imagées pour renforcer l'impact du discours entendu." },
+          { team: "Médiateur", role: "ANALYSE", text: "Commentez la fluidité du propos et la cohérence entre le fond et le langage non verbal." }
         ]
       },
       {
         id: 4,
-        title: "Traduction CNSS",
+        title: "Interview à l'aveugle",
         solo: false,
         items: [
-          { team: "Pilote", role: "JOUE", text: "Expliquez une procédure administrative complexe en utilisant des mots simples et des images concrètes." },
-          { team: "Médiateur", role: "INTERAGIT", text: "Jouez l'usager naïf qui ne connaît rien à l'administration et posez des questions candides." },
-          { team: "Créatif", role: "ANALYSE", text: "Vérifiez si le message passe sans utiliser aucun mot de 'jargon' administratif." }
+          { team: "Créatif", role: "JOUE", text: "Dos à votre partenaire, répondez aux questions avec sincérité et calme, en vous appuyant uniquement sur votre voix." },
+          { team: "Médiateur", role: "INTERAGIT", text: "Formulez 3 questions précises et ouvertes à votre partenaire (dos à dos)." },
+          { team: "Pilote", role: "ANALYSE", text: "Évaluez la pertinence, la fluidité de l'échange et la qualité de l'écoute active sans repères visuels." }
         ]
       },
       {
         id: 5,
-        title: "Le Téléphone Arabe",
+        title: "Simulation d'Interview",
         solo: false,
         items: [
-          { team: "Pilote", role: "JOUE", text: "Redites avec vos propres mots l'information entendue ou lue. Soyez le plus précis possible." },
-          { team: "Médiateur", role: "JOUE", text: "Redites avec vos propres mots l'information entendue ou lue. Soyez le plus précis possible." },
-          { team: "Créatif", role: "JOUE", text: "Redites avec vos propres mots l'information entendue ou lue. Soyez le plus précis possible." }
+          { team: "Médiateur", role: "JOUE", text: "Répondez aux questions face caméra. Faites des phrases courtes et maintenez le contact visuel." },
+          { team: "Pilote", role: "INTERAGIT", text: "Incarnez le journaliste : animez l'entretien, maintenez le rythme et anticipez les angles." },
+          { team: "Créatif", role: "ANALYSE", text: "Repérez les moments d'authenticité et d'émotion lors du visionnage de la vidéo." }
         ]
       },
       {
         id: 6,
-        title: "Le Téléphone Braqué",
+        title: "La Phrase Choc",
         solo: false,
         items: [
-          { team: "Pilote", role: "JOUE", text: "Usager provocateur : filmez l'agent avec votre smartphone en direct (Facebook Live fictif) et cherchez le buzz." },
-          { team: "Médiateur", role: "INTERAGIT", text: "Agent CNSS : désamorcez la tension sans gestes brusques. Gardez une voix posée et refusez poliment d'être filmé." },
-          { team: "Créatif", role: "ANALYSE", text: "Observez la scène à travers le prisme de la vidéo : repérez tout geste (yeux au ciel, bras croisés) qui nuirait à l'image." }
+          { team: "Créatif", role: "JOUE", text: "Dites votre phrase choc avec assurance. Ajustez intonations et rythme pour frapper fort en peu de mots." },
+          { team: "Médiateur", role: "ANALYSE", text: "Évaluez la force du propos, est-ce que le message retient l'attention ?" },
+          { team: "Pilote", role: "ANALYSE", text: "Aidez l'orateur à ajuster sa gestuelle, son regard et le volume de sa voix." }
         ]
       },
       {
         id: 7,
-        title: "Crise en Accueil",
+        title: "Questions Pièges",
         solo: false,
         items: [
-          { team: "Pilote", role: "JOUE", text: "Agent de guichet : démentez fermement la rumeur de piratage. Rassurez sur la sécurité des fonds avec empathie." },
-          { team: "Médiateur", role: "INTERAGIT", text: "Usager en colère : brandissez la rumeur sur votre téléphone, coupez la parole et exigez un remboursement immédiat." },
-          { team: "Créatif", role: "ANALYSE", text: "Évaluez la capacité de l'agent à valider l'émotion (« Je comprends votre inquiétude ») sans jamais valider la rumeur." }
+          { team: "Créatif", role: "JOUE", text: "Répondez avec sérénité (écouter, respirer, reformuler, répondre par des faits, sans se justifier)." },
+          { team: "Pilote", role: "INTERAGIT", text: "Jouez le journaliste incisif. Posez des questions déstabilisantes mais pertinentes." },
+          { team: "Médiateur", role: "ANALYSE", text: "Observez la cohérence entre l'attitude (calme extérieur) et le propos de l'orateur." }
+        ]
+      },
+      {
+        id: 8,
+        title: "Conférence de Presse (Crise)",
+        solo: false,
+        items: [
+          { team: "Pilote", role: "JOUE", text: "Porte-parole : défendez votre message face à une situation de crise (parler vrai, assumer, rassurer)." },
+          { team: "Médiateur", role: "INTERAGIT", text: "Journalistes : formulez des questions pressantes et exigeantes pour tester la réactivité." },
+          { team: "Créatif", role: "ANALYSE", text: "Analysez la posture de leader, l'empathie démontrée et l'authenticité du ton." }
         ]
       }
     ];
 
+    // Descriptions contextuelles
     const EXPLAIN = {
-      1: "Tour de table rapide simulant l'accueil au guichet pour transmettre disponibilité et chaleur humaine en une phrase.",
-      2: "Exercice en binôme focalisé sur l'écoute active et la gestuelle de reformulation.",
-      3: "Simulation dos à dos pour se concentrer sur la voix et la capacité à poser des questions clarificatrices.",
-      4: "Exercice de vulgarisation : traduire le jargon administratif (immatriculation, cotisations) en langage courant.",
-      5: "Analyse de la déperdition du message institutionnel et de l'importance de la précision verbale.",
-      6: "Gestion d'un usager agressif filmant l'interaction pour les réseaux sociaux. Focus sur le calme et l'image non-verbale.",
-      7: "Simulation de crise majeure (rumeur de piratage). Application des 5 piliers de la communication de crise au guichet."
+      1: "L'objectif n'est pas la performance mais d'aider chacun à se détendre. Brisez la glace librement devant le groupe pour transformer le trac en énergie.",
+      2: "Travail sur le non-verbal : ressentez la connexion corporelle sans utiliser la parole. C'est l'écoute par le corps.",
+      3: "Apprendre à synthétiser. L'auditoire doit pouvoir résumer votre intervention complexe en un seul mot-clé.",
+      4: "Exercice dos à dos pour annuler l'impact visuel et se concentrer exclusivement sur les intonations de la voix (décoder les émotions).",
+      5: "Mise en situation réelle (filmée) de la relation avec la presse. Il faut aller à l'essentiel et assumer le silence.",
+      6: "Développement du 'Soundbite' : formuler le message clé parfait (la citation qui sera retenue par les médias).",
+      7: "Entraînement en binôme pour apprendre à désamorcer l'agressivité et éviter la justification défensive.",
+      8: "L'exercice ultime. Seul face à la meute pour tester l'alignement entre le message de crise et le langage corporel."
     };
 
+    // Mapping temporel selon la fiche ASIN (Oct 2026)
     const slotMap = new Map();
-    [1, 2].forEach(id => slotMap.set(id, 'matin'));
-    [3, 4].forEach(id => slotMap.set(id, 'apres'));
-    [5, 6].forEach(id => slotMap.set(id, 'matin'));
-    [7].forEach(id => slotMap.set(id, 'apres'));
+    [1, 2].forEach(id => slotMap.set(id, 'matin')); // J1 Matin
+    [3].forEach(id => slotMap.set(id, 'matin'));    // J2 Matin (9h-10h45)
+    [4].forEach(id => slotMap.set(id, 'apres'));    // J2 "Fin Matinée" décalé APM pour équilibrer UI
+    [5].forEach(id => slotMap.set(id, 'matin'));    // J3 Matin (9h15-11h)
+    [6].forEach(id => slotMap.set(id, 'apres'));    // J3 "Fin Matinée" décalé APM
+    [7].forEach(id => slotMap.set(id, 'matin'));    // J4 Matin (9h15-10h45)
+    [8].forEach(id => slotMap.set(id, 'apres'));    // J4 "Fin Matinée" décalé APM
 
     const dayMap = new Map();
-    [1, 2, 3, 4].forEach(id => dayMap.set(id, 1));
-    [5, 6, 7].forEach(id => dayMap.set(id, 2));
+    [1, 2].forEach(id => dayMap.set(id, 1));
+    [3, 4].forEach(id => dayMap.set(id, 2));
+    [5, 6].forEach(id => dayMap.set(id, 3));
+    [7, 8].forEach(id => dayMap.set(id, 4));
 
-    const ORDER = [1, 2, 3, 4, 5, 6, 7];
+    const ORDER = [1, 2, 3, 4, 5, 6, 7, 8];
     const VISIBLE = ORDER.map((origId, idx) => {
       const src = GAMES_FULL.find(g => g.id === origId);
       return { ...src, origId, displayId: idx + 1 };
@@ -305,18 +327,12 @@
     const roleName = document.getElementById('roleName');
     const roleDot = document.getElementById('roleDot');
 
+    // Mode super-utilisateur (formateur)
     let adminMode = false;
-    let adminDay = null;
-    let adminTeamStore = null;
+    let adminDay = 1; // Jour affiché actuellement en mode manuel
 
     function getDay(id) { return dayMap.get(id) || null; }
     function getSlot(id) { return slotMap.get(id) || null; }
-
-    function dayFromDate(d) {
-      // Février 2026 : Pas de jours précis définis, on retourne le Jour 1 par défaut.
-      // Utilisez le mode Superviseur (Ctrl+Shift+E) pour basculer sur le Jour 2.
-      return 1;
-    }
 
     function teamColor(t) {
       if (t === 'Créatif') return 'var(--creatif)';
@@ -328,19 +344,39 @@
     function roleBadge(r) {
       const b = "px-2 py-0.5 text-[10px] font-bold rounded uppercase tracking-wide ring-1 ring-inset";
       if (r === 'JOUE') return `${b} bg-emerald-50 text-emerald-700 ring-emerald-200/50`;
-      if (r === 'INTERAGIT') return `${b} bg-sky-50 text-sky-700 ring-sky-200/50`;
-      return `${b} bg-rose-50 text-rose-700 ring-rose-200/50`;
+      if (r === 'INTERAGIT') return `${b} bg-blue-50 text-blue-700 ring-blue-200/50`; // Changé pour coller ASIN
+      if (r === 'ANALYSE') return `${b} bg-rose-50 text-rose-700 ring-rose-200/50`;
+      return b;
     }
 
+    // Détermination automatique du jour selon le calendrier réel (12 au 16 oct 2026)
+    // Le trigger se fait à 23h59 (le lendemain, on passe au jour suivant)
+    function calculateAutoDay() {
+      const now = new Date();
+      // On s'assure qu'on est bien en 2026 et en octobre (mois 9 en JS, car 0-indexé)
+      if (now.getFullYear() === 2026 && now.getMonth() === 9) {
+          const date = now.getDate();
+          if (date <= 12) return 1; // Le 12 ou avant -> Jour 1
+          if (date === 13) return 2; // Le 13 -> Jour 2
+          if (date === 14) return 3; // Le 14 -> Jour 3
+          if (date >= 15) return 4;  // Le 15 et le 16 -> Jour 4
+      }
+      return 1; // Valeur par défaut hors période
+    }
+
+
+    // Le jour affiché est désormais forcé par la variable adminDay (contrôlable via UI)
+    // puisque la formation se déroule sur 4 jours et nous voulons laisser l'utilisateur
+    // ou le formateur naviguer facilement.
     function currentAllowedDisplayIds() {
-      const day = adminMode && adminDay ? adminDay : dayFromDate(new Date());
-      return day === 1 ? [1, 2, 3, 4] : [5, 6, 7];
+      // Retourne les jeux associés au jour `adminDay`
+      return VISIBLE.filter(g => dayMap.get(g.origId) === adminDay).map(g => g.displayId);
     }
 
     function renderCards(list) {
       grid.innerHTML = "";
       if (!list.length) {
-        grid.innerHTML = `<div class="col-span-full py-20 text-center border-2 border-dashed border-slate-200 rounded-3xl bg-slate-50/50"><p class="text-slate-500">Aucune activité pour ce créneau.</p></div>`;
+        grid.innerHTML = `<div class="col-span-full py-20 text-center border-2 border-dashed border-slate-200 rounded-3xl bg-slate-50/50"><p class="text-slate-500 font-medium">Aucune activité trouvée pour ces filtres.</p></div>`;
         resultCount.textContent = "";
         return;
       }
@@ -359,7 +395,7 @@
         if (itemsToShow.length === 0) return;
         
         h3.textContent = `${game.displayId}. ${game.title}`;
-        const slLabel = getSlot(game.displayId) === 'matin' ? 'Matin' : 'Après-midi';
+        const slLabel = getSlot(game.displayId) === 'matin' ? 'Activité 1' : 'Activité 2';
         sub.textContent = `Jour ${getDay(game.displayId)} • ${slLabel}`;
         chip.textContent = game.solo ? "Solo" : "Équipe";
         
@@ -385,7 +421,7 @@
         frag.appendChild(node);
       });
       grid.appendChild(frag);
-      resultCount.textContent = `${grid.childElementCount} activités affichées`;
+      resultCount.textContent = `${grid.childElementCount} activité(s) affichée(s)`;
     }
 
     function applyFilters() {
@@ -405,20 +441,25 @@
     }
 
     function updateBanner() {
-      const day = adminMode && adminDay ? adminDay : dayFromDate(new Date());
-      activeDayLabel.textContent = `Jour ${day}`;
-      activeHint.textContent = day === 1 ? "Intelligence Relationnelle" : "Communication de Crise";
+      activeDayLabel.textContent = `Jour ${adminDay} / 4`;
+      const hints = {
+        1: "Impact Personnel & Langage Non-Verbal",
+        2: "Concision (Clarté) & Écoute Active",
+        3: "Interactions Médiatiques face Caméra",
+        4: "Gestion de Crise et Situations difficiles"
+      };
+      activeHint.textContent = hints[adminDay] || "";
     }
 
     function setSlotUI(v) {
       slotSwitch.dataset.state = v;
-      slotSwitch.classList.remove('bg-sky-200', 'bg-amber-200', 'bg-slate-200');
+      slotSwitch.classList.remove('bg-blue-200', 'bg-amber-200', 'bg-slate-200');
       if (v === 'apres') {
         slotThumb.style.transform = 'translateX(2.25rem)';
         slotSwitch.classList.add('bg-amber-200');
       } else if (v === 'matin') {
         slotThumb.style.transform = 'translateX(0.25rem)';
-        slotSwitch.classList.add('bg-sky-200');
+        slotSwitch.classList.add('bg-blue-200');
       } else {
         slotThumb.style.transform = 'translateX(1.25rem)';
         slotSwitch.classList.add('bg-slate-200');
@@ -440,12 +481,14 @@
     });
 
     searchInput.addEventListener('input', applyFilters);
+    
+    // Modal Management
     roleCapsule.addEventListener('click', () => roleDialog.classList.remove('hidden'));
     
     roleDialog.querySelectorAll('[data-team]').forEach(btn => {
       btn.addEventListener('click', () => {
         const t = btn.getAttribute('data-team');
-        localStorage.setItem('cnss:userTeam', t);
+        localStorage.setItem('asin:userTeam', t);
         currentTeamFilter = t;
         roleName.textContent = t;
         roleDot.style.background = teamColor(t);
@@ -465,26 +508,28 @@
       applyFilters();
     });
 
-    window.addEventListener('keydown', e => {
-      if (e.ctrlKey && e.shiftKey && e.key === 'E') {
-        adminMode = !adminMode;
-        if (!adminMode) adminDay = null;
-        updateBanner();
-        applyFilters();
-      }
-    });
-
+    // Navigation des jours
     activeDayLabel.addEventListener('click', () => {
-      if (!adminMode) return;
-      adminDay = (adminDay || dayFromDate(new Date())) === 1 ? 2 : 1;
+      // Click simple pour avancer d'un jour (cycle 1 -> 4)
+      adminDay = adminDay >= 4 ? 1 : adminDay + 1;
       updateBanner();
       applyFilters();
     });
+    
+    // Raccourci formateur 
+    window.addEventListener('keydown', e => {
+      if (e.ctrlKey && e.shiftKey && e.key === 'E') {
+        alert("Astuce Formateur : Cliquez sur le badge 'Jour X' en haut pour naviguer entre les 4 jours de la formation.");
+      }
+    });
 
-    // Init
     (function init() {
+      // Déterminer le jour par défaut au chargement
+      adminDay = calculateAutoDay();
+      
       updateBanner();
-      const t = localStorage.getItem('cnss:userTeam');
+      
+      const t = localStorage.getItem('asin:userTeam');
       if (t) {
         currentTeamFilter = t;
         roleName.textContent = t;
